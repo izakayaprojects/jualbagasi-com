@@ -1,0 +1,17 @@
+{
+  "name": "com.jualbagasi",
+  "version": "1.0.0",
+  "description": "Jual Bagasi API Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jason Christian",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^4.16.4",
+    "md5": "^2.2.1",
+    "mysql": "^2.17.1"
+  }
+}
