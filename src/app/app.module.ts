@@ -8,11 +8,17 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from "./login/login.component";
+import { HomepageComponent } from './homepage/homepage.component';
+import { ProfileComponent } from './profile/profile.component';
+import { PurchaseDetailComponent } from './purchase-detail/purchase-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HomepageComponent,
+    ProfileComponent,
+    PurchaseDetailComponent
   ],
   imports: [
     BrowserModule,
