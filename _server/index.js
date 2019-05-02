@@ -27,6 +27,14 @@ app.post("/api/login", function(req, res) {
 	})
 })
 
+app.post("/api/session", function(req, res) {
+	auth.check_token(req.body.token).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.listen(3000, function() {
 	console.log("Server is running at port 3000")
 })

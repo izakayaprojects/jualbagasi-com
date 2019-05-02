@@ -11,6 +11,7 @@ import { LoginComponent } from "./login/login.component";
 import { HomepageComponent } from './homepage/homepage.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PurchaseDetailComponent } from './purchase-detail/purchase-detail.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { PurchaseDetailComponent } from './purchase-detail/purchase-detail.compo
     LoginComponent,
     HomepageComponent,
     ProfileComponent,
-    PurchaseDetailComponent
+    PurchaseDetailComponent,
+    NavigationBarComponent
   ],
   imports: [
     BrowserModule,

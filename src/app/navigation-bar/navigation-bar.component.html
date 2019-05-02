@@ -1,0 +1,11 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+	<ul class="navbar-nav">
+		<li class="nav-item mr-1"><a class="nav-link" 
+			[ngClass]="{'highlighted':currentNavigation==='homepage'}" href="/">Beranda</a></li>
+		<li class="nav-item mr-1"><a class="nav-link" href="#">Cara kerja</a></li>
+		<li class="nav-item mr-1"><a class="nav-link" 
+			[ngClass]="{'highlighted':currentNavigation==='profile'}" href="profile">Profil</a></li>
+		<li class="nav-item mr-1"><a class="nav-link" href="#">Order saya</a></li>
+		<li class="nav-item mr-1"><a class="nav-link" href="#">Keluar</a></li>
+	</ul>
+</nav>

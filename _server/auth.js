@@ -41,7 +41,7 @@ module.exports = {
 								// Expired
 								let token = newLoginToken();
 								let expiration = new Date(Date.now() + AUTH_KEY_LIFETIME);
-								let query = "UDPATE tbl_user_auth SET token=?, expired_at=? WHERE user_id=?";
+								let query = "UPDATE tbl_user_auth SET token=?, expired_at=? WHERE user_id=?";
 								db.connection.query(query, [token, expiration, userid], function(err, results) {
 									if (results) {
 										resolve(utils.createSuccessResp({
@@ -61,5 +61,27 @@ module.exports = {
 				}
 			})
 		});
+	},
+
+	check_token: function(token) {
+		return new Promise(function(resolve, reject) {
+			let query = "SELECT * FROM tbl_user_auth WHERE token = ?";
+			db.connection.query(query, [token], function(err, result) {
+				if (result.length === 0) {
+					reject(utils.createErrorResp(-1, "Token does not exist"))
+				} else {
+					let auth = result[0];
+					let expiration = new Date(auth.expired_at);
+					let now = new Date();
+					if (expiration < now) {
+						// Expired
+						reject(utils.createErrorResp(-2, "Token expired"))
+					} else {
+						// Still valid
+						resolve(utils.createSuccessResp({valid: true}))
+					}
+				}
+			})
+		})
 	}
 }
