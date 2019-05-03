@@ -63,6 +63,23 @@ module.exports = {
 		});
 	},
 
+	logout: function(token) {
+		return new Promise(function(resolve, reject) {
+			let query = "DELETE FROM tbl_user_auth WHERE token = ?"
+			db.connection.query(query, [token], function(err, result) {
+				if(err) {
+					reject(utils.createErrorResp(-1, "Database Error"))
+				} else {
+					if (result["affectedRows"] == 1) {
+						resolve(utils.createSuccessResp({deleted_token: token}))
+					} else {
+						reject(utils.createErrorResp(-2, "Unknown token"))
+					}
+				}
+			})
+		})
+	},
+
 	check_token: function(token) {
 		return new Promise(function(resolve, reject) {
 			let query = "SELECT * FROM tbl_user_auth WHERE token = ?";

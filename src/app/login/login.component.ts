@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
         if (result["success"] === false) {
           this.loginErrorMessage = "E-mail atau Password salah!"
         } else {
+          let token = result["data"]["token"]
           this.localStorage.store("token", token)
           this.router.navigate(["/"])
         }

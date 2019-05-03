@@ -22,6 +22,12 @@ export class UserAuthService {
   	return this.http.post(API+"/login", {email: email, password: pass});
   }
 
+  logout() {
+    let token = this.localStorage.retrieve("token")
+    this.localStorage.clear("token")
+    return this.http.post(API+"/logout", {token: token});
+  }
+
   check_token(): Observable<boolean> {
   	let token = this.localStorage.retrieve("token")
   	if (token === undefined || token === "") {
