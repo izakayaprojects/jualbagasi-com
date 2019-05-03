@@ -1,0 +1,51 @@
+<div class="jumbotron">
+	<h1>Jual Bagasi</h1>
+	<app-navigation-bar [currentNavigation]="'orders'"></app-navigation-bar>
+</div>
+<div class="container">
+	<form>
+		<div class="form-group">
+			<label for="po_title">Judul Purchase Order*</label>
+			<input type="text" class="form-control" id="po_title" placeholder="Masukkan judul PO anda.." />
+		</div>
+
+		<div class="form-group">
+			<label for="po_description">Deskripsi*</label>
+			<textarea class="form-control rounded-0" id="po_description" 
+				placeholder="Jelaskan tentang PO anda.."></textarea>
+		</div>
+
+		<div class="form-group">
+			<span class="d-flex">Keberangkatan*</span>
+			
+			<div class="bg-dark p-2 text-light d-flex mt-1 dest-box">
+				<div class="row ml-2" (click)="openDestinationForm()">
+					Masukkan data keberangkatan..
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<span class="d-flex">Rute*</span>
+			<span class="bg-dark p-2 text-light dest-box d-flex" 
+				(click)="openDestinationForm()">
+				Tambah rute..
+			</span>
+			<!-- TODO rute yang sudah ditambahkan -->
+			<div class="bg-dark p-2 text-light d-flex mt-1">
+				<img src="assets/icons/ic_close.png" class="action-icon mr-3" />
+				<div (click)="openDestinationForm()" class="dest-box">
+					<div class="row ml-2">
+						<span class="span1 mr-2">1.</span>
+						<span class="span1 mr-2 flag-icon flag-icon-de"></span> 
+						<span class="span1 badge badge-light mr-2">Kassel, Germany</span> 
+						<span class="span1">(Senin, 15 Okt. 2019)</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<button class="btn btn-success mr-2">Konfirmasi PO</button>
+		<button class="btn btn-danger">Batal</button>
+	</form>
+</div>

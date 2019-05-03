@@ -1,3 +1,13 @@
 .pointer {
 	cursor:pointer;
 }
+
+.action-icon {
+	cursor: pointer;
+	opacity: 1;
+	transition: 0.2s;
+}
+
+.action-icon:hover {
+	opacity: 0.6;
+}

@@ -3,9 +3,29 @@
 		<li class="nav-item mr-1"><a class="nav-link" 
 			[ngClass]="{'highlighted':currentNavigation==='homepage'}" href="/">Beranda</a></li>
 		<li class="nav-item mr-1"><a class="nav-link" href="#">Cara kerja</a></li>
-		<li class="nav-item mr-1"><a class="nav-link" 
-			[ngClass]="{'highlighted':currentNavigation==='profile'}" href="profile">Profil</a></li>
-		<li class="nav-item mr-1"><a class="nav-link" href="#">Order saya</a></li>
-		<li class="nav-item mr-1"><span class="nav-link pointer" (click)="logout()">Keluar</span></li>
+
+		<ng-container *ngIf="isLoggedIn$ | async as login">
+			<li class="nav-item mr-1" *ngIf="login.result">
+				<a class="nav-link" 
+					[ngClass]="{'highlighted':currentNavigation==='profile'}" 
+					href="profile">Profil
+				</a>
+			</li>
+
+			<li class="nav-item mr-1" *ngIf="login.result">
+				<a class="nav-link" 
+					[ngClass]="{'highlighted':currentNavigation==='orders'}" 
+					href="my-orders">Order saya</a>
+			</li>
+
+			<li class="nav-item mr-1 " *ngIf="login.result">
+				<span class="nav-link pointer" (click)="logout()">Keluar</span>
+			</li>
+
+			<li class="nav-item mr-1 " *ngIf="!login.result">
+				<a class="nav-link" href="login">Masuk</a>
+			</li>
+		</ng-container>
+	
 	</ul>
 </nav>

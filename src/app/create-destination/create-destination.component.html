@@ -1,0 +1,28 @@
+<div class="m-3">
+	<h4>Tambah Rute Perjalanan</h4>
+	<form>
+		<div class="form-group">
+			<label for="dest_country">Negara tujuan*</label>
+			<input type="text" 
+				class="form-control" 
+				id="dest_country" />
+		</div>
+
+		<div class="form-group">
+			<label for="dest_city">Kota tujuan*</label>
+			<input type="text" 
+				class="form-control" 
+				id="dest_city" />
+		</div>
+
+		<div class="form-group">
+			<label for="dest_dep_date">Tanggal keberangkatan*</label>
+			<input id="dest_dep_date" class="form-control" ngbDatepicker 
+				#d="ngbDatepicker" (focus)="d.open()">
+		</div>
+		<div class="form-group">
+			<button class="btn btn-success mr-3">Tambah</button>
+			<button class="btn btn-danger">Batal</button>
+		</div>
+	</form>
+</div>

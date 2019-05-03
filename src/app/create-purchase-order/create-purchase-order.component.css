@@ -1,0 +1,9 @@
+.dest-box {
+	cursor: pointer;
+	opacity: 1;
+	transition: 0.2s;
+}
+
+.dest-box:hover {
+	opacity: 0.7
+}

@@ -13,6 +13,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { PurchaseDetailComponent } from './purchase-detail/purchase-detail.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { PurchaseOrderComponent } from './purchase-order/purchase-order.component';
+import { ManageOrdersComponent } from './manage-orders/manage-orders.component';
+import { OrderItemComponent } from './order-item/order-item.component';
+import { CreatePurchaseOrderComponent } from './create-purchase-order/create-purchase-order.component';
+import { CreateDestinationComponent } from './create-destination/create-destination.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import { PurchaseOrderComponent } from './purchase-order/purchase-order.componen
     ProfileComponent,
     PurchaseDetailComponent,
     NavigationBarComponent,
-    PurchaseOrderComponent
+    PurchaseOrderComponent,
+    ManageOrdersComponent,
+    OrderItemComponent,
+    CreatePurchaseOrderComponent,
+    CreateDestinationComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +41,7 @@ import { PurchaseOrderComponent } from './purchase-order/purchase-order.componen
     HttpClientModule
   ],
   providers: [],
+  entryComponents: [CreateDestinationComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

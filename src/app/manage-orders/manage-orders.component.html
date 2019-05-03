@@ -1,0 +1,19 @@
+<div class="jumbotron">
+	<h1>Jual Bagasi</h1>
+	<app-navigation-bar [currentNavigation]="'orders'"></app-navigation-bar>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3">
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a class="nav-link" href="new-order">Purchase Order baru</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-sm-9">
+			<app-order-item></app-order-item>
+		</div> 
+	</div>
+</div>
