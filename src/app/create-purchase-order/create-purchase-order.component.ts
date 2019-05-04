@@ -13,6 +13,9 @@ export class CreatePurchaseOrderComponent implements OnInit {
 
 	@Input() purchaseOrder: PurchaseOrder
 
+  selectedBannerFileName: string
+  selectedBannerPreviewUrl: any
+
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -24,6 +27,16 @@ export class CreatePurchaseOrderComponent implements OnInit {
 
   onCancel() {
   	
+  }
+
+  processBannerFile(image) {
+    let file = image.files[0]
+    this.selectedBannerFileName = file.name
+    let reader = new FileReader()
+    reader.onload = (event) => {
+      this.selectedBannerPreviewUrl = reader.result
+    }
+    reader.readAsDataURL(file)
   }
 
   openDestinationForm() {
