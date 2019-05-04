@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { Route } from "../_models/order";
 
 @Component({
   selector: 'app-create-destination',
@@ -6,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-destination.component.css']
 })
 export class CreateDestinationComponent implements OnInit {
+
+	@Input() route: Route
 
   constructor() { }
 

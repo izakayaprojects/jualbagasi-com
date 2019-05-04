@@ -95,7 +95,7 @@ module.exports = {
 						reject(utils.createErrorResp(-2, "Token expired"))
 					} else {
 						// Still valid
-						resolve(utils.createSuccessResp({valid: true}))
+						resolve(utils.createSuccessResp({valid: true, userid: auth.user_id}))
 					}
 				}
 			})

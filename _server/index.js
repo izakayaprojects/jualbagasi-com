@@ -3,6 +3,7 @@ const db = require("./db");
 const app = express();
 
 const auth = require("./auth")
+const order = require("./order")
 
 db.connect();
 app.use(express.urlencoded({extended: true}));
@@ -29,6 +30,14 @@ app.post("/api/login", function(req, res) {
 
 app.post("/api/logout", function(req, res) {
 	auth.logout(req.body.token).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
+app.post("/api/purchaseorder/add", function(req, res) {
+	order.add_purchase_order(req.body.token, req.body.data).then(result => {
 		res.send(result)
 	}).catch(err => {
 		res.send(err)

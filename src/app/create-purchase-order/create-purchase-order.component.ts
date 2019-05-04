@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { PurchaseOrder } from "../_models/order"
 import { CreateDestinationComponent } from "../create-destination/create-destination.component"
 
 @Component({
@@ -10,9 +11,19 @@ import { CreateDestinationComponent } from "../create-destination/create-destina
 })
 export class CreatePurchaseOrderComponent implements OnInit {
 
+	@Input() purchaseOrder: PurchaseOrder
+
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
+  }
+
+  onConfirmPO() {
+
+  }
+
+  onCancel() {
+  	
   }
 
   openDestinationForm() {
