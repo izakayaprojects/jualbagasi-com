@@ -3,16 +3,30 @@
 	<form>
 		<div class="form-group">
 			<label for="dest_country">Negara tujuan*</label>
-			<input type="text" 
-				class="form-control" 
-				id="dest_country" />
+			<input type="text" [(ngModel)]="route.country"
+				class="form-control"
+				[ngClass]="{
+					'is-invalid': route.country === '' && added,
+					'is-valid': route.country !== ''
+				}"
+				id="dest_country" name="dest_country" />
+			<div class="small text-danger" *ngIf="error.country !== ''">
+				{{ error.country }}
+			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="dest_city">Kota tujuan*</label>
-			<input type="text" 
+			<input type="text" [(ngModel)]="route.city"
 				class="form-control" 
-				id="dest_city" />
+				[ngClass]="{
+					'is-invalid': route.city === '' && added,
+					'is-valid': route.city !== ''
+				}"
+				id="dest_city" name="dest_city"/>
+			<div class="small text-danger" *ngIf="error.city !== ''">
+				{{ error.city }}
+			</div>
 		</div>
 
 		<div class="form-group">
@@ -21,18 +35,27 @@
 				class="hidden-input ml-2"
 				(dateSelect)="onDateSelected('departureDate', $event)"
 				ngbDatepicker #dest_dep="ngbDatepicker"/>
-			<button class="btn btn-info" (click)="dest_dep.toggle()">
+			<button class="btn btn-info"
+				[ngClass]="{
+					'btn-danger': route.departureDate === null && added
+				}"
+			 	(click)="dest_dep.toggle()">
 				{{ ngbDestDep !== null ? dateConv.yyyyMMdd(ngbDestDep) 
 					: "Pilih..." }}
 			</button>
+			<div class="small text-danger" *ngIf="error.depDate !== ''">
+				{{ error.depDate }}
+			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="dest_note">Catatan</label>
-			<input id="dest_note" class="form-control" type="text" name="dest_note">
+			<input id="dest_note" class="form-control" type="text" 
+				[(ngModel)]="route.note" 
+				name="dest_note"/>
 		</div>
 		<div class="form-group">
-			<button class="btn btn-success mr-3">Tambah</button>
+			<button class="btn btn-success mr-3" (click)="addRoute(route)">Tambah</button>
 			<button class="btn btn-danger">Batal</button>
 		</div>
 	</form>
