@@ -47,7 +47,7 @@
 		<label>Tanggal berlaku PO*</label>
 		<div class="form-inline mb-2">
 			<input id="po_startdate" name="po_startDate" type="text" readonly
-				style="width: 0px; height:0px; opacity: 0" 
+				class="hidden-input"
 				(dateSelect)="onDateSelected('startDate', $event)"
 				ngbDatepicker #po_startDate="ngbDatepicker"/>
 			<button class="btn btn-info" (click)="po_startDate.toggle()">
@@ -56,7 +56,7 @@
 			<span class="mr-2 ml-2">-</span>
 
 			<input id="po_enddate" name="po_endDate" type="text" readonly
-				style="width: 0px; height:0px; opacity: 0"
+				class="hidden-input"
 				[minDate]="ngbPOStartDate"
 				(dateSelect)="onDateSelected('endDate', $event)"
 				ngbDatepicker #po_endDate="ngbDatepicker"/>
@@ -68,9 +68,9 @@
 
 		<div class="form-group">
 			<span class="d-flex">Keberangkatan*</span>
-			
-			<div class="bg-dark p-2 text-light d-flex mt-1 dest-box">
-				<div class="row ml-2" (click)="openDestinationForm()">
+			<div class="bg-dark p-2 text-light d-flex mt-1 dest-box"
+				(click)="openDestinationForm()">
+				<div class="row ml-2">
 					Masukkan data keberangkatan..
 				</div>
 			</div>
