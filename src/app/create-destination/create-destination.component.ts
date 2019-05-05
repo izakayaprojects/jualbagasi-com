@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DateConverter } from "../_models/utils"
 import { Route } from "../_models/order";
@@ -23,9 +24,13 @@ export class CreateDestinationComponent implements OnInit {
 	ngbDestDep =  this.route.departureDate === null ? 
 		null : this.dateConv.dateToNgbDate(this.route.departureDate)
 
-  constructor() { }
+  constructor(private modal: NgbActiveModal) { }
 
   ngOnInit() {
+  }
+
+  closeModal(resp: any) {
+  	this.modal.close(resp)
   }
 
   addRoute(route: Route) {

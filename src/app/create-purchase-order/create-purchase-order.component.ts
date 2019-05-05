@@ -63,6 +63,10 @@ export class CreatePurchaseOrderComponent implements OnInit {
 
   openDestinationForm() {
   	const modalRef = this.modalService.open(CreateDestinationComponent)
+    modalRef.componentInstance["route"] = this.purchaseOrder.origin
+    modalRef.result.then(result => {
+      
+    })
   }
 
 }

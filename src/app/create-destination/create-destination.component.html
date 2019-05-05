@@ -2,28 +2,25 @@
 	<h4>Tambah Rute Perjalanan</h4>
 	<form>
 		<div class="form-group">
-			<label for="dest_country">Negara tujuan*</label>
-			<input type="text" [(ngModel)]="route.country"
-				class="form-control"
-				[ngClass]="{
-					'is-invalid': route.country === '' && added,
-					'is-valid': route.country !== ''
-				}"
-				id="dest_country" name="dest_country" />
-			<div class="small text-danger" *ngIf="error.country !== ''">
-				{{ error.country }}
-			</div>
-		</div>
-
-		<div class="form-group">
 			<label for="dest_city">Kota tujuan*</label>
-			<input type="text" [(ngModel)]="route.city"
-				class="form-control" 
-				[ngClass]="{
-					'is-invalid': route.city === '' && added,
-					'is-valid': route.city !== ''
-				}"
-				id="dest_city" name="dest_city"/>
+			<div class="form-inline">
+				<input type="text" [(ngModel)]="route.city"
+					class="form-control" 
+					[ngClass]="{
+						'is-invalid': route.city === '' && added,
+						'is-valid': route.city !== ''
+					}"
+					id="dest_city" name="dest_city"/>
+
+				<input type="text" [(ngModel)]="route.country" readonly
+					class="form-control ml-2" 
+					placeholder="Negara.." 
+					[ngClass]="{
+						'is-invalid': route.country === '' && added,
+						'is-valid': route.country !== ''
+					}"
+					id="dest_country" name="dest_coutry"/>
+			</div>
 			<div class="small text-danger" *ngIf="error.city !== ''">
 				{{ error.city }}
 			</div>
@@ -55,8 +52,8 @@
 				name="dest_note"/>
 		</div>
 		<div class="form-group">
-			<button class="btn btn-success mr-3" (click)="addRoute(route)">Tambah</button>
-			<button class="btn btn-danger">Batal</button>
+			<button class="btn btn-success mr-3" type="submit" (click)="addRoute(route)">Tambah</button>
+			<button class="btn btn-danger" (click)="closeModal({state: 'cancelled'})">Batal</button>
 		</div>
 	</form>
 </div>
