@@ -6,13 +6,17 @@
 	<form>
 		<div class="form-group">
 			<label for="po_title">Judul Purchase Order*</label>
-			<input type="text" class="form-control" id="po_title" placeholder="Masukkan judul PO anda.." />
+			<input type="text" class="form-control" 
+				id="po_title" 
+				name="po_title"
+				[(ngModel)]="purchaseOrder.title"
+				placeholder="Masukkan judul PO anda.." />
 		</div>
 
 		<div class="form-group">
 			<label for="po_description">Deskripsi*</label>
-			<textarea class="form-control rounded-0" id="po_description" 
-				placeholder="Jelaskan tentang PO anda.."></textarea>
+			<textarea class="form-control rounded-0" id="po_description" name="po_description"
+				placeholder="Jelaskan tentang PO anda..">{{ purchaseOrder.description }}</textarea>
 		</div>
 
 		<div class="form-group mb-2 file-upload-dnd">
@@ -24,26 +28,42 @@
 
 		<div class="form-group">
 			<label for="po_baggage">Bagasi yang tersedia (Kg)*</label>
-			<input class="form-control" id="po_baggage" type="number" step="0.1"/>
+			<input class="form-control" id="po_baggage" name="po_baggage" type="number" step="0.1" min="0"
+				[(ngModel)]="purchaseOrder.capacityKg"/>
 		</div>
 
 		<div class="form-group">
-			<label for="po_baggage_price">Harga bagasi per Kg (IDR)*</label>
+			<label for="po_baggage_price">Harga bagasi per Kg*</label>
 			<div class="form-inline">
-				<input class="form-control mr-2" id="po_currency" type="text" placeholder="Mata uang.." />
-				<input class="form-control" id="po_baggage_price" type="number"/>
+				<input class="form-control mr-2" id="po_currency" name="po_currency" 
+					[(ngModel)]="purchaseOrder.currency" 
+					type="text" placeholder="Mata uang.." />
+				<input class="form-control" id="po_baggage_price" name="po_baggage_price"
+					[(ngModel)]="purchaseOrder.feePerKg"  
+					type="number"/>
 			</div>
 		</div>
 
-		<label>Tanggal berlaku PO</label>
+		<label>Tanggal berlaku PO*</label>
 		<div class="form-inline mb-2">
-			<input id="po_startdate" class="form-control" ngbDatepicker
-				placecholder="Tanggal mulai" readonly
-				#startDate="ngbDatepicker" (focus)="startDate.open()"/>
+			<input id="po_startdate" name="po_startDate" type="text" readonly
+				style="width: 0px; height:0px; opacity: 0" 
+				(dateSelect)="onDateSelected('startDate', $event)"
+				ngbDatepicker #po_startDate="ngbDatepicker"/>
+			<button class="btn btn-info" (click)="po_startDate.toggle()">
+				{{ dateConv.yyyyMMdd(ngbPOStartDate) }}
+			</button>
 			<span class="mr-2 ml-2">-</span>
-			<input id="po_enddate" class="form-control" ngbDatepicker
-				placecholder="Tanggal terakhir" readonly
-				#endDate="ngbDatepicker" (focus)="endDate.open()"/>
+
+			<input id="po_enddate" name="po_endDate" type="text" readonly
+				style="width: 0px; height:0px; opacity: 0"
+				[minDate]="ngbPOStartDate"
+				(dateSelect)="onDateSelected('endDate', $event)"
+				ngbDatepicker #po_endDate="ngbDatepicker"/>
+			<button class="btn btn-info" (click)="po_endDate.toggle()">
+				{{ ngbPOEndDate !== null ? dateConv.yyyyMMdd(ngbPOEndDate) 
+					: "Pilih tanggal batas akhir PO" }}
+			</button>
 		</div>
 
 		<div class="form-group">

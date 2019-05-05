@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 import { PurchaseOrder } from "../_models/order"
+import { DateConverter } from "../_models/utils"
 import { CreateDestinationComponent } from "../create-destination/create-destination.component"
 
 @Component({
@@ -11,14 +12,21 @@ import { CreateDestinationComponent } from "../create-destination/create-destina
 })
 export class CreatePurchaseOrderComponent implements OnInit {
 
-	@Input() purchaseOrder: PurchaseOrder
+	@Input() purchaseOrder: PurchaseOrder = new PurchaseOrder()
 
+  dateConv = new DateConverter()
   selectedBannerFileName: string
   selectedBannerPreviewUrl: any
+
+  ngbPOStartDate: NgbDateStruct 
+  ngbPOEndDate: NgbDateStruct 
 
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.ngbPOStartDate = this.dateConv.dateToNgbDate(this.purchaseOrder.startDate)
+    this.ngbPOEndDate = this.purchaseOrder.endDate !== null ? 
+      this.dateConv.dateToNgbDate(this.purchaseOrder.startDate) : null
   }
 
   onConfirmPO() {
@@ -27,6 +35,20 @@ export class CreatePurchaseOrderComponent implements OnInit {
 
   onCancel() {
   	
+  }
+
+  onDateSelected(which, event) {
+    try {
+      this.purchaseOrder[which] = this.dateConv.ngbDateToDate(event)
+    } catch(e) {
+      console.error(e)
+    }
+
+    if (which === "startDate") {
+      this.ngbPOStartDate = event
+    } else if (which === "endDate") {
+      this.ngbPOEndDate = event
+    }
   }
 
   processBannerFile(image) {
