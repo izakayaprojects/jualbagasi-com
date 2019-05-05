@@ -3,5 +3,23 @@
 	<app-navigation-bar [currentNavigation]="'profile'"></app-navigation-bar>
 </div>
 <div class="container">
-	Profile
+	<div class="row">
+		<div class="col-sm-4 d-flex justify-content-center">
+			<img src="assets/icons/default_pp.png" class="profilepic" 
+				data-tooltip="Ubah Profile Picture" />
+		</div>
+		<div class="col-sm-8">
+			<div class="form-inline row">
+				<span class="col-sm-4">Username</span>
+				<input class="form-control col-sm-8" type="text" value="bagasimaster2000" />
+			</div>
+
+			<div class="form-inline row mt-1">
+				<span class="col-sm-4">Nama</span>
+				<input class="form-control col-sm-8" type="text" value="John Titor" />
+			</div>
+			<hr/>
+			<div><i>Member sejak 15 Agustus 2010</i></div>
+		</div>
+	</div>
 </div>
