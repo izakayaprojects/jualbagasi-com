@@ -4,6 +4,7 @@ const app = express();
 
 const auth = require("./auth")
 const order = require("./order")
+const cities = require("./cities")
 
 db.connect();
 app.use(express.urlencoded({extended: true}));
@@ -18,6 +19,14 @@ app.use(function(req, res, next) {
 
 app.get("/", function(req, res) {
 	res.send("Hello")
+})
+
+app.get("/api/autocomplete/city", function(req, res) {
+	cities.get_city_by_name(req.query.search).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
 })
 
 app.post("/api/login", function(req, res) {

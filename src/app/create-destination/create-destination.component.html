@@ -4,21 +4,27 @@
 		<div class="form-group">
 			<label for="dest_city">Kota tujuan*</label>
 			<div class="form-inline">
+				<ng-template #rt let-r="result" let-t="term">
+					<ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+					<div class="small">{{ r.state }} - {{ r.country }}</div>
+				</ng-template>
 				<input type="text" [(ngModel)]="route.city"
-					class="form-control" 
 					[ngClass]="{
-						'is-invalid': route.city === '' && added,
-						'is-valid': route.city !== ''
+						'is-valid': route.city.id > 0,
+						'is-invalid': route.city.id < 0 && added
 					}"
+					[ngbTypeahead]="searchCity"
+					[resultTemplate]="rt"
+					[inputFormatter]="cityFormatter"
+					class="form-control" 
 					id="dest_city" name="dest_city"/>
 
-				<input type="text" [(ngModel)]="route.country" readonly
+				<input type="text" [(ngModel)]="route.city.country" readonly
 					class="form-control ml-2" 
-					placeholder="Negara.." 
 					[ngClass]="{
-						'is-invalid': route.country === '' && added,
-						'is-valid': route.country !== ''
+						'is-valid': route.city.id > 0
 					}"
+					placeholder="Negara.."
 					id="dest_country" name="dest_coutry"/>
 			</div>
 			<div class="small text-danger" *ngIf="error.city !== ''">

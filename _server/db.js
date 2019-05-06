@@ -7,13 +7,13 @@ module.exports = {
 		host: 'localhost',
 		user: 'jualbagasi',
 		password: 'jualbagasi',
-		database: 'db_nitipteman_test'
+		database: 'db_nitipteman_test',
 	}),
 
 	connect: function() {
 		this.connection.connect(function(err) {
 			if (!err) console.log("Connected to DB!");
-			else console.log("Error: "+err);
+			else console.log("Error: "+err.stack);
 		});
 	},
 }

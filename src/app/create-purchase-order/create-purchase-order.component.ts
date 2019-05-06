@@ -66,6 +66,8 @@ export class CreatePurchaseOrderComponent implements OnInit {
     modalRef.componentInstance["route"] = this.purchaseOrder.origin
     modalRef.result.then(result => {
       
+    }).catch(err => {
+      
     })
   }
 
