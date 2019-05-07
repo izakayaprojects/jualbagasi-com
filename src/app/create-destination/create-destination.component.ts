@@ -16,6 +16,7 @@ import { AutocompleterService } from "../autocompleter.service";
 export class CreateDestinationComponent implements OnInit {
 
 	@Input() route: Route = new Route()
+  @Input() routeIndex: number = -1
 	dateConv = new DateConverter()
 
 	added = false
@@ -49,7 +50,8 @@ export class CreateDestinationComponent implements OnInit {
 
   	if (validated) {
   		//Send back the route object
-  	}
+  	  this.closeModal({route: this.route, routeIndex: this.routeIndex})
+    }
   }
 
   onDateSelected(which, event) {
@@ -70,7 +72,7 @@ export class CreateDestinationComponent implements OnInit {
             return of([])
           }),
           map(result => {
-            return result.length > 7 ? result.splice(0, 7) : result
+            return result.length > 10 ? result.splice(0, 10) : result
           })
         )
       })

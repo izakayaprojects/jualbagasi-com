@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
-import { PurchaseOrder } from "../_models/order"
+import { PurchaseOrder, Route } from "../_models/order"
 import { DateConverter } from "../_models/utils"
 import { CreateDestinationComponent } from "../create-destination/create-destination.component"
 
@@ -61,14 +61,30 @@ export class CreatePurchaseOrderComponent implements OnInit {
     reader.readAsDataURL(file)
   }
 
-  openDestinationForm() {
+  openDestinationForm(destIndex: number) {
   	const modalRef = this.modalService.open(CreateDestinationComponent)
-    modalRef.componentInstance["route"] = this.purchaseOrder.origin
+
+    if (destIndex === -1) {
+      modalRef.componentInstance["route"] = this.purchaseOrder.origin
+    } else if (destIndex === this.purchaseOrder.routes.length) {
+      modalRef.componentInstance["route"] = new Route()
+    } else {
+      modalRef.componentInstance["route"] = this.purchaseOrder.routes[destIndex]
+    }
+    modalRef.componentInstance["routeIndex"] = destIndex
     modalRef.result.then(result => {
-      
-    }).catch(err => {
-      
-    })
+      if (result["route"]) {
+        let route = result["route"]
+        let index = result["routeIndex"]
+        if (index === -1) {
+          // Origin
+          this.purchaseOrder.origin = route
+        } else {
+          // One of the destinations
+          this.purchaseOrder.routes[index] = route
+        }
+      }
+    }).catch(err => { })
   }
 
 }

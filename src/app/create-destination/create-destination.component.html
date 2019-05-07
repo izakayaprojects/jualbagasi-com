@@ -38,14 +38,16 @@
 				class="hidden-input ml-2"
 				(dateSelect)="onDateSelected('departureDate', $event)"
 				ngbDatepicker #dest_dep="ngbDatepicker"/>
-			<button class="btn btn-info"
+			<button class="btn btn-info mr-1"
 				[ngClass]="{
 					'btn-danger': route.departureDate === null && added
 				}"
 			 	(click)="dest_dep.toggle()">
-				{{ ngbDestDep !== null ? dateConv.yyyyMMdd(ngbDestDep) 
-					: "Pilih..." }}
+			 	Pilih..
 			</button>
+			<span class="small" *ngIf="route.departureDate !== null">
+				{{ route.departureDate | date:'dd-MMM-y' }}
+			</span>
 			<div class="small text-danger" *ngIf="error.depDate !== ''">
 				{{ error.depDate }}
 			</div>

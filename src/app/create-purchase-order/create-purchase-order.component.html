@@ -46,32 +46,49 @@
 
 		<label>Tanggal berlaku PO*</label>
 		<div class="form-inline mb-2">
-			<input id="po_startdate" name="po_startDate" type="text" readonly
-				class="hidden-input"
-				(dateSelect)="onDateSelected('startDate', $event)"
-				ngbDatepicker #po_startDate="ngbDatepicker"/>
-			<button class="btn btn-info" (click)="po_startDate.toggle()">
-				{{ dateConv.yyyyMMdd(ngbPOStartDate) }}
-			</button>
+			<span class="datepicker-cover bg-light">
+				<input id="po_startdate" name="po_startDate" type="text" readonly
+					class="hidden-input"
+					(dateSelect)="onDateSelected('startDate', $event)"
+					ngbDatepicker #po_startDate="ngbDatepicker"/>
+				<button class="btn btn-info" (click)="po_startDate.toggle()">
+					Mulai...
+				</button>
+				<span class="ml-1 mr-1">{{ purchaseOrder.startDate | date: 'dd-MMM-y' }}</span>
+			</span>
 			<span class="mr-2 ml-2">-</span>
 
-			<input id="po_enddate" name="po_endDate" type="text" readonly
-				class="hidden-input"
-				[minDate]="ngbPOStartDate"
-				(dateSelect)="onDateSelected('endDate', $event)"
-				ngbDatepicker #po_endDate="ngbDatepicker"/>
-			<button class="btn btn-info" (click)="po_endDate.toggle()">
-				{{ ngbPOEndDate !== null ? dateConv.yyyyMMdd(ngbPOEndDate) 
-					: "Pilih tanggal batas akhir PO" }}
-			</button>
+			<span class="datepicker-cover bg-light">
+				<input id="po_enddate" name="po_endDate" type="text" readonly
+					class="hidden-input"
+					[minDate]="ngbPOStartDate"
+					(dateSelect)="onDateSelected('endDate', $event)"
+					ngbDatepicker #po_endDate="ngbDatepicker"/>
+				<button class="btn btn-info" (click)="po_endDate.toggle()">
+					Sampai...
+				</button>
+				<span class="ml-1 mr-1">{{ purchaseOrder.endDate | date: 'dd-MMM-y' }}</span>
+			</span>
 		</div>
 
+		<!-- origin -->
 		<div class="form-group">
 			<span class="d-flex">Keberangkatan*</span>
 			<div class="bg-dark p-2 text-light d-flex mt-1 dest-box"
-				(click)="openDestinationForm()">
+				(click)="openDestinationForm(-1)">
 				<div class="row ml-2">
-					Masukkan data keberangkatan..
+					<div *ngIf="purchaseOrder.origin.city.id !== -1; else missingOrigin">
+						<span 
+							class="span1 mr-2 flag-icon flag-icon-{{purchaseOrder.origin.city.countryCode|lowercase}}">		
+						</span> 
+						<span class="span1 badge badge-light mr-2">
+							{{purchaseOrder.origin.city.name}} - {{purchaseOrder.origin.city.country}}
+						</span> 
+						<span class="span1">
+							{{purchaseOrder.origin.departureDate | date: 'dd-MMM-y'}}
+						</span>
+					</div>
+					<ng-template #missingOrigin>Masukkan data keberangkatan..</ng-template>
 				</div>
 			</div>
 		</div>
@@ -79,22 +96,28 @@
 		<div class="form-group">
 			<span class="d-flex">Rute*</span>
 			<span class="bg-dark p-2 text-light dest-box d-flex" 
-				(click)="openDestinationForm()">
+				(click)="openDestinationForm(purchaseOrder.routes.length)">
 				Tambah rute..
 			</span>
 			<!-- TODO rute yang sudah ditambahkan -->
-			<div class="bg-dark p-2 text-light d-flex mt-1">
+			<div class="bg-dark p-2 text-light d-flex mt-1" 
+				*ngFor="let route of purchaseOrder.routes; let i = index">
 				<img src="assets/icons/ic_close.png" 
 					width="24px" height="24px" class="action-icon mr-3" />
-				<div (click)="openDestinationForm()" class="dest-box">
+				<div (click)="openDestinationForm(i)" class="dest-box">
 					<div class="row ml-2">
-						<span class="span1 mr-2">1.</span>
-						<span class="span1 mr-2 flag-icon flag-icon-de"></span> 
-						<span class="span1 badge badge-light mr-2">Kassel, Germany</span> 
-						<span class="span1">(Senin, 15 Okt. 2019)</span>
+						<span class="span1 mr-2">{{i + 1}}.</span>
+						<span class="span1 mr-2 flag-icon flag-icon-{{route.city.countryCode|lowercase}}"></span> 
+						<span class="span1 badge badge-light mr-2">
+							{{route.city.name}} - {{route.city.country}}
+						</span> 
+						<span class="span1">
+							{{route.departureDate | date: 'y-MM-dd'}}
+						</span>
 					</div>
 				</div>
 			</div>
+
 		</div>
 
 		<button class="btn btn-success mr-2">Konfirmasi PO</button>
