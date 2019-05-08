@@ -33,23 +33,27 @@
 		</div>
 
 		<div class="form-group">
-			<label for="dest_dep">Tanggal Keberangkatan</label>
-			<input id="dest_dep" name="dest_dep" type="text" readonly
-				class="hidden-input ml-2"
-				(dateSelect)="onDateSelected('departureDate', $event)"
-				ngbDatepicker #dest_dep="ngbDatepicker"/>
-			<button class="btn btn-info mr-1"
-				[ngClass]="{
-					'btn-danger': route.departureDate === null && added
-				}"
-			 	(click)="dest_dep.toggle()">
-			 	Pilih..
-			</button>
-			<span class="small" *ngIf="route.departureDate !== null">
-				{{ route.departureDate | date:'dd-MMM-y' }}
-			</span>
-			<div class="small text-danger" *ngIf="error.depDate !== ''">
-				{{ error.depDate }}
+			<div>
+				<label for="dest_dep">Estimasi tanggal barang tiba</label>
+				<input id="dest_dep" name="dest_dep" type="text" readonly
+					class="hidden-input ml-2"
+					(dateSelect)="onDateSelected('estimatedItemArrivalDate', $event)"
+					ngbDatepicker #dest_dep="ngbDatepicker"/>
+			</div>
+			<div>
+				<button class="btn btn-info mr-1"
+					[ngClass]="{
+						'btn-danger': route.estimatedItemArrivalDate === null && added
+					}"
+				 	(click)="dest_dep.toggle()">
+				 	Pilih..
+				</button>
+				<span class="small" *ngIf="route.estimatedItemArrivalDate !== null">
+					{{ route.estimatedItemArrivalDate | date:'dd-MMM-y' }}
+				</span>
+				<div class="small text-danger" *ngIf="error.depDate !== ''">
+					{{ error.depDate }}
+				</div>
 			</div>
 		</div>
 

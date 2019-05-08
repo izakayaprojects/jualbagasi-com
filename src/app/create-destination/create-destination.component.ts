@@ -22,8 +22,8 @@ export class CreateDestinationComponent implements OnInit {
 	added = false
 	error = { city: "", depDate: "" }
 
-	ngbDestDep =  this.route.departureDate === null ? 
-		null : this.dateConv.dateToNgbDate(this.route.departureDate)
+	ngbDestDep =  this.route.estimatedItemArrivalDate === null ? 
+		null : this.dateConv.dateToNgbDate(this.route.estimatedItemArrivalDate)
 
   constructor(private modal: NgbActiveModal, private autocompleter: AutocompleterService) {
   }
@@ -43,8 +43,8 @@ export class CreateDestinationComponent implements OnInit {
   		this.error.city = "Kota tujuan tidak boleh kosong!"
   		validated = false
   	}
-  	if (route.departureDate === null) {
-  		this.error.depDate = "Tanggal keberangkatan tidak boleh kosong!"
+  	if (route.estimatedItemArrivalDate === null) {
+  		this.error.depDate = "Estimasi tanggal barang tiba tidak boleh kosong!"
   		validated = false
   	}
 
@@ -56,7 +56,7 @@ export class CreateDestinationComponent implements OnInit {
 
   onDateSelected(which, event) {
   	this.route[which] = this.dateConv.ngbDateToDate(event)
-  	if (which === "departureDate") {
+  	if (which === "estimatedItemArrivalDate") {
   		this.ngbDestDep = event
   	}
   }

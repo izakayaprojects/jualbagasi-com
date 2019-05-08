@@ -32,13 +32,14 @@ export class PurchaseOrder {
 export class Route {
 	city: City
 	arrivalDate: Date
-	departureDate: Date
+	estimatedItemArrivalDate: Date
+
 	note: string = ""
 
 	constructor() {
 		this.city = new City()
 		this.arrivalDate = null
-		this.departureDate = null
+		this.estimatedItemArrivalDate = null
 		this.note = ""
 	}
 }

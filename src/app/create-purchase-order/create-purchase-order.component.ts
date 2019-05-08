@@ -30,7 +30,10 @@ export class CreatePurchaseOrderComponent implements OnInit {
   }
 
   onConfirmPO() {
-
+    let isValidated = true
+    if (this.purchaseOrder.title === "") {
+      
+    }
   }
 
   onCancel() {
