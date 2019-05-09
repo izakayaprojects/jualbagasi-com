@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from "rxjs";
 
-import { PurchaseOrder, Route } from "../_models/order"
+import { PurchaseOrder, Route, Currency } from "../_models/order"
 import { DateConverter } from "../_models/utils"
 import { CreateDestinationComponent } from "../create-destination/create-destination.component"
+import { PurchaseOrderService } from "../purchase-order.service"
 
 @Component({
   selector: 'app-create-purchase-order',
@@ -14,6 +16,18 @@ export class CreatePurchaseOrderComponent implements OnInit {
 
 	@Input() purchaseOrder: PurchaseOrder = new PurchaseOrder()
 
+  errorMessages = {
+    title: "",
+    description: "",
+    availableLuggage: "",
+    pricePerKg: "",
+    currency: "",
+    startDate: "",
+    endDate: ""
+  }
+
+  currencies: Observable<Currency[]>
+
   dateConv = new DateConverter()
   selectedBannerFileName: string
   selectedBannerPreviewUrl: any
@@ -21,23 +35,63 @@ export class CreatePurchaseOrderComponent implements OnInit {
   ngbPOStartDate: NgbDateStruct 
   ngbPOEndDate: NgbDateStruct 
 
-  constructor(private modalService: NgbModal) { }
+  isSubmitted: boolean = false
+
+  constructor(
+    private modalService: NgbModal,
+    private poService: PurchaseOrderService) { }
 
   ngOnInit() {
+    this.currencies = this.poService.getCurrencies()
     this.ngbPOStartDate = this.dateConv.dateToNgbDate(this.purchaseOrder.startDate)
     this.ngbPOEndDate = this.purchaseOrder.endDate !== null ? 
       this.dateConv.dateToNgbDate(this.purchaseOrder.startDate) : null
   }
 
   onConfirmPO() {
+    this.isSubmitted = true
     let isValidated = true
     if (this.purchaseOrder.title === "") {
-      
+      this.errorMessages.title = "Judul tidak boleh kosong"
+      isValidated = false
     }
+    if (this.purchaseOrder.description === "") {
+      this.errorMessages.description = "Deskripsi tidak boleh kosong"
+      isValidated = false
+    }
+    if (this.purchaseOrder.capacityKg <= 0) {
+      this.errorMessages.availableLuggage = "Kapasitas harus lebih dari 0"
+      isValidated = false
+    }
+    if (this.purchaseOrder.feePerKg <= 0) {
+      this.errorMessages.pricePerKg = "Harga per Kg harus lebih dari 0"
+      isValidated = false
+    }
+    if (this.purchaseOrder.currency.id === -1) {
+      this.errorMessages.currency = "Mata uang tidak boleh kosong"
+      isValidated = false
+    }
+    if (this.purchaseOrder.startDate === null) {
+      this.errorMessages.startDate = "Tanggal mulai PO tidak boleh kosong"
+      isValidated = false
+    }
+    if (this.purchaseOrder.endDate === null) {
+      this.errorMessages.endDate = "Tanggal akhir PO tidak boleh kosong"
+      isValidated = false
+    }
+
+    if (isValidated) {
+      // code...
+    }
+
   }
 
   onCancel() {
   	
+  }
+
+  onCurrencyPicked(curr: Currency) {
+    this.purchaseOrder.currency = curr
   }
 
   onDateSelected(which, event) {

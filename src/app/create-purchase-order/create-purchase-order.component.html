@@ -4,19 +4,31 @@
 </div>
 <div class="container">
 	<form>
+		<!--Title of PO-->
 		<div class="form-group">
 			<label for="po_title">Judul Purchase Order*</label>
 			<input type="text" class="form-control" 
-				id="po_title" 
-				name="po_title"
+				id="po_title" name="po_title"
+				[ngClass]="{
+					'is-valid': purchaseOrder.title !== '',
+					'is-invalid': purchaseOrder.title === '' && isSubmitted
+				}"
 				[(ngModel)]="purchaseOrder.title"
 				placeholder="Masukkan judul PO anda.." />
+			<div *ngIf="errorMessages.title" class="small text-danger">{{ errorMessages.title }}</div>
 		</div>
 
 		<div class="form-group">
 			<label for="po_description">Deskripsi*</label>
 			<textarea class="form-control rounded-0" id="po_description" name="po_description"
+				[ngClass]="{
+					'is-valid': purchaseOrder.description !== '',
+					'is-invalid': purchaseOrder.description === '' && isSubmitted
+				}"
 				placeholder="Jelaskan tentang PO anda..">{{ purchaseOrder.description }}</textarea>
+			<div *ngIf="errorMessages.description" class="small text-danger">
+				{{ errorMessages.description }}
+			</div>
 		</div>
 
 		<div class="form-group mb-2 file-upload-dnd">
@@ -28,19 +40,51 @@
 
 		<div class="form-group">
 			<label for="po_baggage">Bagasi yang tersedia (Kg)*</label>
-			<input class="form-control" id="po_baggage" name="po_baggage" type="number" step="0.1" min="0"
+			<input class="form-control" id="po_baggage" name="po_baggage" type="number" 
+				step="0.1" min="0"
+				[ngClass]="{
+					'is-valid': purchaseOrder.capacityKg > 0,
+					'is-invalid': purchaseOrder.capacityKg <= 0 && isSubmitted
+				}"
 				[(ngModel)]="purchaseOrder.capacityKg"/>
+			<div *ngIf="errorMessages.availableLuggage" class="small text-danger">
+				{{ errorMessages.availableLuggage }}
+			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="po_baggage_price">Harga bagasi per Kg*</label>
 			<div class="form-inline">
-				<input class="form-control mr-2" id="po_currency" name="po_currency" 
-					[(ngModel)]="purchaseOrder.currency" 
-					type="text" placeholder="Mata uang.." />
-				<input class="form-control" id="po_baggage_price" name="po_baggage_price"
+				<div ngbDropdown class="d-inline-block">
+			    	<button class="btn btn-primary mr-1" 
+						[ngClass]="{
+							'btn-danger': purchaseOrder.currency.id === -1 && submitted
+						}"
+			    		id="dropdown_currency" ngbDropdownToggle>
+			    		{{ purchaseOrder.currency.id === -1 
+			    			? 'Pilih mata uang' : purchaseOrder.currency.name }}
+			    	</button>
+			    	<div ngbDropdownMenu aria-labelledby="dropdown_currency">
+			    		<button ngbDropdownItem *ngFor="let curr of currencies | async"
+			    			(click)="onCurrencyPicked(curr)">
+			    			{{ curr.symbol }} - {{ curr.name }}
+			    		</button>
+			     	</div>
+			    </div>
+				<input class="form-control" id="po_baggage_price" min="0" step="0.01" 
+					name="po_baggage_price"
 					[(ngModel)]="purchaseOrder.feePerKg"  
+					[ngClass]="{
+						'is-valid': purchaseOrder.feePerKg > 0,
+						'is-invalid': purchaseOrder.feePerKg <= 0 && isSubmitted
+					}"
 					type="number"/>
+			</div>
+			<div *ngIf="errorMessages.pricePerKg" class="small text-danger">
+				{{ errorMessages.pricePerKg }}
+			</div>
+			<div *ngIf="errorMessages.currency" class="small text-danger">
+				{{ errorMessages.currency }}
 			</div>
 		</div>
 
@@ -48,6 +92,10 @@
 		<div class="form-inline mb-2">
 			<span class="datepicker-cover bg-light">
 				<input id="po_startdate" name="po_startDate" type="text" readonly
+					[ngClass]="{
+						'is-valid': purchaseOrder.startDate !== null,
+						'is-invalid': purchaseOrder.startDate === null && isSubmitted
+					}"
 					class="hidden-input"
 					(dateSelect)="onDateSelected('startDate', $event)"
 					ngbDatepicker #po_startDate="ngbDatepicker"/>
@@ -60,6 +108,10 @@
 
 			<span class="datepicker-cover bg-light">
 				<input id="po_enddate" name="po_endDate" type="text" readonly
+					[ngClass]="{
+						'is-valid': purchaseOrder.endDate !== null,
+						'is-invalid': purchaseOrder.endDate === null && isSubmitted
+					}"
 					class="hidden-input"
 					[minDate]="ngbPOStartDate"
 					(dateSelect)="onDateSelected('endDate', $event)"
@@ -70,10 +122,16 @@
 				<span class="ml-1 mr-1">{{ purchaseOrder.endDate | date: 'dd-MMM-y' }}</span>
 			</span>
 		</div>
+		<div *ngIf="errorMessages.startDate" class="small text-danger">
+			{{ errorMessages.startDate }}
+		</div>
+		<div *ngIf="errorMessages.endDate" class="small text-danger">
+			{{ errorMessages.endDate }}
+		</div>
 
 		<!-- origin -->
 		<div class="form-group">
-			<span class="d-flex">Keberangkatan*</span>
+			<span class="d-flex">Keberangkatan</span>
 			<div class="bg-dark p-2 text-light d-flex mt-1 dest-box"
 				(click)="openDestinationForm(-1)">
 				<div class="row ml-2">

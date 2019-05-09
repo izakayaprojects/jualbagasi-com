@@ -29,6 +29,14 @@ app.get("/api/autocomplete/city", function(req, res) {
 	})
 })
 
+app.get("/api/currencies", function(req, res) {
+	order.get_currencies().then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.post("/api/login", function(req, res) {
 	auth.login(req.body.email, req.body.password).then(result => {
 		res.send(result)

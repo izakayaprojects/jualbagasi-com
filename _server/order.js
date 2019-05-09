@@ -5,7 +5,8 @@ const crypto = require("crypto");
 
 function do_add_routes(routes) {
 	return new Promise(function(resolve, reject) {
-		let queryRoute = "INSERT INTO tbl_destinations VALUES ?"
+		let queryRoute = "INSERT INTO tbl_destinations "+
+			"(_id,po_id,city,country,country_code,est_item_arrival_date,note) VALUES ?"
 		db.connection.query(queryRoute, [routes], function(err, result) {
 			if (err) reject()
 			else resolve()
@@ -42,7 +43,6 @@ module.exports = {
 						} else {
 							let suffixPoId = newPOId.substr(newPOId.length - 6)
 							let routes = po.routes
-							let queryRoute = "INSERT INTO tbl_destinations VALUES (?)"
 							let values = []
 							let routeIds = []
 							for (var i = 0 ; i < routes.length ; i++) {
@@ -50,7 +50,8 @@ module.exports = {
 								routeIds.push(newRouteId)
 								let r = routes[i]
 								let note = r.note === undefined ? "" : r.note
-								values.push([newRouteId,newPOId,r.city,r.country,r.arrivalDate,r.departureDate,r.note])
+								values.push([newRouteId,newPOId,r.city,r.country,
+									r.country_code,r.estItemArrivalDate,r.note])
 							}
 							do_add_routes(values).then(result => {
 								// Update the PO with the routes' IDs
@@ -65,6 +66,9 @@ module.exports = {
 									}
 								})
 							}).catch(err => {
+								console.log(err)
+								// Ensure Atomic operation
+								db.connection.query("DELETE FROM tbl_purchase_order WHERE _id = ?", [newPOId])
 								reject(utils.createErrorResp(-13, "Error inserting routes"))
 							})
 						}
@@ -73,6 +77,19 @@ module.exports = {
 				})
 			}).catch(err => {
 				reject(err)
+			})
+		})
+	},
+
+	get_currencies: function() {
+		return new Promise(function(resolve, reject) {
+			let query = "SELECT * FROM tbl_currencies"
+			db.connection.query(query, function(err, results) {
+				if (err) {
+					reject(utils.createErrorResp(-1, "Error getting currency"))
+				} else {
+					resolve(utils.createSuccessResp(results))
+				}
 			})
 		})
 	}

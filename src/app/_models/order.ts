@@ -7,7 +7,7 @@ export class PurchaseOrder {
 	bannerUrl: string
 	capacityKg: number
 	feePerKg: number
-	currency: string
+	currency: Currency
 	startDate: Date
 	endDate: Date
 	createdAt: Date
@@ -26,6 +26,19 @@ export class PurchaseOrder {
 		this.origin = new Route()
 		this.routes = []
 		this.createdAt = null
+		this.currency = new Currency()
+	}
+}
+
+export class Currency {
+	id: number
+	symbol: string
+	name: string
+	
+	constructor() {
+		this.id = -1
+		this.symbol = ""
+		this.name = ""
 	}
 }
 
