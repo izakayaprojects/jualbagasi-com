@@ -91,9 +91,10 @@ export class CreatePurchaseOrderComponent implements OnInit {
       this.isBeingSubmittedToServer = true
       this.poService.addPurchaseOrder(this.purchaseOrder).subscribe(result => {
         if (result.data) {
-          // Purchase order entered, adding image
+          // Purchase order entered, adding image if any
         } else {
-          // check the error
+          // TODO display the error
+
         }
         this.isBeingSubmittedToServer = false
       })

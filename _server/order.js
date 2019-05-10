@@ -92,5 +92,48 @@ module.exports = {
 				}
 			})
 		})
+	},
+
+	edit_banner(fs, file, token, po_id) {
+		return new Promise(function(resolve, reject) {
+			if (!file || file === null) {
+				reject(utils.createErrorResp(-11, "Missing image"))
+				return
+			}
+			if (!file.mimetype.startsWith("image")) {
+				reject(utils.createErrorResp(-12, "Only image is allowed"))
+				return
+			}
+
+			if (!po_id || po_id === null) {
+				reject(utils.createErrorResp(-13, "Missing purchase order id"))
+				return
+			}
+
+			auth.check_token(token).then(result => {
+				let userId = result["data"]["userid"]
+				let tempPath = file.path
+				let extension = file.originalname.split(".").pop()
+				let finalImageName = "banner_"+po_id+"."+extension
+				let target = "uploads/"+finalImageName
+				fs.rename(tempPath, target, function(err) {
+					if (err) {
+						fs.unlink(tempPath)
+						reject(utils.createErrorResp(-14, "Error moving image to directory"))
+					} else {
+						let query = "UPDATE tbl_purchase_order SET banner=? WHERE _id=?"
+						db.connection.query(query, [finalImageName, userId], function(err, result) {
+							if (err) {
+								reject(utils.createErrorResp(-15, "Error updating purchase order"))
+							} else {
+								resolve(utils.createSuccessResp({ banner_path: finalImageName }))
+							}
+						})
+					}
+				})
+			}).catch(err => {
+				reject(err)
+			})
+		})
 	}
 }

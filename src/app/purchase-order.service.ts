@@ -67,6 +67,10 @@ export class PurchaseOrderService {
     )
   }
 
+  uploadBannerForPurchaseOrder(banner: File) {
+    
+  }
+
   deletePurchaseOrder(poId: string) {
 
   }
