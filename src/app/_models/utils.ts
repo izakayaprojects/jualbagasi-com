@@ -14,4 +14,14 @@ export class DateConverter {
 		return dt.year+"-"+(dt.month+1)+"-"+dt.day
 	}
  
+	toMySqlTimestamp(dt: Date): string {
+		return dt.getUTCFullYear()+"-"+(dt.getUTCMonth()+1)+"-"+dt.getUTCDate()
+	}
+
+}
+
+export class ApiResponse<T> {
+	success: boolean
+	errorId: number
+	data: T
 }

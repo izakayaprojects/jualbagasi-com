@@ -21,6 +21,8 @@
 		<div class="form-group">
 			<label for="po_description">Deskripsi*</label>
 			<textarea class="form-control rounded-0" id="po_description" name="po_description"
+				(change)="onDescriptionChanged($event.target.value)"
+				[ngModel]="purchaseOrder.description"
 				[ngClass]="{
 					'is-valid': purchaseOrder.description !== '',
 					'is-invalid': purchaseOrder.description === '' && isSubmitted
@@ -178,7 +180,11 @@
 
 		</div>
 
-		<button class="btn btn-success mr-2" (click)="onConfirmPO()">Konfirmasi PO</button>
+		<button class="btn btn-success mr-2" (click)="onConfirmPO()">
+  			<span class="spinner-border spinner-border-sm mr-2" 
+  				*ngIf="isBeingSubmittedToServer" role="status" aria-hidden="true"></span>
+  			<span>Konfirmasi PO</span>
+  		</button>
 		<button class="btn btn-danger">Batal</button>
 	</form>
 </div>

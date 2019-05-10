@@ -3,7 +3,7 @@ import { NgbModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from "rxjs";
 
 import { PurchaseOrder, Route, Currency } from "../_models/order"
-import { DateConverter } from "../_models/utils"
+import { DateConverter, ApiResponse } from "../_models/utils"
 import { CreateDestinationComponent } from "../create-destination/create-destination.component"
 import { PurchaseOrderService } from "../purchase-order.service"
 
@@ -36,6 +36,7 @@ export class CreatePurchaseOrderComponent implements OnInit {
   ngbPOEndDate: NgbDateStruct 
 
   isSubmitted: boolean = false
+  isBeingSubmittedToServer: boolean = false
 
   constructor(
     private modalService: NgbModal,
@@ -49,6 +50,12 @@ export class CreatePurchaseOrderComponent implements OnInit {
   }
 
   onConfirmPO() {
+    this.errorMessages = {
+      title: "", description: "", availableLuggage: "",
+      pricePerKg: "", currency: "",
+      startDate: "", endDate: ""
+    }
+
     this.isSubmitted = true
     let isValidated = true
     if (this.purchaseOrder.title === "") {
@@ -81,7 +88,15 @@ export class CreatePurchaseOrderComponent implements OnInit {
     }
 
     if (isValidated) {
-      // code...
+      this.isBeingSubmittedToServer = true
+      this.poService.addPurchaseOrder(this.purchaseOrder).subscribe(result => {
+        if (result.data) {
+          // Purchase order entered, adding image
+        } else {
+          // check the error
+        }
+        this.isBeingSubmittedToServer = false
+      })
     }
 
   }
@@ -92,6 +107,10 @@ export class CreatePurchaseOrderComponent implements OnInit {
 
   onCurrencyPicked(curr: Currency) {
     this.purchaseOrder.currency = curr
+  }
+
+  onDescriptionChanged(desc: string) {
+    this.purchaseOrder.description = desc
   }
 
   onDateSelected(which, event) {

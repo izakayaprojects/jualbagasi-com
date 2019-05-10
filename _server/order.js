@@ -27,7 +27,7 @@ module.exports = {
 				let newPOId = crypto.randomBytes(32).toString("hex");
 				// Add the purchase order first
 				let query = "INSERT INTO tbl_purchase_order "+
-					"(_id,user_id,title,description,banner,from_date,to_date,capacity_kg,fee_per_kg,currency) "+
+					"(_id,user_id,title,description,banner,from_date,to_date,capacity_kg,fee_per_kg,currency_id) "+
 					"VALUES (?,?,?,?,?,?,?,?,?,?)"
 				let params = [newPOId,userId,
 					po.title,po.description,po.banner,
