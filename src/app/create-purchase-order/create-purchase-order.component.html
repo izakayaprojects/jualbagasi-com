@@ -36,7 +36,7 @@
 		<div class="form-group mb-2 file-upload-dnd">
 			<input #po_banner type="file" class="form-control-file" 
 				accept="image/*" (change)="processBannerFile(po_banner)"/>
-			<p>{{ selectedBannerFileName ? selectedBannerFileName : "Pilih Banner..." }}</p>
+			<p>{{ selectedBanner ? selectedBanner.name : "Pilih Banner..." }}</p>
 			<img [src]="selectedBannerPreviewUrl" *ngIf="selectedBannerPreviewUrl" height="200" />
 		</div>
 

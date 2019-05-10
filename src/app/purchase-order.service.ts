@@ -67,8 +67,20 @@ export class PurchaseOrderService {
     )
   }
 
-  uploadBannerForPurchaseOrder(banner: File) {
-    
+  uploadBannerForPurchaseOrder(banner: File, poId: string): Observable<ApiResponse<string>> {
+    let formData = new FormData()
+    formData.append("banner", banner)
+    formData.append("purchase_order_id", poId)
+    formData.append("token", this.localStorage.retrieve("token"))
+    return this.http.post(API+"/purchaseorder/banner", formData).pipe(
+      map(result => {
+        let resp = new ApiResponse<string>()
+        resp.success = result["success"] ? result["success"] : false
+        resp.errorId = result["success"] === false ? result["id"] : undefined
+        resp.data = result["data"] ? result["data"]["banner_path"] : undefined
+        return resp
+      })
+    )
   }
 
   deletePurchaseOrder(poId: string) {

@@ -29,7 +29,7 @@ export class CreatePurchaseOrderComponent implements OnInit {
   currencies: Observable<Currency[]>
 
   dateConv = new DateConverter()
-  selectedBannerFileName: string
+  selectedBanner: File
   selectedBannerPreviewUrl: any
 
   ngbPOStartDate: NgbDateStruct 
@@ -88,15 +88,29 @@ export class CreatePurchaseOrderComponent implements OnInit {
     }
 
     if (isValidated) {
+      let context = this
       this.isBeingSubmittedToServer = true
       this.poService.addPurchaseOrder(this.purchaseOrder).subscribe(result => {
-        if (result.data) {
+        if (result.success === true) {
           // Purchase order entered, adding image if any
+          let poId = result.data
+          if (this.selectedBanner) {
+            this.poService.uploadBannerForPurchaseOrder(this.selectedBanner, poId).subscribe(banner => {         
+              context.isBeingSubmittedToServer = false
+              if (banner.success === true) {
+                // TODO Banner successfully added, back to order list
+              } else {
+                // TODO banner failed to upload. just go back to order list and give warning
+              }
+            })
+          } else {
+            // TODO (no banner to upload) display success message and go back to order list
+            context.isBeingSubmittedToServer = false
+          }
         } else {
           // TODO display the error
-
+          context.isBeingSubmittedToServer = false
         }
-        this.isBeingSubmittedToServer = false
       })
     }
 
@@ -130,7 +144,7 @@ export class CreatePurchaseOrderComponent implements OnInit {
 
   processBannerFile(image) {
     let file = image.files[0]
-    this.selectedBannerFileName = file.name
+    this.selectedBanner = file
     let reader = new FileReader()
     reader.onload = (event) => {
       this.selectedBannerPreviewUrl = reader.result

@@ -66,7 +66,6 @@ module.exports = {
 									}
 								})
 							}).catch(err => {
-								console.log(err)
 								// Ensure Atomic operation
 								db.connection.query("DELETE FROM tbl_purchase_order WHERE _id = ?", [newPOId])
 								reject(utils.createErrorResp(-13, "Error inserting routes"))
@@ -122,7 +121,8 @@ module.exports = {
 						reject(utils.createErrorResp(-14, "Error moving image to directory"))
 					} else {
 						let query = "UPDATE tbl_purchase_order SET banner=? WHERE _id=?"
-						db.connection.query(query, [finalImageName, userId], function(err, result) {
+						db.connection.query(query, [finalImageName, po_id], function(err, result) {
+							console.log(result)
 							if (err) {
 								reject(utils.createErrorResp(-15, "Error updating purchase order"))
 							} else {

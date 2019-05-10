@@ -11,6 +11,9 @@
 /node_modules
 /_server/node_modules
 
+# User-uploaded files
+/_server/uploads
+
 # profiling files
 chrome-profiler-events.json
 speed-measure-plugin.json
