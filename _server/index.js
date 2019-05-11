@@ -80,6 +80,18 @@ app.post("/api/purchaseorder/list-summary", function(req, res) {
 	})
 })
 
+app.get("/api/purchaseorder/list-display", function(req, res) {
+	order.get_displaylist_purchase_orders().then(result => {
+		result["data"] = result["data"].map(i => {
+			if (i["po_banner"])  i["po_banner"] = utils.getImageUrl(req, i["po_banner"])
+			return i
+		})
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.post("/api/purchaseorder/banner", imageUpload.single("banner"), function(req, res) {
 	order.edit_banner(fs, req.file, req.body.token, req.body.purchase_order_id).then(result => {
 		result["data"]["banner_path"] = utils.getImageUrl(req, result["data"]["banner_path"])

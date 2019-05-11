@@ -39,6 +39,41 @@ module.exports = {
 		})
 	},
 
+	get_displaylist_purchase_orders: function(token) {
+		return new Promise(function(resolve, reject) {
+			let concatDest = "(SELECT GROUP_CONCAT(CONCAT(dst._id, ';', dst.country_code)) "+
+				"FROM tbl_destinations dst WHERE dst.po_id = po._id GROUP BY po._id) "+
+				"AS po_dest"
+			let query = "SELECT po._id AS po_id, po.title AS po_title, po.banner AS po_banner, "+
+					"po.from_date AS po_from, po.to_date AS po_to,"+
+					concatDest+" "+
+					"FROM tbl_purchase_order po "+
+					"ORDER BY po.from_date DESC"
+			db.connection.query(query, function(err, results) {
+				if (err) {
+					reject(utils.createErrorResp(-11, "Error getting purchase orders"))
+				} else {
+					let data = results.map(r => {
+						if (r["po_dest"] !== null) {
+							let destinations = r["po_dest"].split(",")
+							r["destinations"] = []
+							destinations.forEach(e => {
+								let destElems = e.split(";")
+								r["destinations"].push({
+									_id: destElems[0],
+									code: destElems[1]
+								})
+							})
+						}
+						r["po_dest"] = undefined
+						return r
+					})
+					resolve(utils.createSuccessResp(results))
+				}
+			})
+		})
+	},
+
 	add_purchase_order: function(token, po) {
 		return new Promise(function(resolve, reject) {
 			auth.check_token(token).then(result => {

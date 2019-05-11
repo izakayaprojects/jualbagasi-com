@@ -6,10 +6,15 @@ import { map } from 'rxjs/operators';
 
 import { ENV } from "./_global/global";
 import { DateConverter, ApiResponse } from "./_models/utils";
-import { PurchaseOrder, Currency } from "./_models/order";
+import { PurchaseOrder, Currency, Route } from "./_models/order";
 
 const API = ENV.debug.apiurl;
 const dateConv = new DateConverter();
+
+enum POListType {
+  Homepage = 1,
+  Manage = 2
+}
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +25,50 @@ export class PurchaseOrderService {
   	private http: HttpClient,
   	private localStorage: LocalStorageService) { }
 
-  getPurchaseOrders() {
-    let token = this.localStorage.retrieve("token")
+  getPurchaseOrdersList(type: POListType = 1) {
+    if (type == POListType.Manage) {
+      // TODO /api/purchaseorder/list-summary
+    } else {
+      return this.http.get<ApiResponse<PurchaseOrder[]>>(API+"/purchaseorder/list-display").pipe(
+        map(result => {
+          let resp = new ApiResponse<PurchaseOrder[]>()
+          resp.success = result["success"] ? result["success"] : false
+          resp.errorId = result["success"] === false ? result["id"] : undefined
+          if (result.success === true) {
+            let data = result["data"]
+            let poList: PurchaseOrder[] = []
+            data.forEach(d => poList.push(this.parseToPurchaseOrder(d)))
+            resp.data = poList
+          }
+          return resp;
+        })
+      )
+    }
+  }
+
+  private parseToPurchaseOrder(item: any): PurchaseOrder {
+    let po = new PurchaseOrder()
+    po.id = item["po_id"]
+    po.title = item["po_title"]
+    po.bannerUrl = item["po_banner"] ? item["po_banner"] : ""
+    po.startDate = item["po_from"] ? new Date(item["po_from"]) : null
+    po.endDate = item["po_to"] ? new Date(item["po_to"]) : null
+    // TODO other fields (capacity, etc.)
+
+    if (item["destinations"] && item["destinations"].length > 0) {
+      let dests = item["destinations"]
+      po.origin.city.countryCode = dests[0]["code"]
+      
+      if (dests.length > 1) {
+        for (var i = 0 ; i < dests.length ; i++) {
+          let route = new Route()
+          route.city.countryCode = dests[0]["code"]
+          po.routes.push(route)
+        }
+      }
+    }
+
+    return po
   }
 
   addPurchaseOrder(po: PurchaseOrder): Observable<ApiResponse<string>> {
