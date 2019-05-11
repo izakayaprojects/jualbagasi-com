@@ -19,7 +19,6 @@ export class HomepageComponent implements OnInit {
   	
   	this.purchaseOrders$ = this.poService.getPurchaseOrdersList().pipe(
   		map(result => {
-  			console.log(result)
   			if (result.success === true) {
   				return result.data
   			} else {

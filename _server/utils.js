@@ -6,6 +6,6 @@ module.exports = {
 		return {success: true, data: data}
 	},
 	getImageUrl(req, imgName) {
-		return req.protocol+"://"+req.get("host")+"/uploads/"+imgName
+		return req.protocol+"://"+req.get("host")+"/static/"+imgName
 	}
 }

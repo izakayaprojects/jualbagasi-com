@@ -8,26 +8,8 @@
 	<hr/>
 
 	<div class="row">
-		<div class="col-sm-4">
-			<app-purchase-order></app-purchase-order>
-		</div>
-		<div class="col-sm-4">
-			<app-purchase-order></app-purchase-order>
-		</div>
-		<div class="col-sm-4">
-			<app-purchase-order></app-purchase-order>
-		</div>
-
-		<div class="col-sm-4">
-			<app-purchase-order></app-purchase-order>
-		</div>
-
-		<div class="col-sm-4">
-			<app-purchase-order></app-purchase-order>
-		</div>
-
-		<div class="col-sm-4">
-			<app-purchase-order></app-purchase-order>
+		<div class="col-sm-4" *ngFor="let po of purchaseOrders$ | async">
+			<app-purchase-order [purchaseOrder]="po"></app-purchase-order>
 		</div>
 	</div>
 
