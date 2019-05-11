@@ -20,6 +20,10 @@ export class PurchaseOrderService {
   	private http: HttpClient,
   	private localStorage: LocalStorageService) { }
 
+  getPurchaseOrders() {
+    let token = this.localStorage.retrieve("token")
+  }
+
   addPurchaseOrder(po: PurchaseOrder): Observable<ApiResponse<string>> {
   	let data = {
   		title: 				po.title,

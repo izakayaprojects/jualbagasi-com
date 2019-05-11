@@ -8,6 +8,7 @@ const fs = require("fs");
 const auth = require("./auth")
 const order = require("./order")
 const cities = require("./cities")
+const utils = require("./utils")
 
 db.connect();
 app.use(express.urlencoded({extended: true}));
@@ -67,10 +68,21 @@ app.post("/api/purchaseorder/add", function(req, res) {
 	})
 })
 
+app.post("/api/purchaseorder/list-summary", function(req, res) {
+	order.get_summary_purchase_orders(req.body.token).then(result => {
+		result["data"] = result["data"].map(i => {
+			i["po_banner"] = utils.getImageUrl(req, i["po_banner"])
+			return i
+		})
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.post("/api/purchaseorder/banner", imageUpload.single("banner"), function(req, res) {
 	order.edit_banner(fs, req.file, req.body.token, req.body.purchase_order_id).then(result => {
-		let url = req.protocol+"://"+req.get("host")
-		result["data"]["banner_path"] = url+"/uploads/"+result["data"]["banner_path"]
+		result["data"]["banner_path"] = utils.getImageUrl(req, result["data"]["banner_path"])
 		res.send(result)
 	}).catch(err => {
 		res.send(err)

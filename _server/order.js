@@ -15,6 +15,30 @@ function do_add_routes(routes) {
 }
 
 module.exports = {
+	get_summary_purchase_orders: function(token) {
+		return new Promise(function(resolve, reject) {
+			auth.check_token(token).then(result => {
+				let userid = result["data"]["userid"]
+				let query = "SELECT po._id AS po_id, po.title AS po_title, po.banner AS po_banner, "+
+					"po.from_date AS po_from, po.to_date AS po_to, po.destinations AS po_dest_count "+
+					"FROM tbl_purchase_order po WHERE po.user_id = ?"
+				db.connection.query(query, [userid], function(err, results) {
+					if (err) {
+						reject(utils.createErrorResp(-11, "Error getting purchase orders"))
+					} else {
+						let data = results.map(r => {
+							r["po_dest_count"] = r["po_dest_count"].split(",").length
+							return r
+						})
+						resolve(utils.createSuccessResp(data))
+					}
+				})
+			}).catch(err => {
+				reject(err)
+			})
+		})
+	},
+
 	add_purchase_order: function(token, po) {
 		return new Promise(function(resolve, reject) {
 			auth.check_token(token).then(result => {
