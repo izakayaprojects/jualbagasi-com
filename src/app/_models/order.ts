@@ -13,6 +13,7 @@ export class PurchaseOrder {
 	createdAt: Date
 	origin: Route
 	routes: Route[]
+	additional: any
 
 	constructor() {
 		this.id = ""
@@ -27,6 +28,29 @@ export class PurchaseOrder {
 		this.routes = []
 		this.createdAt = null
 		this.currency = new Currency()
+	}
+
+	isCurrentlyOpen(): boolean {
+		if (this.startDate === null || this.endDate === null) return false
+		var now = new Date()
+		return now.getTime() >= this.startDate.getTime() && now.getTime() <= this.endDate.getTime()
+	}
+
+	getRemainingTimePrintable(): string {
+		if (!this.isCurrentlyOpen()) {
+			return ""
+		}
+		var now = new Date()
+		var diffHr = Math.floor((this.endDate.getTime() - now.getTime()) / (1000 * 3600))
+		if (diffHr > 24) {
+			// Days before PO ends
+			var value = Math.floor(diffHr/24)
+			return value + " hari lagi"
+		} else if (diffHr > 1) {
+			// Hours before PO ends
+			return diffHr + " jam lagi"
+		}
+		return "Tutup sebentar lagi"
 	}
 }
 

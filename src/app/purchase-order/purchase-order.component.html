@@ -12,7 +12,11 @@
 	    			class="ml-1 flag-icon flag-icon-{{route.city.countryCode | lowercase}}"></span>
 	    	</div>
 	    	<!-- TODO status PO sesuai tanggal berlaku, berat, etc. -->
-	    	<div class="float-right"><i>8 Hari lagi</i></div>
+	    	<div class="float-right">
+	    		<span *ngIf="purchaseOrder.isCurrentlyOpen()">
+	    			<i>{{ purchaseOrder.getRemainingTimePrintable() }}</i>
+	    		</span>
+	    	</div>
     	</div>
   	</div>
 </div>
