@@ -44,9 +44,13 @@ module.exports = {
 			let concatDest = "(SELECT GROUP_CONCAT(CONCAT(dst._id, ';', dst.country_code)) "+
 				"FROM tbl_destinations dst WHERE dst.po_id = po._id GROUP BY po._id) "+
 				"AS po_dest"
+			let concatOrders = "(SELECT GROUP_CONCAT(ord.capacity SEPARATOR ';') "+
+				"FROM tbl_orders ord WHERE ord.po_id = po._id GROUP BY po._id) "+
+				"AS po_orders"
 			let query = "SELECT po._id AS po_id, po.title AS po_title, po.banner AS po_banner, "+
-					"po.from_date AS po_from, po.to_date AS po_to,"+
-					concatDest+" "+
+					"po.from_date AS po_from, po.to_date AS po_to, po.capacity_kg AS po_capacity,"+
+					concatDest+", "+
+					concatOrders+" "+
 					"FROM tbl_purchase_order po "+
 					"ORDER BY po.from_date DESC"
 			db.connection.query(query, function(err, results) {
@@ -65,6 +69,14 @@ module.exports = {
 								})
 							})
 						}
+						if (r["po_orders"] !== null) {
+							let orders = r["po_orders"].split(";")
+							let taken = orders.reduce((accu, current) => current + parseFloat(accu))
+							r["po_remaining_capacity"] = parseFloat(r["po_capacity"]) - taken
+						} else {
+							r["po_remaining_capacity"] = r["po_capacity"]
+						}
+						r["po_orders"] = undefined
 						r["po_dest"] = undefined
 						return r
 					})

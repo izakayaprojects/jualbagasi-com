@@ -28,6 +28,7 @@ export class PurchaseOrder {
 		this.routes = []
 		this.createdAt = null
 		this.currency = new Currency()
+		this.additional = {}
 	}
 
 	isCurrentlyOpen(): boolean {

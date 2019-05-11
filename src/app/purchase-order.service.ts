@@ -53,6 +53,7 @@ export class PurchaseOrderService {
     po.bannerUrl = item["po_banner"] ? item["po_banner"] : ""
     po.startDate = item["po_from"] ? new Date(item["po_from"]) : null
     po.endDate = item["po_to"] ? new Date(item["po_to"]) : null
+    po.capacityKg = item["po_capacity"] ? item["po_capacity"] : 0
     // TODO other fields (capacity, etc.)
 
     if (item["destinations"] && item["destinations"].length > 0) {
@@ -66,6 +67,10 @@ export class PurchaseOrderService {
           po.routes.push(route)
         }
       }
+    }
+
+    if (item["po_remaining_capacity"]) {
+      po.additional["remaining_capacity"] = item["po_remaining_capacity"]
     }
 
     return po
