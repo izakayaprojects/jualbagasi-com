@@ -1,11 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from "rxjs";
+import { Router } from '@angular/router';
 
 import { PurchaseOrder, Route, Currency } from "../_models/order"
 import { DateConverter, ApiResponse } from "../_models/utils"
 import { CreateDestinationComponent } from "../create-destination/create-destination.component"
 import { PurchaseOrderService } from "../purchase-order.service"
+import { MessageService } from "../message.service"
 
 @Component({
   selector: 'app-create-purchase-order',
@@ -39,6 +41,8 @@ export class CreatePurchaseOrderComponent implements OnInit {
   isBeingSubmittedToServer: boolean = false
 
   constructor(
+    private router: Router,
+    private messageService: MessageService,
     private modalService: NgbModal,
     private poService: PurchaseOrderService) { }
 
@@ -99,16 +103,53 @@ export class CreatePurchaseOrderComponent implements OnInit {
               context.isBeingSubmittedToServer = false
               if (banner.success === true) {
                 // TODO Banner successfully added, back to order list
+                this.messageService.setMessage("success", "Data PO berhasil ditambahkan")
+                this.router.navigate(["/my-orders"])
               } else {
-                // TODO banner failed to upload. just go back to order list and give warning
+                // banner failed to upload. just go back to order list and give warning
+                switch (result.errorId) {
+                  case -11:
+                    this.messageService.setMessage("warning", "Banner PO tidak ditemukan")
+                    break;
+                  case -12:
+                    this.messageService.setMessage("warning", "Banner PO hanya boleh berupa gambar")
+                    break;
+                  case -13:
+                    this.messageService.setMessage("danger", "Data PO tidak ditemukan")
+                    break;
+                  case -14:
+                    this.messageService.setMessage("warning", "Banner tidak dapat disimpan. Mohon lapor admin")
+                    break;
+                  default:
+                    this.messageService.setMessage("warning", "Data PO tidak ter-update. Mohon upload kembali")
+                    break;
+                }
+                this.router.navigate(["/my-orders"])
               }
             })
           } else {
             // TODO (no banner to upload) display success message and go back to order list
             context.isBeingSubmittedToServer = false
+            this.messageService.setMessage("success", "Data PO berhasil ditambahkan")
+            this.router.navigate(["/my-orders"])
           }
         } else {
-          // TODO display the error
+          // display the error from PO submission
+          if (result.errorId === -1 || result.errorId === -2) {
+            // user not logged in or token has expired
+            this.messageService.setMessage("danger", "Harap login terlebih dahulu")
+            this.router.navigate(["/login"])
+          } else if (result.errorId === -11) {
+            this.messageService.setMessage("danger", "Data PO tidak ditemukan")
+          } else if (result.errorId === -12) {
+            this.messageService.setMessage("danger", "Data PO tidak lengkap. Mohon dicek kembali")
+          } else if (result.errorId === -13) {
+            this.messageService.setMessage("warning", "Rute perjalanan tidak bisa ditambahkan. Anda bisa update PO anda kembali")
+            this.router.navigate(["/my-orders"])
+          } else if (result.errorId === -14) {
+            this.messageService.setMessage("warning", "Rute perjalanan gagal di-update. Anda bisa update PO anda kembali")
+            this.router.navigate(["/my-orders"])
+          }
           context.isBeingSubmittedToServer = false
         }
       })

@@ -57,7 +57,6 @@ module.exports = {
 								// Update the PO with the routes' IDs
 								let queryUpdate = "UPDATE tbl_purchase_order SET destinations=? WHERE _id=?"
 								let updateParams = [routeIds.join(), newPOId]
-
 								db.connection.query(queryUpdate, updateParams, function(err, result) {
 									if (err) {
 										reject(utils.createErrorResp(-14, "Error updating PO with routes"))
@@ -66,8 +65,6 @@ module.exports = {
 									}
 								})
 							}).catch(err => {
-								// Ensure Atomic operation
-								db.connection.query("DELETE FROM tbl_purchase_order WHERE _id = ?", [newPOId])
 								reject(utils.createErrorResp(-13, "Error inserting routes"))
 							})
 						}
@@ -122,7 +119,6 @@ module.exports = {
 					} else {
 						let query = "UPDATE tbl_purchase_order SET banner=? WHERE _id=?"
 						db.connection.query(query, [finalImageName, po_id], function(err, result) {
-							console.log(result)
 							if (err) {
 								reject(utils.createErrorResp(-15, "Error updating purchase order"))
 							} else {

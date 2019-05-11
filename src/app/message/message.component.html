@@ -1,0 +1,5 @@
+<p *ngIf="messageService.hasMessage()">
+  <ngb-alert [type]="messageService.getType()" (close)="messageService.removeMessage()">
+  	{{ messageService.getText() }}
+  </ngb-alert>
+</p>

@@ -17,6 +17,7 @@ import { ManageOrdersComponent } from './manage-orders/manage-orders.component';
 import { OrderItemComponent } from './order-item/order-item.component';
 import { CreatePurchaseOrderComponent } from './create-purchase-order/create-purchase-order.component';
 import { CreateDestinationComponent } from './create-destination/create-destination.component';
+import { MessageComponent } from './message/message.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CreateDestinationComponent } from './create-destination/create-destinat
     ManageOrdersComponent,
     OrderItemComponent,
     CreatePurchaseOrderComponent,
-    CreateDestinationComponent
+    CreateDestinationComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
