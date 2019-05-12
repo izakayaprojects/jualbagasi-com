@@ -4,9 +4,15 @@
 </div>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-4 d-flex justify-content-center">
-			<img src="assets/icons/default_pp.png" class="profilepic" 
-				data-tooltip="Ubah Profile Picture" />
+		<div class="col-sm-4 d-flex flex-column align-items-center">
+			<div class="profilepic-container">
+				<img src="assets/icons/default_pp.png" class="profilepic" 
+					data-tooltip="Ubah Profile Picture" />
+				<div class="inside top-left">
+					<input #pp type="file" class="form-control-file" (change)="onProfilePicClicked(pp)"/>
+					<img class="edit" src="assets/icons/ic_edit.svg" />
+				</div>
+			</div>
 		</div>
 		<div class="col-sm-8">
 			<div class="form-inline row">

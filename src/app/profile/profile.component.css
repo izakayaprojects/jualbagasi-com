@@ -1,11 +1,24 @@
-.profilepic {
-	border: 3px solid black;
-	padding: 5px;
-	cursor: pointer;
-	opacity: 1;
-	transition: 0.2s;
+.profilepic-container {
+	position: relative;
 }
 
-.profilepic:hover {
-	opacity: 0.75
+.profilepic-container > .top-left {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+}
+
+.profilepic-container > .inside > .edit {
+	border-radius: 50%;
+	border: 1px solid black;
+	padding: 7px;
+	width: 40px;
+	background-color: #eee;
+}
+
+.profilepic {
+	border-radius: 50%;
+	border: 3px solid black;
+	padding: 8px;
+	cursor: pointer;
 }
