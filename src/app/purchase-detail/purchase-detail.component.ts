@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ActivatedRoute } from "@angular/router"
+import { Observable } from "rxjs"
+import { map, delay } from "rxjs/operators"
+
+import { PurchaseOrderService } from "../purchase-order.service"
+import { PurchaseOrder } from "../_models/order"
 
 @Component({
   selector: 'app-purchase-detail',
@@ -9,8 +13,15 @@ import { ActivatedRoute } from "@angular/router"
 })
 export class PurchaseDetailComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute) {
-  	this.activatedRoute.paramMap.subscribe(params => console.log(params))
+	purchaseOrder: Observable<PurchaseOrder>
+
+  constructor(
+  	private activatedRoute: ActivatedRoute,
+  	private poService: PurchaseOrderService) {
+
+  	this.activatedRoute.paramMap.subscribe(params => {
+  		this.purchaseOrder = this.poService.getPurchaseOrder(params.get("id")).pipe(map(r => r.data))
+  	})
   }
 
   ngOnInit() {

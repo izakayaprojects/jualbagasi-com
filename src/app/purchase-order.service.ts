@@ -25,6 +25,62 @@ export class PurchaseOrderService {
   	private http: HttpClient,
   	private localStorage: LocalStorageService) { }
 
+  private parseToPurchaseOrder(item: any): PurchaseOrder {
+    let po = new PurchaseOrder()
+    po.id = item["po_id"]
+    po.title = item["po_title"]
+    po.description = item["po_desc"] ? item["po_desc"] : ""
+    po.bannerUrl = item["po_banner"] ? item["po_banner"] : ""
+    po.startDate = item["po_from"] ? new Date(item["po_from"]) : null
+    po.endDate = item["po_to"] ? new Date(item["po_to"]) : null
+    po.capacityKg = item["po_capacity"] ? item["po_capacity"] : 0
+    po.feePerKg = item["po_fee"] ? item["po_fee"] : 0
+    po.currency.symbol = item["curr_symbol"] ? item["curr_symbol"] : ""
+    // TODO other fields (user, etc.)
+
+    if (item["destinations"] && item["destinations"].length > 0) {
+      let dests = item["destinations"]
+      po.origin.city.countryCode = dests[0]["code"]
+      po.origin.estimatedItemArrivalDate = dests[0]["estItemArrivalDate"]
+      po.origin.city.country = dests[0]["country"]
+      po.origin.city.name = dests[0]["city"]
+      
+      if (dests.length > 1) {
+        for (var i = 0 ; i < dests.length ; i++) {
+          let route = new Route()
+          route.city.countryCode = dests[i]["code"]
+          route.estimatedItemArrivalDate = dests[i]["estItemArrivalDate"]
+          route.city.country = dests[i]["country"]
+          route.city.name = dests[i]["city"]
+          po.routes.push(route)
+        }
+      }
+    }
+
+    if (item["po_remaining_capacity"]) {
+      po.additional["remaining_capacity"] = item["po_remaining_capacity"]
+    }
+
+    return po
+  }
+
+  getPurchaseOrder(id: string) {
+    return this.http.get<ApiResponse<PurchaseOrder>>(API+"/purchaseorder/item/"+id).pipe(
+      map(result => {
+        let resp = new ApiResponse<PurchaseOrder>()
+        resp.success = result["success"] ? result["success"] : false
+        resp.errorId = result["success"] === false ? result["id"] : undefined
+        if (result.success === true) {
+          let data = result["data"]
+          let po = this.parseToPurchaseOrder(data)
+          resp.data = po
+        }
+        return resp;
+      })
+    )
+  }
+
+
   getPurchaseOrdersList(type: POListType = 1) {
     if (type == POListType.Manage) {
       // TODO /api/purchaseorder/list-summary
@@ -44,36 +100,6 @@ export class PurchaseOrderService {
         })
       )
     }
-  }
-
-  private parseToPurchaseOrder(item: any): PurchaseOrder {
-    let po = new PurchaseOrder()
-    po.id = item["po_id"]
-    po.title = item["po_title"]
-    po.bannerUrl = item["po_banner"] ? item["po_banner"] : ""
-    po.startDate = item["po_from"] ? new Date(item["po_from"]) : null
-    po.endDate = item["po_to"] ? new Date(item["po_to"]) : null
-    po.capacityKg = item["po_capacity"] ? item["po_capacity"] : 0
-    // TODO other fields (capacity, etc.)
-
-    if (item["destinations"] && item["destinations"].length > 0) {
-      let dests = item["destinations"]
-      po.origin.city.countryCode = dests[0]["code"]
-      
-      if (dests.length > 1) {
-        for (var i = 0 ; i < dests.length ; i++) {
-          let route = new Route()
-          route.city.countryCode = dests[0]["code"]
-          po.routes.push(route)
-        }
-      }
-    }
-
-    if (item["po_remaining_capacity"]) {
-      po.additional["remaining_capacity"] = item["po_remaining_capacity"]
-    }
-
-    return po
   }
 
   addPurchaseOrder(po: PurchaseOrder): Observable<ApiResponse<string>> {

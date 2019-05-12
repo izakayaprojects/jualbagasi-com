@@ -14,6 +14,22 @@ function do_add_routes(routes) {
 	})
 }
 
+function do_parse_destination_concat(dests) {
+	let destinations = dests.split(",")
+	let parsed = []
+	destinations.forEach(e => {
+		let destElems = e.split(";")
+		parsed.push({
+			_id: destElems[0], // Id
+			code: destElems[1], // Country code
+			city: destElems[2], // city name
+			country: destElems[3], // country name
+			estItemArrivalDate: destElems[4] // estimated item arrival date
+		})
+	})
+	return parsed
+}
+
 module.exports = {
 	get_summary_purchase_orders: function(token) {
 		return new Promise(function(resolve, reject) {
@@ -59,15 +75,7 @@ module.exports = {
 				} else {
 					let data = results.map(r => {
 						if (r["po_dest"] !== null) {
-							let destinations = r["po_dest"].split(",")
-							r["destinations"] = []
-							destinations.forEach(e => {
-								let destElems = e.split(";")
-								r["destinations"].push({
-									_id: destElems[0],
-									code: destElems[1]
-								})
-							})
+							r["destinations"] = do_parse_destination_concat(r["po_dest"])
 						}
 						if (r["po_orders"] !== null) {
 							let orders = r["po_orders"].split(";")
@@ -92,24 +100,45 @@ module.exports = {
 			let concatOrders = "(SELECT GROUP_CONCAT(ord.capacity SEPARATOR ';') "+
 				"FROM tbl_orders ord WHERE ord.po_id = po._id GROUP BY po._id) "+
 				"AS po_orders"
-			let concatDest = "(SELECT GROUP_CONCAT(CONCAT(dst._id, ';', dst.country_code)) "+
+			let concatDest = "(SELECT GROUP_CONCAT(CONCAT("+
+				"dst._id,';',dst.country_code,';',dst.city,';',dst.country,';',dst.est_item_arrival_date)) "+
 				"FROM tbl_destinations dst WHERE dst.po_id = po._id GROUP BY po._id) "+
 				"AS po_dest"
 			let query = "SELECT po._id AS po_id, po.title AS po_title, po.description AS po_desc, "+
 				"po.banner AS po_banner, po.from_date AS po_from, po.to_date AS po_to, po.capacity_kg AS po_capacity,"+
-				"po.fee_per_kg AS po_fee,"+
+				"po.fee_per_kg AS po_fee, "+
 				"curr.symbol AS curr_symbol, "+
+				"u.username AS user_username, u.profile_picture AS user_pp, "+
 				concatDest+", "+
 				concatOrders+" "+
 				"FROM tbl_purchase_order po "+
 				"LEFT JOIN tbl_currencies curr ON curr._id = po.currency_id "+
+				"LEFT JOIN tbl_users u ON u._id = po.user_id "+
 				"WHERE po._id = ?"
 			db.connection.query(query, [po_id], function(err, results) {
 				if (err) {
 					reject(utils.createErrorResp(-1, "Error querying purchase order"))
 				} else {
-					// TODO parse the orders and destinations
-					resolve(utils.createSuccessResp(results))
+					if (results.length === 0) {
+						reject(utils.createErrorResp(-2, "Purchase order not found"))
+					} else {
+						let data = results.map(r => {
+							if (r["po_dest"] !== null) {
+								r["destinations"] = do_parse_destination_concat(r["po_dest"])
+							}
+							if (r["po_orders"] !== null) {
+								let orders = r["po_orders"].split(";")
+								let taken = orders.reduce((accu, current) => current + parseFloat(accu))
+								r["po_remaining_capacity"] = parseFloat(r["po_capacity"]) - taken
+							} else {
+								r["po_remaining_capacity"] = r["po_capacity"]
+							}
+							r["po_orders"] = undefined
+							r["po_dest"] = undefined
+							return r
+						})
+						resolve(utils.createSuccessResp(results[0]))
+					}
 				}
 			})
 

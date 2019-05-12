@@ -38,20 +38,45 @@ export class PurchaseOrder {
 	}
 
 	getRemainingTimePrintable(): string {
-		if (!this.isCurrentlyOpen()) {
-			return ""
-		}
+		var diffHr = 0
+		var status = ""
 		var now = new Date()
-		var diffHr = Math.floor((this.endDate.getTime() - now.getTime()) / (1000 * 3600))
+		if (!this.isCurrentlyOpen()) {
+			if (now.getTime() < this.startDate.getTime()) {
+				status = "before"
+			} else {
+				status = "after"
+			}
+		} else {
+			status = "during"
+		}
+
+		if (status === "after") {
+			return "PO sudah tidak berlaku"
+		}
+
+		if (status === "before") {
+			diffHr = Math.floor((this.startDate.getTime() - now.getTime()) / (1000 * 3600))
+		} else {
+			diffHr = Math.floor((this.endDate.getTime() - now.getTime()) / (1000 * 3600))
+		}
 		if (diffHr > 24) {
 			// Days before PO ends
 			var value = Math.floor(diffHr/24)
-			return value + " hari lagi"
+			if (status === "before") {
+				return "Buka dalam "+value+" hari lagi"
+			} else {
+				return value + " hari lagi"
+			}
 		} else if (diffHr > 1) {
 			// Hours before PO ends
-			return diffHr + " jam lagi"
+			if (status === "before") {
+				return "Buka dalam "+value+" jam lagi"
+			} else {
+				return value + " jam lagi"
+			}
 		}
-		return "Tutup sebentar lagi"
+		return (status === "before") ? "Buka sebentar lagi" : "Tutup sebentar lagi"
 	}
 }
 

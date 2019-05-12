@@ -3,8 +3,7 @@
 	<app-navigation-bar></app-navigation-bar>
 </div>
 
-<div class="container">
-
+<div class="container" *ngIf="purchaseOrder | async as po; else loading">
 	<!--User-->
 	<span>
 		<img src="assets/icons/default_pp.png" class="profilepic-small mr-3" />
@@ -12,11 +11,10 @@
 	</span>
 	<hr/>
 	<!--Title-->
-	<h3>[Open PO] Jerman, UK, dan Jepang. Mulai dari 15.000 per Kg</h3>
+	<h3>{{ po.title }}</h3>
 	
 	<!--Banner-->
-	<img class="mb-2 img-fluid" 
-		src="http://localhost:3000/static/banner_88ee769392354dfa8d21849c46ad7b9c554dc43a0a69d9bd27d7c713112ee4da.jpg"/>
+	<img class="mb-2 img-fluid" src="{{ po.bannerUrl }}"/>
 
 	<div>
 		<table class="table table-borderless">
@@ -27,8 +25,8 @@
 						<b>Tanggal buka pesanan</b>
 					</td>
 					<td>
-						6 Okt. 2019 - 10 Okt. 2019
-						<span class="badge badge-success ml-2">2 Hari lagi</span>
+						{{ po.startDate | date: 'd MMM. y' }} - {{ po.endDate | date: 'd MMM. y' }}
+						<span class="badge badge-success ml-2">{{ po.getRemainingTimePrintable() }}</span>
 					</td>
 				</tr>
 				<tr>
@@ -36,18 +34,19 @@
 						<span><img src="assets/icons/ic_luggage.svg" class="mr-3" height="20px" /></span>
 						<b>Sisa Kapasitas</b>
 					</td>
-					<td>6.6 Kg</td>
+					<td>{{ po.additional['remaining_capacity'] }} Kg</td>
 				</tr>
 				<tr>
 					<td>
 						<span><img src="assets/icons/ic_price.svg" class="mr-3" height="20px" /></span>
 						<b>Harga per Kg</b>
 					</td>
-					<td>IDR 15.000</td>
+					<td>{{ po.currency.symbol }} {{ po.feePerKg }}</td>
 				</tr>
 			</tbody>
 		</table>
 
+		<!-- TODO rute -->
 		<div class="bg-light p-3">
 			<h5><span><img src="assets/icons/ic_route.svg" class="mr-3" height="20px"/></span>Rute</h5>
 			<div class="d-flex align-items-center flex-wrap">
@@ -82,11 +81,18 @@
 
 		<div class="mt-3">
 			<h5>Tentang PO ini</h5>
-			<p>
-				Tidak menerima titipan obat-obatan. Barang sudah harus di-package dengan rapi<br/>
-				Tidak menggunakan jasa kirim barang. Penerima harus bertemu langsung
-			</p>
+			<p>{{ po.description }}</p>
 		</div>
 	</div>
 
 </div>
+
+
+<!-- Loading -->
+<ng-template #loading>
+	<div class="container d-flex align-items-center justify-content-center">
+		<div class="spinner-border" role="loading">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+</ng-template>
