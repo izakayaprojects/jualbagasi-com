@@ -86,6 +86,36 @@ module.exports = {
 		})
 	},
 
+
+	get_purchase_order: function(po_id) {
+		return new Promise(function(resolve, reject) {
+			let concatOrders = "(SELECT GROUP_CONCAT(ord.capacity SEPARATOR ';') "+
+				"FROM tbl_orders ord WHERE ord.po_id = po._id GROUP BY po._id) "+
+				"AS po_orders"
+			let concatDest = "(SELECT GROUP_CONCAT(CONCAT(dst._id, ';', dst.country_code)) "+
+				"FROM tbl_destinations dst WHERE dst.po_id = po._id GROUP BY po._id) "+
+				"AS po_dest"
+			let query = "SELECT po._id AS po_id, po.title AS po_title, po.description AS po_desc, "+
+				"po.banner AS po_banner, po.from_date AS po_from, po.to_date AS po_to, po.capacity_kg AS po_capacity,"+
+				"po.fee_per_kg AS po_fee,"+
+				"curr.symbol AS curr_symbol, "+
+				concatDest+", "+
+				concatOrders+" "+
+				"FROM tbl_purchase_order po "+
+				"LEFT JOIN tbl_currencies curr ON curr._id = po.currency_id "+
+				"WHERE po._id = ?"
+			db.connection.query(query, [po_id], function(err, results) {
+				if (err) {
+					reject(utils.createErrorResp(-1, "Error querying purchase order"))
+				} else {
+					// TODO parse the orders and destinations
+					resolve(utils.createSuccessResp(results))
+				}
+			})
+
+		})
+	},
+
 	add_purchase_order: function(token, po) {
 		return new Promise(function(resolve, reject) {
 			auth.check_token(token).then(result => {
@@ -103,7 +133,7 @@ module.exports = {
 				let params = [newPOId,userId,
 					po.title,po.description,po.banner,
 					po.startDate,po.endDate,
-					po.capacity,po.fee,po.currency]
+					po.capacity,po.fee,po.currency_id]
 				db.connection.query(query, params, function(err, result) {
 					if (err) {
 						reject(utils.createErrorResp(-12, "PO data is missing some fields"))

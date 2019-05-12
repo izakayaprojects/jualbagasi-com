@@ -62,6 +62,7 @@ app.post("/api/logout", function(req, res) {
 
 app.post("/api/purchaseorder/add", function(req, res) {
 	order.add_purchase_order(req.body.token, req.body.data).then(result => {
+		// Assign the correct banner url
 		res.send(result)
 	}).catch(err => {
 		res.send(err)
@@ -86,6 +87,14 @@ app.get("/api/purchaseorder/list-display", function(req, res) {
 			if (i["po_banner"])  i["po_banner"] = utils.getImageUrl(req, i["po_banner"])
 			return i
 		})
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
+app.get("/api/purchaseorder/item/:id", function(req, res) {
+	order.get_purchase_order(req.params.id).then(result => {
 		res.send(result)
 	}).catch(err => {
 		res.send(err)
