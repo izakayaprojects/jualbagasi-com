@@ -11,7 +11,6 @@
 	    		<span *ngFor="let route of purchaseOrder.routes" 
 	    			class="ml-1 flag-icon flag-icon-{{route.city.countryCode | lowercase}}"></span>
 	    	</div>
-	    	<!-- TODO status PO sesuai tanggal berlaku, berat, etc. -->
 	    	<div>
 	    		<span *ngIf="purchaseOrder.isCurrentlyOpen()" class="mr-2 badge badge-info">
 	    			<img src="assets/icons/ic_time.svg" height="15px" class="mr-1" />
