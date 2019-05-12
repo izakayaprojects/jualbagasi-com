@@ -80,6 +80,28 @@ module.exports = {
 		})
 	},
 
+	get_user: function(token) {
+		return new Promise(function(resolve, reject) {
+			let query = "SELECT u._id AS id, u.email AS email, u.username AS username,"+
+				"u.role AS role, u.is_active AS is_active, u.profile_picture AS profile_pic, "+
+				"u.created_at AS created_at "+
+				"FROM tbl_users u "+
+				"LEFT JOIN tbl_user_auth auth ON auth.user_id = u._id "+
+				"WHERE auth.token = ?"
+			db.connection.query(query, [token], function(err, results) {
+				if (err) {
+					reject(utils.createErrorResp(-1, "Error retrieving users"))
+				} else {
+					if (results.length === 0) {
+						reject(utils.createErrorResp(-2, "User not found"))
+					} else {
+						resolve(utils.createSuccessResp(results[0]))
+					}
+				}
+			})
+		})
+	},
+
 	check_token: function(token) {
 		return new Promise(function(resolve, reject) {
 			let query = "SELECT * FROM tbl_user_auth WHERE token = ?";

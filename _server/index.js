@@ -120,6 +120,17 @@ app.post("/api/session", function(req, res) {
 	})
 })
 
+app.post("/api/user/current", function(req, res) {
+	auth.get_user(req.body.token).then(result => {
+		if (result["data"]["profile_pic"]) {
+			result["data"]["profile_pic"] = utils.getImageUrl(req, result["data"]["profile_pic"])
+		}
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.listen(3000, function() {
 	console.log("Server is running at port 3000")
 })

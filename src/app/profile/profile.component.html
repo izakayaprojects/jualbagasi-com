@@ -2,14 +2,15 @@
 	<h1>Jual Bagasi</h1>
 	<app-navigation-bar [currentNavigation]="'profile'"></app-navigation-bar>
 </div>
-<div class="container">
+<div class="container" *ngIf="user | async as user; else loading">
 	<div class="row">
 		<div class="col-sm-4 d-flex flex-column align-items-center">
 			<div class="profilepic-container">
 				<img src="assets/icons/default_pp.png" class="profilepic" 
 					data-tooltip="Ubah Profile Picture" />
+					<!--TODO pp-->
 				<div class="inside top-left">
-					<input #pp type="file" class="form-control-file" (change)="onProfilePicClicked(pp)"/>
+					<input #pp type="file" accept="image/*" class="form-control-file" (change)="onProfilePicClicked(pp)"/>
 					<img class="edit" src="assets/icons/ic_edit.svg" />
 				</div>
 			</div>
@@ -17,15 +18,23 @@
 		<div class="col-sm-8">
 			<div class="form-inline row">
 				<span class="col-sm-4">Username</span>
-				<input class="form-control col-sm-8" type="text" value="bagasimaster2000" />
+				<input class="form-control col-sm-8" type="text" [ngModel]="user.username" />
 			</div>
 
 			<div class="form-inline row mt-1">
-				<span class="col-sm-4">Nama</span>
-				<input class="form-control col-sm-8" type="text" value="John Titor" />
+				<span class="col-sm-4">Email</span>
+				<input class="form-control col-sm-8" type="text" [ngModel]="user.email" />
 			</div>
 			<hr/>
-			<div><i>Member sejak 15 Agustus 2010</i></div>
+			<div><i>Member sejak {{ user.createdAt | date:'d MMM. y' }}</i></div>
 		</div>
 	</div>
 </div>
+
+<ng-template #loading>
+	<div class="container d-flex align-items-center justify-content-center">
+		<div class="spinner-border" role="loading">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+</ng-template>

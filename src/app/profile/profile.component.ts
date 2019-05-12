@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from "rxjs"
+
+import { UserAuthService } from "../user-auth.service"
+import { User } from "../_models/user"
 
 @Component({
   selector: 'app-profile',
@@ -7,13 +11,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+	user: Observable<User>
+
+  constructor(private auth: UserAuthService) {
+  	this.user = this.auth.getCurrentUser()
+  }
 
   ngOnInit() {
   }
 
   onProfilePicClicked(file) {
-  	console.log(file)
+  	console.log(file.files[0])
+    // TODO upload pp
   }
 
 }
