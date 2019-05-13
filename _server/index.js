@@ -134,6 +134,14 @@ app.post("/api/user/current", function(req, res) {
 	})
 })
 
+app.post("/api/user/username/edit", function(req, res) {
+	auth.edit_username(req.body.token, req.body.username).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.post("/api/user/profilepicture/edit", imageUpload.single("profile_picture"), function(req, res) {
 	auth.upload_profile_picture(req.body.token, req.file, fs).then(result => {
 		if (result["data"]["profile_picture_path"]) {

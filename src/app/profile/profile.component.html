@@ -32,7 +32,12 @@
 				<div class="input-group col-sm-9">
 					<input class="form-control" type="text" #inp_username [(ngModel)]="user.username" />
 					<div class="input-group-append">
-						<button class="btn btn-info" (click)="onUsernameChange(inp_username.value)">
+						<button class="btn btn-info" (click)="onUsernameChange(inp_username.value)"
+							[disabled]="isUpdatingUsername">
+  							<span class="spinner-border spinner-border-sm mr-2" 
+  								*ngIf="isUpdatingUsername"
+  								role="changing_username" 
+  								aria-hidden="true"></span>
 							Ubah..
 						</button>
 					</div>

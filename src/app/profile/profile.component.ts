@@ -27,6 +27,18 @@ export class ProfileComponent implements OnInit {
   }
 
   onUsernameChange(newUsername) {
+    this.isUpdatingUsername = true
+    this.auth.editUsername(newUsername).subscribe(response => {
+      if (response.success === true) {
+        this.user = this.auth.getCurrentUser()
+        this.messageService.setMessage("success", "Username berhasil di-update")
+      } else if (response.errorId === -11) {
+        this.messageService.setMessage("danger", "Username sudah diambil")
+      } else {
+        this.messageService.setMessage("danger", "Username gagal di-update")
+      }
+      this.isUpdatingUsername = false 
+    })
   }
 
   onProfilePicClicked(file) {

@@ -45,6 +45,19 @@ export class UserAuthService {
     );
   }
 
+  editUsername(newUsername: string): Observable<ApiResponse<String>> {
+    let token = this.localStorage.retrieve("token")
+    let params = {token: token, username: newUsername}
+    return this.http.post<ApiResponse<String>>(API+"/user/username/edit", params).pipe(
+      map(result => {
+        let resp = new ApiResponse<String>()
+        resp.success = result["success"]
+        resp.errorId = result["id"]
+        return resp
+      })
+    )
+  }
+
   uploadProfilePicture(file: File): Observable<ApiResponse<String>> {
     let token = this.localStorage.retrieve("token")
     let formData = new FormData()

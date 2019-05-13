@@ -102,6 +102,31 @@ module.exports = {
 		})
 	},
 
+	edit_username: function(token, username) {
+		return new Promise(function(resolve, reject) {
+			doCheckToken(token).then(result => {
+				let userid = result["data"]["userid"]
+				let queryUser = "SELECT _id FROM tbl_users WHERE username=?"
+				db.connection.query(queryUser, [username], function(err, results) {
+					if (results.length > 0) {
+						reject(utils.createErrorResp(-11, "Username sudah diambil"))
+					} else {
+						let query = "UPDATE tbl_users SET username=? WHERE _id=?"
+						db.connection.query(query, [username, userid], function(err, results) {
+							if (err) {
+								reject(utils.createErrorResp(-12, "Username gagal di-update"))
+							} else {
+								resolve(utils.createSuccessResp({
+									username: username
+								}))
+							}
+						})
+					}
+				})
+			}).catch(err => reject(err))
+		})
+	},
+
 	upload_profile_picture: function(token, file, fs) {
 		return new Promise(function(resolve, reject) {
 			if (!file || file === null) {
