@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationBarComponent } from "../navigation-bar/navigation-bar.component";
 import { Observable, of } from "rxjs"
 import { map } from 'rxjs/operators';
+import { Router } from "@angular/router"
 
 import { PurchaseOrder } from "../_models/order"
 import { PurchaseOrderService } from "../purchase-order.service"
@@ -15,7 +16,8 @@ export class HomepageComponent implements OnInit {
 
 	purchaseOrders$: Observable<PurchaseOrder[]>
 
-  constructor(private poService: PurchaseOrderService) {
+  constructor(private poService: PurchaseOrderService,
+    private router: Router) {
   	
   	this.purchaseOrders$ = this.poService.getPurchaseOrdersList().pipe(
   		map(result => {
@@ -26,8 +28,10 @@ export class HomepageComponent implements OnInit {
   			}
   		})
   	)
-    // TODO build list in html
-  	// this.poService.getPurchaseOrdersList().subscribe(result => console.log(result))
+  }
+
+  onPurchaseOrderSelected(po: PurchaseOrder) {
+    this.router.navigate(["/purchaseorder", po.id])
   }
 
   ngOnInit() {

@@ -16,9 +16,17 @@
 	background-color: #eee;
 }
 
+.profilepic-container > .inside > .middle {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
 .profilepic {
+	object-fit: cover;
+	width: 180px;
+	height: 180px;
 	border-radius: 50%;
-	border: 3px solid black;
-	padding: 8px;
+	border: 5px solid black;
 	cursor: pointer;
 }

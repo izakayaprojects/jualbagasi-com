@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { ENV } from "./_global/global";
 import { DateConverter, ApiResponse } from "./_models/utils";
 import { PurchaseOrder, Currency, Route } from "./_models/order";
+import { User } from "./_models/user"
 
 const API = ENV.debug.apiurl;
 const dateConv = new DateConverter();
@@ -55,6 +56,13 @@ export class PurchaseOrderService {
           po.routes.push(route)
         }
       }
+    }
+
+    if (item["user_id"]) {
+      po.owner = new User()
+      po.owner.id = item["user_id"]
+      po.owner.username = item["user_username"] ? item["user_username"] : ""
+      po.owner.profilePicUrl = item["user_pp"] ? item["user_pp"]: ""
     }
 
     if (item["po_remaining_capacity"]) {

@@ -1,4 +1,5 @@
 import { City } from "./places"
+import { User } from "./user"
 
 export class PurchaseOrder {
 	id: string
@@ -14,6 +15,7 @@ export class PurchaseOrder {
 	origin: Route
 	routes: Route[]
 	additional: any
+	owner: User
 
 	constructor() {
 		this.id = ""
@@ -29,6 +31,7 @@ export class PurchaseOrder {
 		this.createdAt = null
 		this.currency = new Currency()
 		this.additional = {}
+		this.owner = null
 	}
 
 	isCurrentlyOpen(): boolean {

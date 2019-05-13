@@ -108,7 +108,7 @@ module.exports = {
 				"po.banner AS po_banner, po.from_date AS po_from, po.to_date AS po_to, po.capacity_kg AS po_capacity,"+
 				"po.fee_per_kg AS po_fee, "+
 				"curr.symbol AS curr_symbol, "+
-				"u.username AS user_username, u.profile_picture AS user_pp, "+
+				"u._id AS user_id, u.username AS user_username, u.profile_picture AS user_pp, "+
 				concatDest+", "+
 				concatOrders+" "+
 				"FROM tbl_purchase_order po "+

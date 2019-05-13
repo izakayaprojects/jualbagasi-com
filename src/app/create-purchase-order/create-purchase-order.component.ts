@@ -102,7 +102,7 @@ export class CreatePurchaseOrderComponent implements OnInit {
             this.poService.uploadBannerForPurchaseOrder(this.selectedBanner, poId).subscribe(banner => {         
               context.isBeingSubmittedToServer = false
               if (banner.success === true) {
-                // TODO Banner successfully added, back to order list
+                // Banner successfully added, back to order list
                 this.messageService.setMessage("success", "Data PO berhasil ditambahkan")
                 this.router.navigate(["/my-orders"])
               } else {

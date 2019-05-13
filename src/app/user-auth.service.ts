@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { ENV } from "./_global/global";
 import { User } from "./_models/user"
+import { ApiResponse } from "./_models/utils"
 
 const API = ENV.debug.apiurl;
 
@@ -42,6 +43,20 @@ export class UserAuthService {
         }
       })
     );
+  }
+
+  uploadProfilePicture(file: File): Observable<ApiResponse<String>> {
+    let token = this.localStorage.retrieve("token")
+    let formData = new FormData()
+    formData.append("profile_picture", file)
+    formData.append("token", token)
+    return this.http.post(API+"/user/profilepicture/edit", formData).pipe(map(result => {
+      let resp = new ApiResponse<string>()
+      resp.success = result["success"] ? result["success"] : false
+      resp.errorId = result["success"] === false ? result["id"] : undefined
+      resp.data = result["data"] ? result["data"]["profile_picture_path"] : undefined
+      return resp
+    }))
   }
 
   logout() {

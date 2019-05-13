@@ -97,6 +97,9 @@ app.get("/api/purchaseorder/item/:id", function(req, res) {
 		if (result["data"]["po_banner"]) {
 			result["data"]["po_banner"] = utils.getImageUrl(req, result["data"]["po_banner"])
 		}
+		if (result["data"]["user_pp"]) {
+			result["data"]["user_pp"] = utils.getImageUrl(req, result["data"]["user_pp"])
+		}
 		res.send(result)
 	}).catch(err => {
 		res.send(err)

@@ -1,0 +1,15 @@
+.profilepic-small {
+	border-radius: 50%;
+	background-color: #ddd;
+	width: 60px;
+	height: 60px;
+	transition: 0.25s;
+}
+
+.profilepic-small:hover {
+	border: 3px solid black;
+}
+
+.username {
+	font-size: 20px;
+}
