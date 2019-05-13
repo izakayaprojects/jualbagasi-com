@@ -9,6 +9,28 @@ function newLoginToken() {
 	return crypto.randomBytes(64).toString("hex");
 }
 
+function doCheckToken(token) {
+	return new Promise(function(resolve, reject) {
+		let query = "SELECT * FROM tbl_user_auth WHERE token = ?";
+		db.connection.query(query, [token], function(err, result) {
+			if (result.length === 0) {
+				reject(utils.createErrorResp(-1, "Token does not exist"))
+			} else {
+				let auth = result[0];
+				let expiration = new Date(auth.expired_at);
+				let now = new Date();
+				if (expiration < now) {
+					// Expired
+					reject(utils.createErrorResp(-2, "Token expired"))
+				} else {
+					// Still valid
+					resolve(utils.createSuccessResp({valid: true, userid: auth.user_id}))
+				}
+			}
+		})
+	})
+}
+
 module.exports = {
 	login: function(email, pass) {
 		return new Promise(function(resolve, reject) {
@@ -80,6 +102,45 @@ module.exports = {
 		})
 	},
 
+	upload_profile_picture: function(token, file, fs) {
+		return new Promise(function(resolve, reject) {
+			if (!file || file === null) {
+				reject(utils.createErrorResp(-11, "Missing image"))
+				return
+			}
+			if (!file.mimetype.startsWith("image")) {
+				reject(utils.createErrorResp(-12, "Only image is allowed"))
+				return
+			}
+			doCheckToken(token).then(result => {
+				let userId = result["data"]["userid"]
+				let tempPath = file.path
+				let extension = file.originalname.split(".").pop()
+				let finalImageName = "users/pp_"+userId+"."+extension
+				let target = "uploads/"+finalImageName
+				fs.rename(tempPath, target, function(err) {
+					if (err) {
+						fs.unlink(tempPath, err => console.log(err) )
+						reject(utils.createErrorResp(-13, "Error moving image to directory"))
+					} else {
+						let query = "UPDATE tbl_users SET profile_picture=? WHERE _id=?"
+						db.connection.query(query, [finalImageName, userId], function(err, result) {
+							if (err) {
+								reject(utils.createErrorResp(-14, "Error updating profile picture"))
+							} else {
+								resolve(utils.createSuccessResp({ 
+									profile_picture_path: finalImageName 
+								}))
+							}
+						})
+					}
+				})
+			}).catch(err => {
+				reject(err)
+			})
+		})
+	},
+
 	get_user: function(token) {
 		return new Promise(function(resolve, reject) {
 			let query = "SELECT u._id AS id, u.email AS email, u.username AS username,"+
@@ -102,25 +163,5 @@ module.exports = {
 		})
 	},
 
-	check_token: function(token) {
-		return new Promise(function(resolve, reject) {
-			let query = "SELECT * FROM tbl_user_auth WHERE token = ?";
-			db.connection.query(query, [token], function(err, result) {
-				if (result.length === 0) {
-					reject(utils.createErrorResp(-1, "Token does not exist"))
-				} else {
-					let auth = result[0];
-					let expiration = new Date(auth.expired_at);
-					let now = new Date();
-					if (expiration < now) {
-						// Expired
-						reject(utils.createErrorResp(-2, "Token expired"))
-					} else {
-						// Still valid
-						resolve(utils.createSuccessResp({valid: true, userid: auth.user_id}))
-					}
-				}
-			})
-		})
-	}
+	check_token: doCheckToken
 }

@@ -131,6 +131,19 @@ app.post("/api/user/current", function(req, res) {
 	})
 })
 
+app.post("/api/user/profilepicture/edit", imageUpload.single("profile_picture"), function(req, res) {
+	auth.upload_profile_picture(req.body.token, req.file, fs).then(result => {
+		if (result["data"]["profile_picture_path"]) {
+			result["data"]["profile_picture_path"] = utils.getImageUrl(
+				req, result["data"]["profile_picture_path"]
+			)
+		}
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.listen(3000, function() {
 	console.log("Server is running at port 3000")
 })

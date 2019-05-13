@@ -244,7 +244,7 @@ module.exports = {
 				let target = "uploads/"+finalImageName
 				fs.rename(tempPath, target, function(err) {
 					if (err) {
-						fs.unlink(tempPath)
+						fs.unlink(tempPath, err => console.log(err))
 						reject(utils.createErrorResp(-14, "Error moving image to directory"))
 					} else {
 						let query = "UPDATE tbl_purchase_order SET banner=? WHERE _id=?"
