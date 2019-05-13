@@ -5,7 +5,7 @@
 
 <div class="container" *ngIf="purchaseOrder | async as po; else loading">
 	<!--User-->
-	<span>
+	<span class="pointer">
 		<img class="profilepic-small mr-3" [src]="po.owner.profilePicUrl === '' 
 			? 'assets/icons/default_pp.png' : po.owner.profilePicUrl" />
 		<span *ngIf="po.owner.username !== ''; else no_username" class="username"> 
