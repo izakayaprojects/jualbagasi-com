@@ -4,22 +4,36 @@
 </div>
 <div class="container">
 
-	<div class="form-inline d-flex">
-		<span class="mr-4">
-			<label for="filter_country" class="mr-4 small">Negara tujuan</label>
+	<div class="row">
+		<div class="col-sm-4">
+			<label for="filter_country" class="small">Negara tujuan</label>
 			<input id="filter_country" type="text" class="form-control"/>
-		</span>
+		</div>
 
-		<span class="">
-			<label for="filter_capacity" class="mr-4 small">Kapasitas 
-				(<span *ngIf="currentCapacityFilter as ccf">{{ccf[0]}} - {{ccf[1]}}</span> Kg)
+		<div class="col-sm-4">
+			<label for="filter_capacity" class="small">Kapasitas (Kg)
 			</label>
-			<mv-slider [(value)]="currentCapacityFilter" [range]="true"
-				[ticksLabels]="['0','50']" [ticks]="[0, 50]" 
-				[min]="0" [step]="1" [max]="50">		
-			</mv-slider>
-		</span>
+			<div class="form-inline">
+				<input class="form-control" type="number" name="min_luggage" min="0" step="0.1" 
+					max="50"/>
+				<img src="assets/icons/ic_arrow_right.svg" class="mr-2 ml-2" />
+				<input class="form-control" type="number" name="max_luggage" min="0" step="0.1" max="50"/>
+			</div>
+		</div>
 
+		<div class="col-sm-4">
+			<label class="small">Status</label>
+			<div>
+				<div>
+	    			<input type="checkbox" class="mr-2" id="status_during"/>
+	    			<label class="form-check-label" for="status_during">Masih buka</label>
+	    		</div>
+    			<div>
+    				<input type="checkbox" class="mr-2" id="status_incoming"/>
+    				<label class="form-check-label" for="status_incoming">Akan datang</label>
+    			</div>
+    		</div>
+		</div>
 		<!--TODO filter tanggal -->
 		<!--TODO sort by -->
 	</div>
