@@ -4,7 +4,6 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from "@angular/common/http";
-import { NgxBootstrapSliderModule } from 'ngx-bootstrap-slider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,8 +40,7 @@ import { MessageComponent } from './message/message.component';
     AppRoutingModule,
     NgbModule.forRoot(),
     FormsModule,
-    HttpClientModule,
-    NgxBootstrapSliderModule
+    HttpClientModule
   ],
   providers: [],
   entryComponents: [CreateDestinationComponent],

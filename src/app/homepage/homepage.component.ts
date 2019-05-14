@@ -16,7 +16,13 @@ export class HomepageComponent implements OnInit {
 
 	purchaseOrders$: Observable<PurchaseOrder[]>
 
-  currentCapacityFilter = [0, 50]
+  filter = {
+    country: null,
+    min_capacity: 0,
+    max_capacity: 50,
+    currently_open: true,
+    incoming: true
+  }
 
   constructor(private poService: PurchaseOrderService,
     private router: Router) {
@@ -34,11 +40,6 @@ export class HomepageComponent implements OnInit {
 
   onPurchaseOrderSelected(po: PurchaseOrder) {
     this.router.navigate(["/purchaseorder", po.id])
-  }
-
-  onFilterCapacity(value) {
-    console.log(value)
-    this.currentCapacityFilter = value
   }
 
   ngOnInit() {

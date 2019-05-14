@@ -50,7 +50,6 @@
 			</tbody>
 		</table>
 
-		<!-- TODO rute -->
 		<div class="bg-light p-3">
 			<h5><span><img src="assets/icons/ic_route.svg" class="mr-3" height="20px"/></span>Rute</h5>
 			<div class="d-flex align-items-center flex-wrap">
@@ -72,7 +71,7 @@
 	    			<span>
 	    				<img src="assets/icons/ic_arrow_right.svg" height="20px" class="mr-2 ml-2" />
 	    			</span>
-					<div>
+					<span>
 						<span class="badge badge-info">
 							<span class="mr-1 flag-icon 
 								flag-icon-{{r.city.countryCode | lowercase}}"></span>
@@ -80,11 +79,11 @@
 								{{r.city.name}}, {{r.city.country}}
 								<br/>
 								<span class="small">
-									{{r.city.estimatedItemArrivalDate | date: 'd MMM. y'}}
+									{{r.estimatedItemArrivalDate | date: 'd MMM. y'}}
 								</span>
 							</span>
 	    				</span>
-	    			</div>
+	    			</span>
     			</div>
 			</div>
 		</div>

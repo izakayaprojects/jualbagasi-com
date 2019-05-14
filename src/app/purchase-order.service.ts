@@ -47,7 +47,7 @@ export class PurchaseOrderService {
       po.origin.city.name = dests[0]["city"]
       
       if (dests.length > 1) {
-        for (var i = 0 ; i < dests.length ; i++) {
+        for (var i = 1 ; i < dests.length ; i++) {
           let route = new Route()
           route.city.countryCode = dests[i]["code"]
           route.estimatedItemArrivalDate = dests[i]["estItemArrivalDate"]

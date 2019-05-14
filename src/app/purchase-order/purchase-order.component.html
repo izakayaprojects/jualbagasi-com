@@ -7,7 +7,9 @@
 	    		<span *ngIf="purchaseOrder.origin" class="ml-1 flag-icon 
 	    			flag-icon-{{ purchaseOrder.origin.city.countryCode | lowercase }}">		
     			</span>
-    			<span class="mr-1 ml-1" *ngIf="purchaseOrder.routes.length > 0">=></span>
+    			<span class="mr-1 ml-1" *ngIf="purchaseOrder.routes.length > 0">
+    				<img src="assets/icons/ic_arrow_right.svg"/>
+    			</span>
 	    		<span *ngFor="let route of purchaseOrder.routes" 
 	    			class="ml-1 flag-icon flag-icon-{{route.city.countryCode | lowercase}}"></span>
 	    	</div>

@@ -4,39 +4,48 @@
 </div>
 <div class="container">
 
-	<div class="row">
-		<div class="col-sm-4">
-			<label for="filter_country" class="small">Negara tujuan</label>
-			<input id="filter_country" type="text" class="form-control"/>
-		</div>
+	<ngb-accordion #acc="ngbAccordion" activeIds="panel-filter">
+		<ngb-panel title="Filter.." id="panel-filter">
+			<ng-template ngbPanelContent>
+				<div class="row">
+					<div class="col-sm-4">
+						<label for="filter_country" class="small">Negara tujuan</label>
+						<input id="filter_country" type="text" class="form-control"/>
+					</div>
 
-		<div class="col-sm-4">
-			<label for="filter_capacity" class="small">Kapasitas (Kg)
-			</label>
-			<div class="form-inline">
-				<input class="form-control" type="number" name="min_luggage" min="0" step="0.1" 
-					max="50"/>
-				<img src="assets/icons/ic_arrow_right.svg" class="mr-2 ml-2" />
-				<input class="form-control" type="number" name="max_luggage" min="0" step="0.1" max="50"/>
-			</div>
-		</div>
+					<div class="col-sm-4">
+						<label for="filter_capacity" class="small">Kapasitas (Kg)
+						</label>
+						<div class="form-inline">
+							<input class="form-control" type="number" name="min_luggage" 
+								min="0" step="0.1" max="50" [(ngModel)]="filter.min_capacity"/>
+							<img src="assets/icons/ic_arrow_right.svg" class="mr-1 ml-1" />
+							<input class="form-control" type="number" name="max_luggage" 
+								min="0" step="0.1" max="50" [(ngModel)]="filter.max_capacity"/>
+						</div>
+					</div>
 
-		<div class="col-sm-4">
-			<label class="small">Status</label>
-			<div>
-				<div>
-	    			<input type="checkbox" class="mr-2" id="status_during"/>
-	    			<label class="form-check-label" for="status_during">Masih buka</label>
-	    		</div>
-    			<div>
-    				<input type="checkbox" class="mr-2" id="status_incoming"/>
-    				<label class="form-check-label" for="status_incoming">Akan datang</label>
-    			</div>
-    		</div>
-		</div>
-		<!--TODO filter tanggal -->
-		<!--TODO sort by -->
-	</div>
+					<div class="col-sm-4">
+						<label class="small">Status</label>
+						<div>
+							<div>
+				    			<input type="checkbox" class="mr-2" id="status_during" 
+				    				[(ngModel)]="filter.currently_open"/>
+				    			<label class="form-check-label" for="status_during">Masih buka</label>
+				    		</div>
+			    			<div>
+			    				<input type="checkbox" class="mr-2" id="status_incoming"
+			    					[(ngModel)]="filter.incoming"/>
+			    				<label class="form-check-label" for="status_incoming">Akan datang</label>
+			    			</div>
+			    		</div>
+					</div>
+					<!--TODO filter tanggal -->
+					<!--TODO sort by -->
+				</div>
+			</ng-template>
+		</ngb-panel>
+	</ngb-accordion>
 	<hr />
 
 	<div class="row">
