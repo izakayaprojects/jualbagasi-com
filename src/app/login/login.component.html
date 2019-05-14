@@ -13,7 +13,7 @@
 			<div class="text-danger m-1" *ngIf="loginErrorMessage">{{ loginErrorMessage }}</div>
 			<div class="btn-toolbar">
 				<button class="btn btn-primary mr-1" (click)="onLogin()">Login</button>
-				<button class="btn btn-info">Daftar</button>
+				<button class="btn btn-info" [routerLink]="['/register']">Daftar</button>
 			</div>
 		</form>
 	</div>

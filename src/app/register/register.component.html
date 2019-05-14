@@ -1,0 +1,30 @@
+<div class="jumbotron">
+	<h1>Jual Bagasi</h1>
+</div>
+<div class="container">
+	<h4>Daftar</h4>
+	<hr/>
+	<form>
+		<div class="form-group">
+			<label for="reg_email">Alamat E-mail</label>
+			<input type="email" class="form-control" id="reg_email" name="reg_email"/>
+			<small class="text-muted">Alamat E-mail anda tidak akan terlihat oleh pengunjung lain</small>
+		</div>
+
+		<div class="form-group">
+			<label for="reg_password">Password</label>
+			<input type="password" class="form-control" id="reg_password" name="reg_password"/>
+			<input type="password" class="form-control mt-2" id="reg_password_repeat" 
+				name="reg_password_repeat" placeholder="Ulangi Password..."/>
+		</div>
+
+		<div class="form-group">
+			<label for="reg_username">Username</label>
+			<input type="password" class="form-control" id="reg_username" name="reg_username"/>
+			<small class="text-muted">8-24 karakter. Hanya huruf dan angka yang diperbolehkan</small>
+		</div>
+
+		<button class="btn btn-warning mr-3" [routerLink]="['/login']">Kembali ke Laman Login</button>
+		<button type="submit" class="btn btn-success">Daftar</button>
+	</form>
+</div>

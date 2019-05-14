@@ -18,6 +18,7 @@ import { OrderItemComponent } from './order-item/order-item.component';
 import { CreatePurchaseOrderComponent } from './create-purchase-order/create-purchase-order.component';
 import { CreateDestinationComponent } from './create-destination/create-destination.component';
 import { MessageComponent } from './message/message.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { MessageComponent } from './message/message.component';
     OrderItemComponent,
     CreatePurchaseOrderComponent,
     CreateDestinationComponent,
-    MessageComponent
+    MessageComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
