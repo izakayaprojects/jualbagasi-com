@@ -188,5 +188,45 @@ module.exports = {
 		})
 	},
 
+	register: function(email, password, username) {
+		return new Promise(function(resolve, reject) {
+			let query = "SELECT _id FROM tbl_users WHERE email=?"
+			// Check email
+			db.connection.query(query, [email], function(err, results) {
+				if (results.length > 0) {
+					reject(utils.createErrorResp(-1, "Email address is used"))
+				} else {
+					// Check username
+					let checkUsername = "SELECT _id FROM tbl_users WHERE username=?"
+					db.connection.query(checkUsername, [username], function(err, usernames) {
+						if (usernames.length > 0) {
+							reject(utils.createErrorResp(-2, "Username is already used"))
+						} else {
+							// Register
+							let newId = crypto.randomBytes(16).toString("hex")
+							let confirmationToken = crypto.randomBytes(16).toString("hex")
+							let registerQ = "INSERT INTO tbl_users "+
+								"(_id,email,username,password,confirmationToken) VALUES "+
+								"(?,?,?,?,?)"
+							db.connection.query(registerQ, 
+								[newId,email,checkUsername,md5(password),confirmationToken],
+								function(err, reg) {
+									if (err) {
+										reject(utils.createErrorResp(-3, "Error registering new user"))
+									} else {
+										// TODO successful reg. Send email for confirming email address
+										resolve(utils.createSuccessResp({
+											new_user_id: newId,
+											confirmation_token: confirmationToken
+										}))
+									}
+								})
+						}
+					})
+				}
+			})
+		})
+	} 
+
 	check_token: doCheckToken
 }

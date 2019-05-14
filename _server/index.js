@@ -123,6 +123,8 @@ app.post("/api/session", function(req, res) {
 	})
 })
 
+// TODO "/api/user/register"
+
 app.post("/api/user/current", function(req, res) {
 	auth.get_user(req.body.token).then(result => {
 		if (result["data"]["profile_pic"]) {
