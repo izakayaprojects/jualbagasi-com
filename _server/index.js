@@ -9,6 +9,7 @@ const auth = require("./auth")
 const order = require("./order")
 const cities = require("./cities")
 const utils = require("./utils")
+const mailer = require("./mailer")
 
 db.connect();
 app.use(express.urlencoded({extended: true}));

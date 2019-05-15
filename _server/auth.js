@@ -1,5 +1,6 @@
 const db = require("./db");
 const utils = require("./utils");
+const mailer = require("./mailer");
 const crypto = require("crypto");
 const md5 = require("md5");
 
@@ -214,7 +215,7 @@ module.exports = {
 									if (err) {
 										reject(utils.createErrorResp(-3, "Error registering new user"))
 									} else {
-										// TODO successful reg. Send email for confirming email address
+										mailer.send_email_confirmation(email, confirmationToken)
 										resolve(utils.createSuccessResp({
 											new_user_id: newId,
 											confirmation_token: confirmationToken
@@ -226,7 +227,7 @@ module.exports = {
 				}
 			})
 		})
-	} 
+	},
 
 	check_token: doCheckToken
 }
