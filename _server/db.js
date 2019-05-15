@@ -1,14 +1,12 @@
 const mysql = require('mysql');
 const md5 = require("md5");
 const crypto = require("crypto");
+const config = require("./config");
+
+const conf = config.get()
 
 module.exports = {
-	connection: mysql.createConnection({
-		host: 'localhost',
-		user: 'jualbagasi',
-		password: 'jualbagasi',
-		database: 'db_nitipteman_test',
-	}),
+	connection: mysql.createConnection(conf.db_conn),
 
 	connect: function() {
 		this.connection.connect(function(err) {

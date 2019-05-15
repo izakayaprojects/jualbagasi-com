@@ -1,8 +1,7 @@
 const mailer = require("nodemailer")
 const config = require("./config")
 
-const ENV = process.env.NODE_ENV || "dev"
-const conf = ENV === "dev" ? config.dev : config.production
+const conf = config.get()
 
 const GmailTransporter = mailer.createTransport({
 	service:'gmail',

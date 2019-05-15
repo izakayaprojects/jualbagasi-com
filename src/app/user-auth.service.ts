@@ -23,6 +23,22 @@ export class UserAuthService {
   	return this.http.post(API+"/login", {email: email, password: pass});
   }
 
+  register(email: string, pass: string, username: string): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(API+"/user/register", 
+      {email: email, password: pass, username: username}).pipe(
+      map(result => {
+        let resp = new ApiResponse<string>()
+        resp.success = result["success"]
+        resp.errorId = result["id"]
+        if (resp.success === true) {
+          resp.data = result["data"]["new_user_id"]
+        }
+        return resp
+      })
+    )
+    
+  }
+
   getCurrentUser(): Observable<User> {
     let token = this.localStorage.retrieve("token")
     return this.http.post(API+"/user/current", {token: token}).pipe(

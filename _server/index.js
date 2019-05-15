@@ -125,6 +125,13 @@ app.post("/api/session", function(req, res) {
 })
 
 // TODO "/api/user/register"
+app.post("/api/user/register", function(req, res) {
+	auth.register(req.email, req.password, req.username).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
 
 app.post("/api/user/current", function(req, res) {
 	auth.get_user(req.body.token).then(result => {
