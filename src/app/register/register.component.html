@@ -34,5 +34,9 @@
 
 		<button class="btn btn-success" (click)="onRegistrationSubmit()">Daftar</button>
 		<button class="btn btn-warning ml-3" [routerLink]="['/login']">Kembali ke Laman Login</button>
+
+		<div class="small text-danger" *ngIf="errorMessages.submission">
+			{{ errorMessages.submission }}
+		</div>
 	</form>
 </div>

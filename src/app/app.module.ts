@@ -19,6 +19,7 @@ import { CreatePurchaseOrderComponent } from './create-purchase-order/create-pur
 import { CreateDestinationComponent } from './create-destination/create-destination.component';
 import { MessageComponent } from './message/message.component';
 import { RegisterComponent } from './register/register.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { RegisterComponent } from './register/register.component';
     CreatePurchaseOrderComponent,
     CreateDestinationComponent,
     MessageComponent,
-    RegisterComponent
+    RegisterComponent,
+    ConfirmEmailComponent
   ],
   imports: [
     BrowserModule,

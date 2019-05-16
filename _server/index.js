@@ -124,9 +124,16 @@ app.post("/api/session", function(req, res) {
 	})
 })
 
-// TODO "/api/user/register"
 app.post("/api/user/register", function(req, res) {
-	auth.register(req.email, req.password, req.username).then(result => {
+	auth.register(req.body.email, req.body.password, req.body.username).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
+app.get("/api/user/confirm", function(req, res) {
+	auth.confirm_token(req.query.token).then(result => {
 		res.send(result)
 	}).catch(err => {
 		res.send(err)

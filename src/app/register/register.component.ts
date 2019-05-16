@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { UserAuthService } from "../user-auth.service";
+import { MessageService } from "../message.service"
 
 @Component({
   selector: 'app-register',
@@ -13,7 +17,8 @@ export class RegisterComponent implements OnInit {
 	errorMessages = {
 		email: "",
 		password: "",
-		username: ""
+		username: "",
+    submission: ""
 	}
 
 	email: string = ""
@@ -23,13 +28,15 @@ export class RegisterComponent implements OnInit {
 
 	isSubmitted = false
 
-  constructor() { }
+  constructor(private auth: UserAuthService,
+    private messageService: MessageService,
+    private router: Router) { }
 
   ngOnInit() {
   }
 
   onRegistrationSubmit() {
-  	this.errorMessages = { email: "", password: "", username: "" }
+  	this.errorMessages = { email: "", password: "", username: "", submission: "" }
 
   	let isValidated = true
   	this.isSubmitted = true
@@ -64,8 +71,22 @@ export class RegisterComponent implements OnInit {
   	}
 
   	if (isValidated) {
-  		// TODO submit registration
-  		
+  		// submit registration
+  		this.auth.register(this.email, this.password, this.username).subscribe(result => {
+        if (result.success === true) {
+          this.messageService.setMessage("success", 
+            "Akun berhasil dibuat. Email konfirmasi sudah dikirim ke alamat E-mail anda")
+          this.router.navigate(["/login"])
+        } else {
+          if (result.errorId === -1) {
+            this.errorMessages.email = "Email sudah terpakai"
+          } else if (result.errorId === -2) {
+            this.errorMessages.username = "Username sudah terpakai"
+          } else if (result.errorId === -3) {
+            this.errorMessages.submission = "Gagal membuat akun. Mohon hubungi Admin"
+          } 
+        }
+      })
   	}
   }
 

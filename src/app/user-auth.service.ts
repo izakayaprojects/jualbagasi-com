@@ -39,6 +39,18 @@ export class UserAuthService {
     
   }
 
+  confirmEmail(confirmationToken: string): Observable<ApiResponse<Boolean>> {
+    return this.http.get(API+"/user/confirm?token="+confirmationToken).pipe(map(
+      result => {
+        let resp = new ApiResponse<Boolean>()
+        resp.success = result["success"]
+        resp.errorId = result["id"]
+        resp.data = resp.success
+        return resp
+      }
+    ))
+  }
+
   getCurrentUser(): Observable<User> {
     let token = this.localStorage.retrieve("token")
     return this.http.post(API+"/user/current", {token: token}).pipe(

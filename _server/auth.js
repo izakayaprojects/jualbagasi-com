@@ -229,5 +229,26 @@ module.exports = {
 		})
 	},
 
+	confirm_token: function(confirmationToken) {
+		return new Promise(function(resolve, reject) {
+			let query = "SELECT _id FROM tbl_users WHERE confirmation_token=?"
+			db.connection.query(query, [confirmationToken], function(err, results) {
+				if (err || results.length == 0) {
+					reject(utils.createErrorResp(-1, "Invalid confirmation token"))
+				} else {
+					let userid = results[0]["_id"]
+					let updateStatus = "UPDATE tbl_users SET confirmation_token=?, is_email_confirmed=? WHERE _id=?"
+					db.connection.query(query, ["", true, userid], function(err, results) {
+						if (err) {
+							reject(utils.createErrorResp(-2, "Cannot validate account"))
+						} else {
+							resolve(utils.createSuccessResp({}))
+						}
+					})
+				}
+			})
+		})
+	},
+
 	check_token: doCheckToken
 }

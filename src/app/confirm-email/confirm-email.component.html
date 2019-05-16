@@ -1,0 +1,27 @@
+<div class="jumbotron">
+	<h1>Jual Bagasi</h1>
+</div>
+<div class="container">
+	<div *ngIf="!isBeingChecked; else checking">
+		<div class="border border-success rounded p-3" *ngIf="confirmed; else confirmFail">
+			<h4>{{ message }}</h4>
+			<button [routerLink]="['/login']" class="mr-3 btn btn-info">Login</button>
+			<button [routerLink]="['/']" class="btn btn-warning">Beranda</button>
+		</div>
+		<ng-template #confirmFail>
+			<div class="border border-danger rounded p-3">
+				<h4>{{ message }}</h4>
+				<button class="mr-3 btn btn-info">Kirim ulang konfirmasi</button>
+				<button [routerLink]="['/']" class="btn btn-warning">Beranda</button>
+			</div>
+		</ng-template>
+	</div>
+
+	<ng-template #checking>
+		<div class="d-flex justify-content-center">
+			<div class="spinner-border" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+	</ng-template>
+</div>

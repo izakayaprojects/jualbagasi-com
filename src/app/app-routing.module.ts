@@ -8,6 +8,7 @@ import { PurchaseDetailComponent } from "./purchase-detail/purchase-detail.compo
 import { ProfileComponent } from './profile/profile.component';
 import { ManageOrdersComponent } from './manage-orders/manage-orders.component';
 import { CreatePurchaseOrderComponent } from './create-purchase-order/create-purchase-order.component';
+import { ConfirmEmailComponent } from "./confirm-email/confirm-email.component"
 import { AuthGuard } from './auth-guard';
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: "purchaseorder/:id", component: PurchaseDetailComponent },
   { path: "my-orders", component: ManageOrdersComponent, canActivate: [AuthGuard] },
   { path: "new-order", component: CreatePurchaseOrderComponent, canActivate: [AuthGuard] },
+  { path: "confirm", component: ConfirmEmailComponent }
 ];
 
 @NgModule({
