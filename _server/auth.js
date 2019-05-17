@@ -171,7 +171,7 @@ module.exports = {
 		return new Promise(function(resolve, reject) {
 			let query = "SELECT u._id AS id, u.email AS email, u.username AS username,"+
 				"u.role AS role, u.is_active AS is_active, u.profile_picture AS profile_pic, "+
-				"u.created_at AS created_at "+
+				"u.is_email_confirmed AS email_confirmed, u.created_at AS created_at "+
 				"FROM tbl_users u "+
 				"LEFT JOIN tbl_user_auth auth ON auth.user_id = u._id "+
 				"WHERE auth.token = ?"

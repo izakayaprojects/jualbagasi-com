@@ -4,6 +4,7 @@ export class User {
 	email: string
 	role: string
 	isActive: boolean
+	emailConfirmed: boolean
 	profilePicUrl: string
 	createdAt: Date
 
@@ -15,5 +16,6 @@ export class User {
 		this.isActive = true
 		this.profilePicUrl = ""
 		this.createdAt = null
+		this.emailConfirmed = false
 	}
 }

@@ -64,6 +64,7 @@ export class UserAuthService {
           user.role = data["role"]
           user.isActive = data["is_active"] === 1
           user.profilePicUrl = data["profile_pic"]
+          user.emailConfirmed = data["email_confirmed"] === 1
           user.createdAt = new Date(data["created_at"])
           return user
         } else {

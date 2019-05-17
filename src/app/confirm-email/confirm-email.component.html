@@ -11,7 +11,8 @@
 		<ng-template #confirmFail>
 			<div class="border border-danger rounded p-3">
 				<h4>{{ message }}</h4>
-				<button class="mr-3 btn btn-info">Kirim ulang konfirmasi</button>
+				<p>Email konfirmasi bisa dikirim ulang. Mohon login terlebih dahulu dan pilih Opsi <b>Order saya</b> di bagian navigasi</p>
+				<button [routerLink]="['/login']" class="mr-3 btn btn-info">Login</button>
 				<button [routerLink]="['/']" class="btn btn-warning">Beranda</button>
 			</div>
 		</ng-template>

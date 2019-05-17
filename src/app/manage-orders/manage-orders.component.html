@@ -3,6 +3,14 @@
 	<app-navigation-bar [currentNavigation]="'orders'"></app-navigation-bar>
 </div>
 <div class="container">
+	<div *ngIf="user">
+		<div *ngIf="!user.emailConfirmed" class="p-3 rounded border-warning bg-warning">
+			Email anda belum terkonfirmasi. 
+			<button class="btn btn-secondary" 
+				(click)="onResendConfirmation()">Kirim Email konfirmasi</button>
+		</div>
+	</div>
+
 	<app-message></app-message>
 	<hr/>
 	<div class="row">
