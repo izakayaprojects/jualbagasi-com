@@ -23,7 +23,7 @@ export class ManageOrdersComponent implements OnInit {
   }
 
   onResendConfirmation() {
-  	
+  	 // TODO auth.resendEmailConfirm
   }
 
   ngOnInit() {

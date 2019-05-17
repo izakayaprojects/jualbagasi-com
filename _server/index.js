@@ -140,6 +140,14 @@ app.get("/api/user/confirm", function(req, res) {
 	})
 })
 
+app.post("/api/user/confirm/resend", function(req, res) {
+	auth.resend_email_confirm(req.body.user_id).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.post("/api/user/current", function(req, res) {
 	auth.get_user(req.body.token).then(result => {
 		if (result["data"]["profile_pic"]) {

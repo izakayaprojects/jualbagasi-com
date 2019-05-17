@@ -229,6 +229,31 @@ module.exports = {
 		})
 	},
 
+	resend_email_confirm: function(userid) {
+		return new Promise(function(resolve, reject) {
+			let user = "SELECT email FROM tbl_users WHERE _id=?"
+			db.connection.query(user, [userid], function(err, results) {
+				if (err || results.length === 0) {
+					reject(utils.createErrorResp(-1, "User not found"))
+				} else {
+					let email = results[0]["email"]
+					let confToken = crypto.randomBytes(16).toString("hex")
+					let updateConfToken = "UPDATE tbl_users SET confirmation_token=? WHERE _id=?"
+					db.connection.query(updateConfToken, [confToken, userid], function(err, updated) {
+						if (err) {
+							reject(utils.createErrorResp(-2, "Failed to update token"))
+						} else {
+							mailer.send_email_confirmation(email, confToken)
+							resolve(utils.createSuccessResp({
+								sent_to: email
+							}))
+						}
+					})
+				}
+			})
+		})
+	},
+
 	confirm_token: function(confirmationToken) {
 		return new Promise(function(resolve, reject) {
 			let query = "SELECT _id FROM tbl_users WHERE confirmation_token=?"
