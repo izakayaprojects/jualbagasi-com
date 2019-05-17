@@ -10,7 +10,7 @@ import { PurchaseOrderService } from "../purchase-order.service"
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css'],
+  styleUrls: ['./homepage.component.css', '../app.component.css'],
 })
 export class HomepageComponent implements OnInit {
 

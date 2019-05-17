@@ -9,12 +9,19 @@
 			<ng-template ngbPanelContent>
 				<div class="row">
 					<div class="col-sm-4">
-						<label for="filter_country" class="small">Negara tujuan</label>
-						<input id="filter_country" type="text" class="form-control"/>
+						<div>
+							<label for="filter_country_origin" class="small">Kota/Negara asal</label>
+							<input id="filter_country_origin" type="text" class="form-control"/>
+						</div>
+						<div>
+							<label for="filter_country_dest" class="small">Kota/Negara tujuan</label>
+							<input id="filter_country_dest" type="text" class="form-control"/>
+						</div>
 					</div>
 
 					<div class="col-sm-4">
-						<label for="filter_capacity" class="small">Kapasitas (Kg)
+						<label for="filter_capacity" class="small">
+							Kapasitas (Kg)
 						</label>
 						<div class="form-inline">
 							<input class="form-control" type="number" name="min_luggage" 
@@ -23,6 +30,26 @@
 							<input class="form-control" type="number" name="max_luggage" 
 								min="0" step="0.1" max="50" [(ngModel)]="filter.max_capacity"/>
 						</div>
+
+						<div>
+							<label class="small">Tanggal PO</label>
+							<div>
+								<input id="filter_start" name="filter_start" type="text" readonly
+									class="hidden-input" data-container="body"
+									ngbDatepicker #filter_start="ngbDatepicker"/>
+								<button class="btn btn-info" (click)="filter_start.toggle()">
+									Mulai...
+								</button>
+								<img src="assets/icons/ic_arrow_right.svg" class="ml-1" />
+								<input id="filter_end" name="filter_end" type="text" readonly
+									class="hidden-input" data-container="body"
+									ngbDatepicker #filter_end="ngbDatepicker"/>
+								<button class="btn btn-info" (click)="filter_end.toggle()">
+									Sampai..
+								</button>
+							</div>
+							<!--TODO filter tanggal -->
+			    		</div>
 					</div>
 
 					<div class="col-sm-4">
@@ -31,16 +58,20 @@
 							<div>
 				    			<input type="checkbox" class="mr-2" id="status_during" 
 				    				[(ngModel)]="filter.currently_open"/>
-				    			<label class="form-check-label" for="status_during">Masih buka</label>
+				    			<label class="form-check-label" for="status_during">Open</label>
 				    		</div>
 			    			<div>
 			    				<input type="checkbox" class="mr-2" id="status_incoming"
 			    					[(ngModel)]="filter.incoming"/>
-			    				<label class="form-check-label" for="status_incoming">Akan datang</label>
+			    				<label class="form-check-label" for="status_incoming">Soon</label>
+			    			</div>
+			    			<div>
+			    				<input type="checkbox" class="mr-2" id="status_expired"
+			    					[(ngModel)]="filter.incoming"/>
+			    				<label class="form-check-label" for="status_expired">Expired</label>
 			    			</div>
 			    		</div>
 					</div>
-					<!--TODO filter tanggal -->
 					<!--TODO sort by -->
 				</div>
 			</ng-template>
