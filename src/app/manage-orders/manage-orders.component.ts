@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router"
+import { Observable } from "rxjs"
 
 import { PurchaseOrderService } from "../purchase-order.service";
 import { UserAuthService } from "../user-auth.service"
 
 import { User } from "../_models/user"
+import { PurchaseOrder } from "../_models/order"
 
 @Component({
   selector: 'app-manage-orders',
@@ -16,12 +18,14 @@ export class ManageOrdersComponent implements OnInit {
 	user: User
   emailConfirmationMsg: string
 
+  purchaseOrders$: Observable<PurchaseOrder[]>
+
   constructor(private poService: PurchaseOrderService,
   	private auth: UserAuthService,
     private router: Router) {
   	this.auth.getCurrentUser().subscribe(u => {
   		this.user = u
-  		// TODO get po and orders belonged to this guy
+      this.purchaseOrders$ = this.poService.getPurchaseOrdersList(2)
   	})
   }
 

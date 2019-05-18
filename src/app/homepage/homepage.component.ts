@@ -27,15 +27,7 @@ export class HomepageComponent implements OnInit {
   constructor(private poService: PurchaseOrderService,
     private router: Router) {
   	
-  	this.purchaseOrders$ = this.poService.getPurchaseOrdersList().pipe(
-  		map(result => {
-  			if (result.success === true) {
-  				return result.data
-  			} else {
-  				return []
-  			}
-  		})
-  	)
+  	this.purchaseOrders$ = this.poService.getPurchaseOrdersList()
   }
 
   onPurchaseOrderSelected(po: PurchaseOrder) {

@@ -24,7 +24,10 @@
 		</div>
 
 		<div class="col-sm-9">
-			<app-order-item></app-order-item>
+			<app-order-item 
+				*ngFor="let po of purchaseOrders$ | async" 
+				[purchaseOrder]="po">		
+			</app-order-item>
 		</div> 
 	</div>
 </div>

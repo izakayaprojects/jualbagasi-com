@@ -1,12 +1,11 @@
-<div class="m-2" *ngIf="purchaseOrder">
+<div class="m-2" *ngIf="purchaseOrder as po">
 	<div class="row order-item-bg">
-		<div class="col-md-3 order-category-po">Purchase Order</div>
-		<div class="col-md-9 order-title">
-			<div class="order-title">Open PO: Jakarta => Russia => India => Jakarta</div>
-			<ul class="order-text">
-				<li>2 Pesanan bagasi</li>
-				<li>Pesan baru</li>
-			</ul>
+		<div class="col-md-2 order-category-po small">Purchase order</div>
+		<div class="col-md-5 order-title">
+			<div class="order-title font-weight-bold">{{ po.title }}</div>
+		</div>
+		<div class="col-md-5">
+			<span class="badge badge-primary">2 Pesanan</span>
 		</div>
 	</div>
 </div>

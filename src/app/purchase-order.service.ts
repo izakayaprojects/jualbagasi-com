@@ -91,20 +91,30 @@ export class PurchaseOrderService {
 
   getPurchaseOrdersList(type: POListType = 1) {
     if (type == POListType.Manage) {
-      // TODO /api/purchaseorder/list-summary
-    } else {
-      return this.http.get<ApiResponse<PurchaseOrder[]>>(API+"/purchaseorder/list-display").pipe(
+      let token = this.localStorage.retrieve("token")
+      return this.http.post<PurchaseOrder[]>(API+"/purchaseorder/list-summary", {token: token}).pipe(
         map(result => {
-          let resp = new ApiResponse<PurchaseOrder[]>()
-          resp.success = result["success"] ? result["success"] : false
-          resp.errorId = result["success"] === false ? result["id"] : undefined
-          if (result.success === true) {
+          if (result["success"] === true) {
             let data = result["data"]
             let poList: PurchaseOrder[] = []
             data.forEach(d => poList.push(this.parseToPurchaseOrder(d)))
-            resp.data = poList
+            return poList
+          } else {
+            return []
           }
-          return resp;
+        })
+      )
+    } else {
+      return this.http.get<PurchaseOrder[]>(API+"/purchaseorder/list-display").pipe(
+        map(result => {
+          if (result["success"] === true) {
+            let data = result["data"]
+            let poList: PurchaseOrder[] = []
+            data.forEach(d => poList.push(this.parseToPurchaseOrder(d)))
+            return poList
+          } else {
+            return []
+          }
         })
       )
     }
