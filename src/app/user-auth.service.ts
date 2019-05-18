@@ -54,10 +54,11 @@ export class UserAuthService {
   resendEmailConfirm(userid: string): Observable<ApiResponse<String>> {
     return this.http.post(API+"/user/confirm/resend", {user_id: userid}).pipe(map(
       result => {
+        console.log(result)
         let resp = new ApiResponse<String>()
         resp.success = result["success"]
         resp.errorId = result["id"]
-        resp.data = resp["data"]["sent_to"]
+        resp.data = result["data"]["sent_to"]
         return resp
       }
     ))

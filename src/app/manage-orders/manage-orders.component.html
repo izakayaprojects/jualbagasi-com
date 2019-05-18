@@ -7,7 +7,8 @@
 		<div *ngIf="!user.emailConfirmed" class="p-3 rounded border-warning bg-warning">
 			Email anda belum terkonfirmasi. 
 			<button class="btn btn-secondary" 
-				(click)="onResendConfirmation()">Kirim Email konfirmasi</button>
+				(click)="onResendConfirmation(user.id)">Kirim Email konfirmasi</button>
+			<div *ngIf="emailConfirmationMsg"></div>
 		</div>
 	</div>
 

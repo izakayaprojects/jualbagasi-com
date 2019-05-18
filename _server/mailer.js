@@ -15,8 +15,10 @@ module.exports = {
 	send_email_confirmation: function(recipient, confirmationToken) {
 		return new Promise(function(resolve, reject) {
 			let confirmURL = conf.hostsite+"/confirm?id="+confirmationToken
-			let content = "<p>Konfirmasi alamat email anda lewat link ini:</p>"
+			let content = "<p>Selamat bergabung bersama kami di Jualbagasi. Konfirmasi alamat email anda lewat link ini:</p>"
 			content+="<div style='margin-left: 3em'>"+confirmURL+"</div>"
+			content+="<div>Salam,</div>"
+			content+="<div>Team Jualbagasi</div>"
 			let options = {
 				from: 'jualbagasi@gmail.com',
 				to: recipient,
