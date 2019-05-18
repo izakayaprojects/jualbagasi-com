@@ -1,0 +1,11 @@
+<div class="p-4">
+	<h4>{{ title }}</h4>
+	<div class="mb-2">
+		<input type="text" name="text" class="form-control" [(ngModel)]="content">
+		<div class="small">{{ info }}</div>
+	</div>
+	<div class="d-flex justify-content-end">
+		<button class="btn btn-primary mr-2" (click)="onConfirm()">Konfirmasi</button>
+		<button class="btn btn-warning" (click)="onClose()">Batal</button>
+	</div>
+</div>

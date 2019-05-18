@@ -211,6 +211,46 @@ module.exports = {
 		})
 	},
 
+	edit_purchase_order: function(token, po_id, column, values) {
+		return new Promise(function(resolve, reject) {
+			if (column.length !== values.length) {
+				reject(utils.createErrorResp(-11, "Values don't match the number of properties changed"))
+			}
+
+			auth.check_token(token).then(result => {
+				let userid = result["data"]["userid"]
+				let checkOrder = "SELECT user_id FROM tbl_purchase_order WHERE _id = ?"
+				db.connection.query(checkOrder, [po_id], function(err, order) {
+					if (err || order.length === 0) {
+						reject(utils.createErrorResp(-12, "Purchase Order not found"))
+					} else {
+						let orderOwner = order[0]["user_id"]
+						if (orderOwner !== userid) {
+							reject(utils.createErrorResp(-13, "You are not the owner of this purchase order"))
+						} else {
+							let query = "UPDATE tbl_purchase_order SET "
+							for (var i = 0; i < column.length ; i++) {
+								query += column[i]+"=?"
+								if (i < column.length - 1) {
+									query += ","
+								}
+							}
+							query += " WHERE _id=?"
+							values.push(po_id)
+							db.connection.query(query, values, function(err, results) {
+								if (err) {
+									reject(utils.createErrorResp(-14, "Cannot update Purchase order"))
+								} else {
+									resolve(utils.createSuccessResp({}))
+								}
+							})
+						}
+					}
+				})
+			}).catch(err => reject(err))
+		})
+	},
+
 	get_currencies: function() {
 		return new Promise(function(resolve, reject) {
 			let query = "SELECT * FROM tbl_currencies"

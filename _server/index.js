@@ -116,6 +116,14 @@ app.post("/api/purchaseorder/banner", imageUpload.single("banner"), function(req
 	})
 })
 
+app.post("/api/purchaseorder/edit/username", function(req, res) {
+	order.edit_purchase_order(req.body.token, req.body.purchase_order_id, ["title"], [req.body.title]).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.post("/api/session", function(req, res) {
 	auth.check_token(req.body.token).then(result => {
 		res.send(result)

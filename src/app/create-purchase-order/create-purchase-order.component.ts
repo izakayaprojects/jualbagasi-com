@@ -128,7 +128,6 @@ export class CreatePurchaseOrderComponent implements OnInit {
               }
             })
           } else {
-            // TODO (no banner to upload) display success message and go back to order list
             context.isBeingSubmittedToServer = false
             this.messageService.setMessage("success", "Data PO berhasil ditambahkan")
             this.router.navigate(["/my-orders"])

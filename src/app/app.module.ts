@@ -20,6 +20,7 @@ import { CreateDestinationComponent } from './create-destination/create-destinat
 import { MessageComponent } from './message/message.component';
 import { RegisterComponent } from './register/register.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { DialogEditTextComponent } from './dialog-edit-text/dialog-edit-text.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
     CreateDestinationComponent,
     MessageComponent,
     RegisterComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    DialogEditTextComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,7 @@ import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
     HttpClientModule
   ],
   providers: [],
-  entryComponents: [CreateDestinationComponent],
+  entryComponents: [CreateDestinationComponent, DialogEditTextComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
