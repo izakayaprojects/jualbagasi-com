@@ -73,17 +73,13 @@ export class PurchaseOrderService {
   }
 
   getPurchaseOrder(id: string) {
-    return this.http.get<ApiResponse<PurchaseOrder>>(API+"/purchaseorder/item/"+id).pipe(
+    return this.http.get<PurchaseOrder>(API+"/purchaseorder/item/"+id).pipe(
       map(result => {
-        let resp = new ApiResponse<PurchaseOrder>()
-        resp.success = result["success"] ? result["success"] : false
-        resp.errorId = result["success"] === false ? result["id"] : undefined
-        if (result.success === true) {
-          let data = result["data"]
-          let po = this.parseToPurchaseOrder(data)
-          resp.data = po
+        if (result["success"] === true) {
+          let po = this.parseToPurchaseOrder(result["data"])
+          return po
         }
-        return resp;
+        return null
       })
     )
   }

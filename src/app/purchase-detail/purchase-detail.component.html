@@ -3,7 +3,7 @@
 	<app-navigation-bar></app-navigation-bar>
 </div>
 
-<div class="container" *ngIf="purchaseOrder | async as po; else loading">
+<div class="container" *ngIf="purchaseOrder as po; else loading">
 	<!--User-->
 	<span class="pointer">
 		<img class="profilepic-small mr-3" [src]="po.owner.profilePicUrl === '' 
