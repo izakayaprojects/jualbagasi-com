@@ -25,7 +25,15 @@
 	</h3>
 	
 	<!--Banner-->
-	<img class="mb-2 img-fluid" src="{{ po.bannerUrl }}"/>
+	<div class="banner-overlay">
+		<img class="mb-2 img-fluid" [ngClass]="{'banner-preview': isOwner()}" src="{{ po.bannerUrl }}"/>
+		<div class="overlay">
+			<input #banner type="file" accept="image/*" class="form-control-file" />
+			<button class="btn btn-primary">
+				<img src="assets/icons/ic_edit.svg" class="mr-1" /> Edit
+			</button>
+		</div>
+	</div>
 
 	<div>
 		<table class="table table-borderless">

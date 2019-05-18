@@ -10,6 +10,18 @@
 	border: 3px solid black;
 }
 
+.banner-overlay {
+	position: relative;
+	width: 100%;
+}
+
+.banner-overlay > .overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 15px;
+}
+
 .username {
 	font-size: 20px;
 }
