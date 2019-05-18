@@ -133,7 +133,7 @@
 
 		<!-- origin -->
 		<div class="form-group">
-			<span class="d-flex">Tujuan pertama</span>
+			<span>Keberangkatan*</span>
 			<div class="bg-dark p-2 text-light d-flex mt-1 dest-box"
 				(click)="openDestinationForm(-1)">
 				<div class="row ml-2">
@@ -151,15 +151,20 @@
 					<ng-template #missingOrigin>Masukkan data keberangkatan..</ng-template>
 				</div>
 			</div>
+			<div *ngIf="errorMessages.origin" class="small text-danger">
+				{{ errorMessages.origin }}
+			</div>
 		</div>
 
 		<div class="form-group">
-			<span class="d-flex">Rute*</span>
+			<span>Rute*</span>
 			<span class="bg-dark p-2 text-light dest-box d-flex" 
 				(click)="openDestinationForm(purchaseOrder.routes.length)">
 				Tambah rute..
 			</span>
-			<!-- TODO rute yang sudah ditambahkan -->
+			<div *ngIf="errorMessages.destination" class="small text-danger">
+				{{ errorMessages.destination }}
+			</div>
 			<div class="bg-dark p-2 text-light d-flex mt-1" 
 				*ngFor="let route of purchaseOrder.routes; let i = index">
 				<img src="assets/icons/ic_close.png" 

@@ -25,7 +25,9 @@ export class CreatePurchaseOrderComponent implements OnInit {
     pricePerKg: "",
     currency: "",
     startDate: "",
-    endDate: ""
+    endDate: "",
+    origin: "", 
+    destination: ""
   }
 
   currencies: Observable<Currency[]>
@@ -57,7 +59,8 @@ export class CreatePurchaseOrderComponent implements OnInit {
     this.errorMessages = {
       title: "", description: "", availableLuggage: "",
       pricePerKg: "", currency: "",
-      startDate: "", endDate: ""
+      startDate: "", endDate: "",
+      origin: "", destination: ""
     }
 
     this.isSubmitted = true
@@ -88,6 +91,16 @@ export class CreatePurchaseOrderComponent implements OnInit {
     }
     if (this.purchaseOrder.endDate === null) {
       this.errorMessages.endDate = "Tanggal akhir PO tidak boleh kosong"
+      isValidated = false
+    }
+
+    if (this.purchaseOrder.origin.city.id === -1) {
+      this.errorMessages.origin = "Data keberangkatan tidak boleh kosong"
+      isValidated = false
+    }
+
+    if (this.purchaseOrder.routes.length === 0) {
+      this.errorMessages.destination = "Paling sedikit harus ada 1 rute perjalanan"
       isValidated = false
     }
 
