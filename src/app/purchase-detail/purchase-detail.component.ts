@@ -38,7 +38,7 @@ export class PurchaseDetailComponent implements OnInit {
   }
 
   isOwner(): boolean {
-    return this.purchaseOrder.id === this.user.id
+    return this.purchaseOrder.owner.id === this.user.id
   }
 
   ngOnInit() {

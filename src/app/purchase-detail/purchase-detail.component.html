@@ -15,7 +15,14 @@
 	</span>
 	<hr/>
 	<!--Title-->
-	<h3>{{ po.title }}</h3>
+	<h3>
+		<span *ngIf="isOwner()">
+			<button class="btn btn-primary">
+				<img src="assets/icons/ic_edit.svg" class="mr-1" /> Edit
+			</button>
+		</span>
+		{{ po.title }}
+	</h3>
 	
 	<!--Banner-->
 	<img class="mb-2 img-fluid" src="{{ po.bannerUrl }}"/>
