@@ -40,6 +40,12 @@ export class PurchaseOrder {
 		return now.getTime() >= this.startDate.getTime() && now.getTime() <= this.endDate.getTime()
 	}
 
+	isOver(): boolean {
+		if (this.startDate === null || this.endDate === null) return true
+		var now = new Date()
+		return now.getTime() >= this.endDate.getTime()
+	}
+
 	getRemainingTimePrintable(): string {
 		var diffHr = 0
 		var status = ""

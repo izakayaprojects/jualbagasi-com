@@ -27,7 +27,7 @@
 	<!--Banner-->
 	<div class="banner-overlay">
 		<img class="mb-2 img-fluid" [ngClass]="{'banner-preview': isOwner()}" src="{{ po.bannerUrl }}"/>
-		<div class="overlay">
+		<div class="overlay" *ngIf="isOwner()">
 			<input #banner type="file" accept="image/*" class="form-control-file" />
 			<button class="btn btn-primary">
 				<img src="assets/icons/ic_edit.svg" class="mr-1" /> Edit
@@ -41,26 +41,39 @@
 				<tr>
 					<td>
 						<span><img src="assets/icons/ic_time.svg" class="mr-3" height="20px" /></span>
-						<b>Tanggal buka pesanan</b>
+						<b [ngClass]="{'text-muted': isOfferOver}">Tanggal buka pesanan</b>
 					</td>
 					<td>
-						{{ po.startDate | date: 'd MMM. y' }} - {{ po.endDate | date: 'd MMM. y' }}
-						<span class="badge badge-success ml-2">{{ po.getRemainingTimePrintable() }}</span>
+						<span [ngClass]="{'text-muted': po.isOver()}">
+							{{ po.startDate | date: 'd MMM. y' }} - {{ po.endDate | date: 'd MMM. y' }}
+						</span>
+						<span class="badge badge-success ml-2"
+							[ngClass]="{
+								'badge-success': isOfferStillValid,
+								'badge-danger': isOfferOver
+							}"
+						>{{ po.getRemainingTimePrintable() }}</span>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<span><img src="assets/icons/ic_luggage.svg" class="mr-3" height="20px" /></span>
-						<b>Sisa Kapasitas</b>
+						<b [ngClass]="{'text-muted': po.isOver()}">Sisa Kapasitas</b>
 					</td>
-					<td>{{ po.additional['remaining_capacity'] }} Kg</td>
+					<td [ngClass]="{'text-muted': isOfferOver}">
+						{{ po.additional['remaining_capacity'] }} Kg
+					</td>
 				</tr>
 				<tr>
 					<td>
 						<span><img src="assets/icons/ic_price.svg" class="mr-3" height="20px" /></span>
-						<b>Harga per Kg</b>
+						<b [ngClass]="{'text-muted': isOfferOver}">Harga per Kg</b>
 					</td>
-					<td>{{ po.currency.symbol }} {{ po.feePerKg }}</td>
+					<td>
+						<span [ngClass]="{'text-muted': isOfferOver}">
+							{{ po.currency.symbol }} {{ po.feePerKg }}
+						</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -105,7 +118,7 @@
 
 		<div class="mt-3">
 			<h5>Tentang PO ini</h5>
-			<p>{{ po.description }}</p>
+			<p [ngClass]="{'text-muted': isOfferOver}">{{ po.description }}</p>
 		</div>
 	</div>
 

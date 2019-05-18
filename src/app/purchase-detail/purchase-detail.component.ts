@@ -17,6 +17,8 @@ export class PurchaseDetailComponent implements OnInit {
 
   user: User
 	purchaseOrder: PurchaseOrder
+  isOfferStillValid = false
+  isOfferOver = true
 
   constructor(
   	private activatedRoute: ActivatedRoute,
@@ -28,6 +30,8 @@ export class PurchaseDetailComponent implements OnInit {
         this.user = user
         this.poService.getPurchaseOrder(params.get("id")).subscribe(po => {
           this.purchaseOrder = po
+          this.isOfferOver = po.isOver()
+          this.isOfferStillValid = po.isCurrentlyOpen()
         })
       })
   	})
