@@ -37,7 +37,6 @@ export class PurchaseOrderService {
     po.capacityKg = item["po_capacity"] ? item["po_capacity"] : 0
     po.feePerKg = item["po_fee"] ? item["po_fee"] : 0
     po.currency.symbol = item["curr_symbol"] ? item["curr_symbol"] : ""
-    // TODO other fields (user, etc.)
 
     if (item["destinations"] && item["destinations"].length > 0) {
       let dests = item["destinations"]
@@ -68,6 +67,8 @@ export class PurchaseOrderService {
     if (item["po_remaining_capacity"]) {
       po.additional["remaining_capacity"] = item["po_remaining_capacity"]
     }
+
+    po.additional["orders_count"] = item["orders_count"] ? item["orders_count"] : 0
 
     return po
   }

@@ -65,6 +65,7 @@ export class UserAuthService {
 
   getCurrentUser(): Observable<User> {
     let token = this.localStorage.retrieve("token")
+    if (!token || token === null || token === "") return of(null) 
     return this.http.post(API+"/user/current", {token: token}).pipe(
       map(result => {
         if (result["success"] === true) {

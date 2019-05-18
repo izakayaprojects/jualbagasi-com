@@ -35,8 +35,12 @@ module.exports = {
 		return new Promise(function(resolve, reject) {
 			auth.check_token(token).then(result => {
 				let userid = result["data"]["userid"]
+				let concatOrders = "(SELECT COUNT(ord._id) "+
+					"FROM tbl_orders ord WHERE ord.po_id = po._id GROUP BY po._id) "+
+					"AS orders_count"
 				let query = "SELECT po._id AS po_id, po.title AS po_title, po.banner AS po_banner, "+
-					"po.from_date AS po_from, po.to_date AS po_to, po.destinations AS po_dest_count "+
+					"po.from_date AS po_from, po.to_date AS po_to, po.destinations AS po_dest_count, "+
+					concatOrders+" "+
 					"FROM tbl_purchase_order po WHERE po.user_id = ?"
 				db.connection.query(query, [userid], function(err, results) {
 					if (err) {

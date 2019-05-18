@@ -6,6 +6,17 @@
 	transition: 0.25s;
 }
 
+.bg-sticky-bottom {
+	background-color: #99badd;
+	-webkit-box-shadow: 0px 0px 25px rgba(0,0,0,.8);
+       -moz-box-shadow: 0px 0px 25px rgba(0,0,0,.8);
+            box-shadow: 0px 0px 25px rgba(0,0,0,.8);
+}
+
+.m-bottom-100 {
+	margin-bottom: 100px;
+}
+
 .profilepic-small:hover {
 	border: 3px solid black;
 }

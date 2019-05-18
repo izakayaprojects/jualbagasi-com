@@ -19,6 +19,7 @@ export class PurchaseDetailComponent implements OnInit {
 	purchaseOrder: PurchaseOrder
   isOfferStillValid = false
   isOfferOver = true
+  isOfferValidSoon = false
 
   constructor(
   	private activatedRoute: ActivatedRoute,
@@ -32,6 +33,7 @@ export class PurchaseDetailComponent implements OnInit {
           this.purchaseOrder = po
           this.isOfferOver = po.isOver()
           this.isOfferStillValid = po.isCurrentlyOpen()
+          this.isOfferValidSoon = po.isOpeningSoon()
         })
       })
   	})
@@ -42,7 +44,7 @@ export class PurchaseDetailComponent implements OnInit {
   }
 
   isOwner(): boolean {
-    return this.purchaseOrder.owner.id === this.user.id
+    return this.isLoggedIn() && this.purchaseOrder.owner.id === this.user.id
   }
 
   ngOnInit() {

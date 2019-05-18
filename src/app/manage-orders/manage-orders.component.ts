@@ -25,7 +25,7 @@ export class ManageOrdersComponent implements OnInit {
     private router: Router) {
   	this.auth.getCurrentUser().subscribe(u => {
   		this.user = u
-      this.purchaseOrders$ = this.poService.getPurchaseOrdersList(2)
+      this.purchaseOrders$ = this.poService.getPurchaseOrdersList(2).pipe()
   	})
   }
 
