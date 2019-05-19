@@ -6,6 +6,10 @@
 	transition: 0.25s;
 }
 
+.description {
+	white-space: pre-line;
+}
+
 .bg-sticky-bottom {
 	background-color: #99badd;
 	-webkit-box-shadow: 0px 0px 25px rgba(0,0,0,.8);

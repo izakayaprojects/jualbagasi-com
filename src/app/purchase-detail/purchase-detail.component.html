@@ -26,10 +26,14 @@
 	
 	<!--Banner-->
 	<div class="banner-overlay">
-		<img class="mb-2 img-fluid" [ngClass]="{'banner-preview': isOwner()}" src="{{ po.bannerUrl }}"/>
+		<img class="mb-2 img-fluid" [ngClass]="{'banner-preview': isOwner()}" [src]="po.bannerUrl"/>
 		<div class="overlay" *ngIf="isOwner()">
-			<input #banner type="file" accept="image/*" class="form-control-file" />
-			<button class="btn btn-primary">
+			<input #banner type="file" class="form-control-file"
+				accept="image/*" (change)="onBannerChanged(banner)" />
+			<button class="btn btn-primary" [disabled]="isUploadingBanner">
+				<div class="spinner-border mr-2" role="loading" *ngIf="isUploadingBanner">
+					<span class="sr-only">Loading...</span>
+				</div>
 				<img src="assets/icons/ic_edit.svg" class="mr-1" /> Edit
 			</button>
 		</div>
@@ -138,11 +142,11 @@
 		<div class="mt-3">
 			<h5>Tentang PO ini</h5>
 			<span *ngIf="isOwner()">
-				<button class="btn btn-primary">
-					<img src="assets/icons/ic_edit.svg" class="mr-1" /> Edit
+				<button class="btn btn-primary" (click)="onEditDescription()">
+					<img src="assets/icons/ic_edit.svg" class="mr-1"/> Edit
 				</button>
 			</span>
-			<p [ngClass]="{'text-muted': isOfferOver}">{{ po.description }}</p>
+			<p [ngClass]="{'text-muted': isOfferOver}" class="description">{{ po.description }}</p>
 		</div>
 	</div>
 

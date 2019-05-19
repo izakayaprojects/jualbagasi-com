@@ -184,11 +184,12 @@ export class PurchaseOrderService {
 
   }
 
-  editPOTitle(po_id: string, newTitle: string): Observable<ApiResponse<Boolean>> {
+  editPurchaseOrder(po_id: string, col: string, key: string, newValue: string): Observable<ApiResponse<Boolean>> {
     let token = this.localStorage.retrieve("token")
-    let body = {token: token, purchase_order_id: po_id, title: newTitle}
+    let body = {token: token, purchase_order_id: po_id}
+    body[key] = newValue
     return this.http.post<ApiResponse<Boolean>>
-      (API+"/purchaseorder/edit/username", body).pipe(
+      (API+"/purchaseorder/edit/"+col, body).pipe(
       map(result => {
         let resp = new ApiResponse<Boolean>()
         resp.success = result["success"]

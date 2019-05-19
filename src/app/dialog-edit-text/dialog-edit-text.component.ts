@@ -11,10 +11,16 @@ export class DialogEditTextComponent implements OnInit {
 	@Input() title: string
 	@Input() content: string
 	@Input() info: string
+  @Input() type: string = "text"
+  @Input() min: number
 
   constructor(private modal: NgbActiveModal) { }
 
   ngOnInit() {
+  }
+
+  onTextArea(value) {
+    this.content = value
   }
 
   onConfirm() {

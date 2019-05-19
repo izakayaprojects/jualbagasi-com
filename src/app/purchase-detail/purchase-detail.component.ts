@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from "@angular/router"
 import { Observable } from "rxjs"
 import { map, delay } from "rxjs/operators"
@@ -24,10 +24,13 @@ export class PurchaseDetailComponent implements OnInit {
   isOfferOver = true
   isOfferValidSoon = false
 
+  isUploadingBanner = false
+
   constructor(
     private modalService: NgbModal,
   	private activatedRoute: ActivatedRoute,
   	private poService: PurchaseOrderService,
+    private changeDetector: ChangeDetectorRef,
     private auth: UserAuthService) {
 
   	this.activatedRoute.paramMap.subscribe(params => {
@@ -59,14 +62,43 @@ export class PurchaseDetailComponent implements OnInit {
       let content = result["content"]
       if (content) {
         // update title to server
-        this.poService.editPOTitle(this.purchaseOrder.id, content).subscribe(resp => {
+        this.poService.editPurchaseOrder(this.purchaseOrder.id, "title", "title", content)
+          .subscribe(resp => {
           if (resp.success) {
             this.purchaseOrder.title = content
           }
         })
       }
-    }).catch(err => {
-      
+    }).catch(err => {})
+  }
+
+  onEditDescription() {
+    const modalRef = this.modalService.open(DialogEditTextComponent)
+    modalRef.componentInstance["title"] = "Ubah deskripsi Purchase Order"
+    modalRef.componentInstance["content"] = this.purchaseOrder.description
+    modalRef.componentInstance["type"] = "textarea"
+    modalRef.result.then(result => {
+      let content = result["content"]
+      if (content) {
+        // update desc to server
+        this.poService.editPurchaseOrder(this.purchaseOrder.id, "description", "description", content)
+          .subscribe(resp => {
+          if (resp.success) {
+            this.purchaseOrder.description = content
+          }
+        })
+      }
+    }).catch(err => {})
+  }
+
+  onBannerChanged(f) {
+    let file = f.files[0]
+    this.isUploadingBanner = true
+    this.poService.uploadBannerForPurchaseOrder(file, this.purchaseOrder.id).subscribe(result => {
+      if (result.success) { 
+        this.purchaseOrder.bannerUrl = result.data+"?"+(new Date().getTime())
+        this.isUploadingBanner = false
+      }
     })
   }
 
