@@ -32,20 +32,22 @@
 						</div>
 
 						<div>
-							<label class="small">Tanggal PO</label>
+							<label class="small">Tanggal</label>
 							<div>
 								<input id="filter_start" name="filter_start" type="text" readonly
 									class="hidden-input" data-container="body"
+									(dateSelect)="onFilterMinDate($event)"
 									ngbDatepicker #filter_start="ngbDatepicker"/>
-								<button class="btn btn-info" (click)="filter_start.toggle()">
-									Mulai...
+								<button class="btn btn-sm btn-info" (click)="filter_start.toggle()">
+									{{ filter.min_date === null ? 'Mulai...' : filter.min_date | date:'d-MMM-y' }}
 								</button>
 								<img src="assets/icons/ic_arrow_right.svg" class="ml-1" />
 								<input id="filter_end" name="filter_end" type="text" readonly
 									class="hidden-input" data-container="body"
+									(dateSelect)="onFilterMaxDate($event)"
 									ngbDatepicker #filter_end="ngbDatepicker"/>
-								<button class="btn btn-info" (click)="filter_end.toggle()">
-									Sampai..
+								<button class="btn btn-sm btn-info" (click)="filter_end.toggle()">
+									{{ filter.max_date === null ? 'Sampai...' : filter.max_date | date:'d-MMM-y' }}
 								</button>
 							</div>
 			    		</div>

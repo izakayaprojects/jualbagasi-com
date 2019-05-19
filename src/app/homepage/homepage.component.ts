@@ -6,6 +6,7 @@ import { Router } from "@angular/router"
 
 import { PurchaseOrder } from "../_models/order"
 import { PurchaseOrderService } from "../purchase-order.service"
+import { DateConverter } from "../_models/utils"
 
 @Component({
   selector: 'app-homepage',
@@ -18,11 +19,15 @@ export class HomepageComponent implements OnInit {
 
   filter = {
     country: null,
+    min_date: null,
+    max_date: null,
     min_capacity: 0,
     max_capacity: 50,
     currently_open: true,
     incoming: true
   }
+
+  private dtConv = new DateConverter()
 
   constructor(private poService: PurchaseOrderService,
     private router: Router) {
@@ -35,6 +40,14 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  onFilterMinDate(minDate) {
+    this.filter.min_date = this.dtConv.ngbDateToDate(minDate)
+  }
+
+  onFilterMaxDate(maxDate) {
+    this.filter.max_date = this.dtConv.ngbDateToDate(maxDate)
   }
 
   onFilter() {
