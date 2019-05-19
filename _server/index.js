@@ -116,8 +116,17 @@ app.post("/api/purchaseorder/banner", imageUpload.single("banner"), function(req
 	})
 })
 
-app.post("/api/purchaseorder/edit/username", function(req, res) {
+app.post("/api/purchaseorder/edit/title", function(req, res) {
 	order.edit_purchase_order(req.body.token, req.body.purchase_order_id, ["title"], [req.body.title]).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
+app.post("/api/purchaseorder/edit/description", function(req, res) {
+	order.edit_purchase_order(req.body.token, req.body.purchase_order_id, 
+		["description"], [req.body.description]).then(result => {
 		res.send(result)
 	}).catch(err => {
 		res.send(err)
