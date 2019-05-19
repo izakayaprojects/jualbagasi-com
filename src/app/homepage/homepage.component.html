@@ -68,7 +68,7 @@
 			    			</div>
 			    			<div>
 			    				<input type="checkbox" class="mr-2" id="status_expired"
-			    					[(ngModel)]="filter.incoming"/>
+			    					[(ngModel)]="filter.over"/>
 			    				<label class="form-check-label" for="status_expired">Expired</label>
 			    			</div>
 			    		</div>
@@ -92,7 +92,7 @@
 	<hr />
 
 	<div class="row">
-		<div class="col-sm-4" *ngFor="let po of purchaseOrders$ | async">
+		<div class="col-sm-4" *ngFor="let po of purchaseOrders">
 			<a routerLink="/purchaseorder/{{po.id}}">
 				<app-purchase-order [purchaseOrder]="po">		
 				</app-purchase-order>

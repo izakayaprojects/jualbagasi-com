@@ -15,14 +15,16 @@ import { DateConverter } from "../_models/utils"
 })
 export class HomepageComponent implements OnInit {
 
-	purchaseOrders$: Observable<PurchaseOrder[]>
+	purchaseOrders: PurchaseOrder[]
 
   filter = {
-    country: null,
+    origin: null,
+    route: null,
     min_date: null,
     max_date: null,
     min_capacity: 0,
     max_capacity: 50,
+    over: true,
     currently_open: true,
     incoming: true
   }
@@ -31,8 +33,9 @@ export class HomepageComponent implements OnInit {
 
   constructor(private poService: PurchaseOrderService,
     private router: Router) {
-  	
-  	this.purchaseOrders$ = this.poService.getPurchaseOrdersList()
+  	this.poService.getPurchaseOrdersList().subscribe(res => {
+      this.purchaseOrders = res
+    })
   }
 
   ngOnInit() {
