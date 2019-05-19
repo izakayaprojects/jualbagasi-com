@@ -71,7 +71,18 @@
 			    			</div>
 			    		</div>
 					</div>
-					<!--TODO sort by -->
+				</div>
+				<div class="mt-3">
+					<div ngbDropdown class="d-inline-block mr-2" data-container="body">
+						<button class="btn btn-outline-info" id="sort_by" ngbDropdownToggle>
+							Urutkan..
+						</button>
+						<div ngbDropdownMenu aria-labelledby="sort_by">
+							<button ngbDropdownItem>Tanggal</button>
+							<button ngbDropdownItem>Sisa Kapasitas</button>
+						</div>
+					</div>
+					<button class="btn btn-primary" (click)="onFilter()">Filter</button>
 				</div>
 			</ng-template>
 		</ngb-panel>

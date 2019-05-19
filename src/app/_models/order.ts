@@ -79,14 +79,14 @@ export class PurchaseOrder {
 			// Days before PO ends
 			var value = Math.floor(diffHr/24)
 			if (status === "before") {
-				return "Buka dalam "+value+" hari lagi"
+				return "Buka dalam "+value+" hari"
 			} else {
 				return value + " hari lagi"
 			}
 		} else if (diffHr > 1) {
 			// Hours before PO ends
 			if (status === "before") {
-				return "Buka dalam "+value+" jam lagi"
+				return "Buka dalam "+value+" jam"
 			} else {
 				return value + " jam lagi"
 			}

@@ -37,4 +37,8 @@ export class HomepageComponent implements OnInit {
   ngOnInit() {
   }
 
+  onFilter() {
+    // TODO filter
+  }
+
 }

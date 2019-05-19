@@ -14,7 +14,12 @@
 	    			class="ml-1 flag-icon flag-icon-{{route.city.countryCode | lowercase}}"></span>
 	    	</div>
 	    	<div>
-	    		<span *ngIf="purchaseOrder.isCurrentlyOpen()" class="mr-2 badge badge-info">
+	    		<span class="mr-2 badge"
+	    			[ngClass]="{
+	    				'badge-success': purchaseOrder.isCurrentlyOpen(),
+	    				'badge-secondary': purchaseOrder.isOver(),
+	    				'badge-info': purchaseOrder.isOpeningSoon()
+	    			}">
 	    			<img src="assets/icons/ic_time.svg" height="15px" class="mr-1" />
 	    			<i>{{ purchaseOrder.getRemainingTimePrintable() }}</i>
 	    		</span>
