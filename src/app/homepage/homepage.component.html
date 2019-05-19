@@ -93,10 +93,10 @@
 
 	<div class="row">
 		<div class="col-sm-4" *ngFor="let po of purchaseOrders$ | async">
-			<app-purchase-order 
-				[purchaseOrder]="po" 
-				(click)="onPurchaseOrderSelected(po)">		
-			</app-purchase-order>
+			<a routerLink="/purchaseorder/{{po.id}}">
+				<app-purchase-order [purchaseOrder]="po">		
+				</app-purchase-order>
+			</a>
 		</div>
 	</div>
 

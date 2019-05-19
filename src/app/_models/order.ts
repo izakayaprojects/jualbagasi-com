@@ -16,6 +16,7 @@ export class PurchaseOrder {
 	routes: Route[]
 	additional: any
 	owner: User
+	orders: Order[]
 
 	constructor() {
 		this.id = ""
@@ -32,6 +33,7 @@ export class PurchaseOrder {
 		this.currency = new Currency()
 		this.additional = {}
 		this.owner = null
+		this.orders = []
 	}
 
 	isCurrentlyOpen(): boolean {
@@ -104,6 +106,17 @@ export class Currency {
 		this.id = -1
 		this.symbol = ""
 		this.name = ""
+	}
+}
+
+export class Order {
+	id: string
+	capacityKg: number
+	// TODO more props
+
+	constructor() {
+		this.id = ""
+		this.capacityKg = 0
 	}
 }
 

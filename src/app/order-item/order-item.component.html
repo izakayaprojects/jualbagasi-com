@@ -1,11 +1,19 @@
 <div class="m-2" *ngIf="purchaseOrder as po">
 	<div class="row order-item-bg">
 		<div class="col-md-2 order-category-po small">Purchase order</div>
-		<div class="col-md-5 order-title">
+		<div class="col-md-5 order-title mb-1">
 			<div class="order-title font-weight-bold">{{ po.title }}</div>
+			<div>
+				<img src="assets/icons/ic_luggage.svg" height="15px" class="mr-1" />
+				<span class="mr-2">{{po.additional['capacity_taken']}} / {{po.capacityKg}} Kg</span>
+				<ngb-progressbar [value]="po.additional['capacity_percentage']"
+					[showValue]="true"
+					type="success" [max]="100">
+				</ngb-progressbar>
+			</div>
 		</div>
 		<div class="col-md-5">
-			<span class="badge badge-primary">{{po.additional['orders_count']}} Pesanan</span>
+			<span class="badge badge-primary mr-2">{{po.orders.length}} Pesanan</span>
 		</div>
 	</div>
 </div>

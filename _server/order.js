@@ -35,10 +35,11 @@ module.exports = {
 		return new Promise(function(resolve, reject) {
 			auth.check_token(token).then(result => {
 				let userid = result["data"]["userid"]
-				let concatOrders = "(SELECT COUNT(ord._id) "+
+				let concatOrders = "(SELECT GROUP_CONCAT(CONCAT(ord._id, ';', ord.capacity)) "+
 					"FROM tbl_orders ord WHERE ord.po_id = po._id GROUP BY po._id) "+
-					"AS orders_count"
+					"AS orders"
 				let query = "SELECT po._id AS po_id, po.title AS po_title, po.banner AS po_banner, "+
+					"po.capacity_kg AS po_capacity,"+
 					"po.from_date AS po_from, po.to_date AS po_to, po.destinations AS po_dest_count, "+
 					concatOrders+" "+
 					"FROM tbl_purchase_order po WHERE po.user_id = ?"
@@ -48,6 +49,18 @@ module.exports = {
 					} else {
 						let data = results.map(r => {
 							r["po_dest_count"] = r["po_dest_count"].split(",").length
+							if (r["orders"] !== null) {
+								let parsedOrders = []
+								let orders = r["orders"].split(",")
+								orders.forEach(e => {
+									let orderElems = e.split(";")
+									parsedOrders.push({
+										id: orderElems[0],
+										capacity: orderElems[1]
+									})
+								})
+								r["orders"] = parsedOrders
+							}
 							return r
 						})
 						resolve(utils.createSuccessResp(data))

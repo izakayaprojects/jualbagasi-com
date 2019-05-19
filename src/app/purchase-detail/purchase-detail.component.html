@@ -102,10 +102,21 @@
 		</table>
 
 		<div class="bg-light p-3">
-			<h5><span><img src="assets/icons/ic_route.svg" class="mr-3" height="20px"/></span>Rute</h5>
+			<h5><span class="mr-1"><img src="assets/icons/ic_route.svg" height="20px"/></span>
+				Rute 
+				<span *ngIf="isOwner()">
+					<button class="btn btn-primary btn-sm">
+						<img src="assets/icons/ic_add.svg" class="mr-1" height="20px"/> Tambah
+					</button>
+				</span>
+			</h5>
 			<div class="d-flex align-items-center flex-wrap">
 				<div *ngIf="po.origin.id !== -1">
 					<span class="badge badge-info">
+						<span *ngIf="isOwner()">
+							<img src="assets/icons/ic_edit.svg" class="mr-1 pointer"
+								height="20px"/>
+						</span>
 						<span class="mr-1 flag-icon 
 							flag-icon-{{po.origin.city.countryCode | lowercase}}"></span>
 						<span> 

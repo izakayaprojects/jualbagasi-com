@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { ENV } from "./_global/global";
 import { DateConverter, ApiResponse } from "./_models/utils";
-import { PurchaseOrder, Currency, Route } from "./_models/order";
+import { PurchaseOrder, Currency, Route, Order } from "./_models/order";
 import { User } from "./_models/user"
 
 const API = ENV.debug.apiurl;
@@ -66,6 +66,24 @@ export class PurchaseOrderService {
 
     if (item["po_remaining_capacity"]) {
       po.additional["remaining_capacity"] = item["po_remaining_capacity"]
+    }
+
+    if (item["orders"]) {
+      let totalCapacity = 0
+      item["orders"].forEach(e => {
+        let ord = new Order()
+        ord.id = e["id"]
+        ord.capacityKg = e["capacity"]
+        po.orders.push(ord)
+        totalCapacity += ord.capacityKg
+      })
+      po.additional["capacity_taken"] = totalCapacity
+      if (po.capacityKg > 0) {
+        po.additional["capacity_percentage"] = totalCapacity / po.capacityKg
+      }
+    } else {
+      po.additional["capacity_taken"] = 0
+      po.additional["capacity_percentage"] = 0
     }
 
     po.additional["orders_count"] = item["orders_count"] ? item["orders_count"] : 0

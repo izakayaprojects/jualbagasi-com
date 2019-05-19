@@ -35,10 +35,6 @@ export class HomepageComponent implements OnInit {
   	this.purchaseOrders$ = this.poService.getPurchaseOrdersList()
   }
 
-  onPurchaseOrderSelected(po: PurchaseOrder) {
-    this.router.navigate(["/purchaseorder", po.id])
-  }
-
   ngOnInit() {
   }
 
