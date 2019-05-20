@@ -133,6 +133,15 @@ app.post("/api/purchaseorder/edit/description", function(req, res) {
 	})
 })
 
+app.post("/api/purchaseorder/edit/capacity", function(req, res) {
+	order.edit_purchase_order(req.body.token, req.body.purchase_order_id, 
+		["capacity_kg"], [req.body.capacity]).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
 app.post("/api/session", function(req, res) {
 	auth.check_token(req.body.token).then(result => {
 		res.send(result)

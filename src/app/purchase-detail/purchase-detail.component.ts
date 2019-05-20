@@ -34,16 +34,27 @@ export class PurchaseDetailComponent implements OnInit {
     private auth: UserAuthService) {
 
   	this.activatedRoute.paramMap.subscribe(params => {
-      this.auth.getCurrentUser().subscribe(user => {
-        this.user = user
-        this.poService.getPurchaseOrder(params.get("id")).subscribe(po => {
-          this.purchaseOrder = po
-          this.isOfferOver = po.isOver()
-          this.isOfferStillValid = po.isCurrentlyOpen()
-          this.isOfferValidSoon = po.isOpeningSoon()
-        })
+      this.auth.check_token().subscribe(session => {
+        if (session) {
+          this.auth.getCurrentUser().subscribe(user => {
+            this.user = user
+            this.getPurchaseOrder(params.get("id")).subscribe(po => this.purchaseOrder = po)
+          })
+        } else {
+          this.user = null
+          this.getPurchaseOrder(params.get("id")).subscribe(po => this.purchaseOrder = po)
+        }
       })
   	})
+  }
+
+  private getPurchaseOrder(id: string): Observable<PurchaseOrder> {
+    return this.poService.getPurchaseOrder(id /*params.get("id")*/).pipe(map(po => {
+      this.isOfferOver = po.isOver()
+      this.isOfferStillValid = po.isCurrentlyOpen()
+      this.isOfferValidSoon = po.isOpeningSoon()
+      return po;
+    }))
   }
 
   isLoggedIn(): boolean {
@@ -86,6 +97,29 @@ export class PurchaseDetailComponent implements OnInit {
           if (resp.success) {
             this.purchaseOrder.description = content
           }
+        })
+      }
+    }).catch(err => {})
+  }
+
+  onEditCapacity() {
+    const modalRef = this.modalService.open(DialogEditTextComponent)
+    modalRef.componentInstance["title"] = "Ubah Kapasitas"
+    modalRef.componentInstance["content"] = this.purchaseOrder.capacityKg
+    modalRef.componentInstance["type"] = "number"
+    modalRef.componentInstance["info"] = "Jumlah baru tidak bisa lebih kecil daripada total pesanan ("+this.purchaseOrder.additional["capacity_taken"]+" Kg)"
+    modalRef.componentInstance["min"] = this.purchaseOrder.additional["capacity_taken"]
+    modalRef.result.then(result => {
+      let content = result["content"]
+      if (content) {
+        // update capacity to server
+        this.poService.editPurchaseOrder(this.purchaseOrder.id, "capacity", "capacity", content)
+          .subscribe(resp => {
+            if (resp.success) {
+              this.purchaseOrder.capacityKg = content
+              this.purchaseOrder.additional["capacity_taken"] = 
+                this.purchaseOrder.capacityKg - this.purchaseOrder.additional["capacity_taken"]
+            }
         })
       }
     }).catch(err => {})

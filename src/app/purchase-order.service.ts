@@ -202,7 +202,9 @@ export class PurchaseOrderService {
 
   }
 
-  editPurchaseOrder(po_id: string, col: string, key: string, newValue: string): Observable<ApiResponse<Boolean>> {
+  editPurchaseOrder(po_id: string, col: string, key: string, newValue: string): 
+    Observable<ApiResponse<Boolean>> {
+      
     let token = this.localStorage.retrieve("token")
     let body = {token: token, purchase_order_id: po_id}
     body[key] = newValue

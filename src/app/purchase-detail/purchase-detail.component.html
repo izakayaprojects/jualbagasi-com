@@ -72,12 +72,12 @@
 					</td>
 					<td [ngClass]="{'text-muted': isOfferOver}">
 						<span *ngIf="isOwner()">
-							<button class="btn btn-primary">
-								<img src="assets/icons/ic_edit.svg" class="mr-1" /> Edit
+							<button class="btn btn-primary" (click)="onEditCapacity()">
+								<img src="assets/icons/ic_edit.svg" class="mr-1"/> Edit
 							</button>
 						</span>
 						{{po.capacityKg}} Kg
-						<span class="badge badge-info">
+						<span class="badge badge-warning">
 							Sisa: {{ po.additional['remaining_capacity'] }} Kg
 						</span>
 					</td>
