@@ -16,6 +16,7 @@ import { DateConverter } from "../_models/utils"
 export class HomepageComponent implements OnInit {
 
 	purchaseOrders: PurchaseOrder[]
+  filtered: PurchaseOrder[]
 
   filter = {
     origin: null,
@@ -35,6 +36,7 @@ export class HomepageComponent implements OnInit {
     private router: Router) {
   	this.poService.getPurchaseOrdersList().subscribe(res => {
       this.purchaseOrders = res
+      this.doFilterPurchaseOrders()
     })
   }
 
@@ -50,7 +52,21 @@ export class HomepageComponent implements OnInit {
   }
 
   onFilter() {
-    // TODO filter
+    this.doFilterPurchaseOrders()
+  }
+
+  private doFilterPurchaseOrders() {
+    let f = this.filter
+    this.filtered = this.purchaseOrders.filter(po => {
+      let shouldInsert = true
+      // From PO's availability
+      if (!f.over && po.isOver()) shouldInsert = false
+      if (!f.incoming && po.isOpeningSoon()) shouldInsert = false
+      if (!f.currently_open && po.isCurrentlyOpen()) shouldInsert = false
+       
+      return shouldInsert
+    })
+
   }
 
 }

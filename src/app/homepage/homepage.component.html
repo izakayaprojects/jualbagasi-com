@@ -91,13 +91,20 @@
 	</ngb-accordion>
 	<hr />
 
-	<div class="row">
-		<div class="col-sm-4" *ngFor="let po of purchaseOrders">
+	<div class="row" *ngIf="filtered; else loadingPO">
+		<div class="col-sm-4" *ngFor="let po of filtered">
 			<a routerLink="/purchaseorder/{{po.id}}">
 				<app-purchase-order [purchaseOrder]="po">		
 				</app-purchase-order>
 			</a>
 		</div>
 	</div>
+	<ng-template #loadingPO>
+		<div class="container d-flex align-items-center justify-content-center">
+			<div class="spinner-border" role="loading">
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+	</ng-template>
 
 </div>
