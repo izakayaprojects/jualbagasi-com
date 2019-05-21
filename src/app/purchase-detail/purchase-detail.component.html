@@ -49,7 +49,7 @@
 					</td>
 					<td>
 						<span *ngIf="isOwner()">
-							<button class="btn btn-primary">
+							<button class="btn btn-primary" (click)="onEditPODateRange()">
 								<img src="assets/icons/ic_edit.svg" class="mr-1" /> Edit
 							</button>
 						</span>

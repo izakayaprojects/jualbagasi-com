@@ -1,0 +1,28 @@
+<div class="p-4">
+	<h4>{{ title }}</h4>
+	<!--{{ minDate | date:'d-MMM-y' }}-->
+	<div class="mb-2">
+		<input id="filter_start" name="filter_start" type="text" readonly
+			class="hidden-input" data-container="body"
+			(dateSelect)="onMinDateSelected($event)"
+			ngbDatepicker #minDate="ngbDatepicker"/>
+		<button class="btn btn-info" (click)="minDate.toggle()">
+			<span *ngIf="dateRange[0]; else noMinDate">{{dateRange[0] | date:"d MMM y"}}</span>
+			<ng-template #noMinDate>Pilih...</ng-template>
+		</button>
+		<img src="assets/icons/ic_arrow_right.svg" class="ml-2" />
+		<input id="filter_start" name="filter_start" type="text" readonly
+			class="hidden-input" data-container="body"
+			(dateSelect)="onMaxDateSelected($event)"
+			ngbDatepicker #maxDate="ngbDatepicker"/>
+		<button class="btn btn-info" (click)="maxDate.toggle()">
+			<span *ngIf="dateRange[1]; else noMaxDate">{{dateRange[1] | date:"d MMM y"}}</span>
+			<ng-template #noMaxDate>Pilih...</ng-template>
+		</button>
+		<div class="small">{{ info }}</div>
+	</div>
+	<div class="d-flex justify-content-end">
+		<button class="btn btn-primary mr-2" (click)="onConfirm()">Konfirmasi</button>
+		<button class="btn btn-warning" (click)="onClose()">Batal</button>
+	</div>
+</div>

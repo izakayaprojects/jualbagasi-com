@@ -21,6 +21,7 @@ import { MessageComponent } from './message/message.component';
 import { RegisterComponent } from './register/register.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 import { DialogEditTextComponent } from './dialog-edit-text/dialog-edit-text.component';
+import { DialogEditDaterangeComponent } from './dialog-edit-daterange/dialog-edit-daterange.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { DialogEditTextComponent } from './dialog-edit-text/dialog-edit-text.com
     MessageComponent,
     RegisterComponent,
     ConfirmEmailComponent,
-    DialogEditTextComponent
+    DialogEditTextComponent,
+    DialogEditDaterangeComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,11 @@ import { DialogEditTextComponent } from './dialog-edit-text/dialog-edit-text.com
     HttpClientModule
   ],
   providers: [],
-  entryComponents: [CreateDestinationComponent, DialogEditTextComponent],
+  entryComponents: [
+    CreateDestinationComponent, 
+    DialogEditTextComponent, 
+    DialogEditDaterangeComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

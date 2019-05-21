@@ -10,6 +10,7 @@ import { PurchaseOrder } from "../_models/order"
 import { User } from "../_models/user" 
 
 import { DialogEditTextComponent } from "../dialog-edit-text/dialog-edit-text.component"
+import { DialogEditDaterangeComponent } from "../dialog-edit-daterange/dialog-edit-daterange.component"
 
 @Component({
   selector: 'app-purchase-detail',
@@ -122,6 +123,15 @@ export class PurchaseDetailComponent implements OnInit {
             }
         })
       }
+    }).catch(err => {})
+  }
+
+  onEditPODateRange() {
+    const modalRef = this.modalService.open(DialogEditDaterangeComponent)
+    modalRef.componentInstance["title"] = "Ubah Tanggal PO"
+    modalRef.componentInstance["dateRange"] = [this.purchaseOrder.startDate, this.purchaseOrder.endDate]
+    modalRef.result.then(result => {
+      console.log(result)
     }).catch(err => {})
   }
 
