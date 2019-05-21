@@ -62,8 +62,13 @@ export class HomepageComponent implements OnInit {
       // From PO's availability
       if (!f.over && po.isOver()) shouldInsert = false
       if (!f.incoming && po.isOpeningSoon()) shouldInsert = false
-      if (!f.currently_open && po.isCurrentlyOpen()) shouldInsert = false
-       
+      if (!f.currently_open && po.isCurrentlyOpen()) shouldInsert = false      
+      if (!shouldInsert) return false
+
+      // From capacity offered
+      let leftover = po.capacityKg - po.additional["capacity_taken"]
+      if (leftover >= f.max_capacity || leftover <= f.min_capacity) shouldInsert = false
+
       return shouldInsert
     })
 
