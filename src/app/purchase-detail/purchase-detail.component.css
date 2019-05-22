@@ -11,6 +11,14 @@
 	border-radius: 50%;
 }
 
+.edit-icon {
+	opacity: 1;
+	transition: 0.2s;
+}
+.edit-icon:hover {
+	opacity: 0.5;
+}
+
 .description {
 	white-space: pre-line;
 }

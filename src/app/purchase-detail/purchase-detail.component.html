@@ -114,7 +114,9 @@
 				<div *ngIf="po.origin.id !== -1">
 					<span class="badge badge-info">
 						<span *ngIf="isOwner()">
-							<img src="assets/icons/ic_edit.svg" class="mr-1 pointer"
+							<img src="assets/icons/ic_edit.svg" class="mr-1 pointer edit-icon"
+								height="20px"/>
+							<img src="assets/icons/ic_close.png" class="mr-1 pointer edit-icon"
 								height="20px"/>
 						</span>
 						<span class="mr-1 flag-icon 
@@ -135,6 +137,12 @@
 	    			</span>
 					<span>
 						<span class="badge badge-info">
+							<span *ngIf="isOwner()">
+								<img src="assets/icons/ic_edit.svg" class="mr-1 pointer edit-icon"
+									height="20px"/>
+								<img src="assets/icons/ic_close.png" class="mr-1 pointer edit-icon"
+									height="20px"/>
+							</span>
 							<span class="mr-1 flag-icon 
 								flag-icon-{{r.city.countryCode | lowercase}}"></span>
 							<span>
