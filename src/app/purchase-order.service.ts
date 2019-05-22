@@ -202,12 +202,14 @@ export class PurchaseOrderService {
 
   }
 
-  editPurchaseOrder(po_id: string, col: string, key: string, newValue: string): 
+  editPurchaseOrder(po_id: string, col: string, key: string[], newValue: string[]): 
     Observable<ApiResponse<Boolean>> {
       
     let token = this.localStorage.retrieve("token")
     let body = {token: token, purchase_order_id: po_id}
-    body[key] = newValue
+    for (var i = 0; i < key.length ; i++) {
+      body[key[i]] = newValue[i]
+    }
     return this.http.post<ApiResponse<Boolean>>
       (API+"/purchaseorder/edit/"+col, body).pipe(
       map(result => {

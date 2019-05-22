@@ -13,6 +13,7 @@
 		<img src="assets/icons/ic_arrow_right.svg" class="ml-2" />
 		<input id="filter_start" name="filter_start" type="text" readonly
 			class="hidden-input" data-container="body"
+			[minDate]="outputDateRange[0]"
 			(dateSelect)="onMaxDateSelected($event)"
 			ngbDatepicker #maxDate="ngbDatepicker"/>
 		<button class="btn btn-info" (click)="maxDate.toggle()">

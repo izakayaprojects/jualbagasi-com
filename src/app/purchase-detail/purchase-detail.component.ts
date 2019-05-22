@@ -8,6 +8,7 @@ import { PurchaseOrderService } from "../purchase-order.service"
 import { UserAuthService } from "../user-auth.service"
 import { PurchaseOrder } from "../_models/order"
 import { User } from "../_models/user" 
+import { DateConverter } from "../_models/utils" 
 
 import { DialogEditTextComponent } from "../dialog-edit-text/dialog-edit-text.component"
 import { DialogEditDaterangeComponent } from "../dialog-edit-daterange/dialog-edit-daterange.component"
@@ -26,6 +27,8 @@ export class PurchaseDetailComponent implements OnInit {
   isOfferValidSoon = false
 
   isUploadingBanner = false
+
+  private dateConv = new DateConverter()
 
   constructor(
     private modalService: NgbModal,
@@ -74,7 +77,7 @@ export class PurchaseDetailComponent implements OnInit {
       let content = result["content"]
       if (content) {
         // update title to server
-        this.poService.editPurchaseOrder(this.purchaseOrder.id, "title", "title", content)
+        this.poService.editPurchaseOrder(this.purchaseOrder.id, "title", ["title"], [content])
           .subscribe(resp => {
           if (resp.success) {
             this.purchaseOrder.title = content
@@ -93,7 +96,7 @@ export class PurchaseDetailComponent implements OnInit {
       let content = result["content"]
       if (content) {
         // update desc to server
-        this.poService.editPurchaseOrder(this.purchaseOrder.id, "description", "description", content)
+        this.poService.editPurchaseOrder(this.purchaseOrder.id, "description", ["description"], [content])
           .subscribe(resp => {
           if (resp.success) {
             this.purchaseOrder.description = content
@@ -114,7 +117,7 @@ export class PurchaseDetailComponent implements OnInit {
       let content = result["content"]
       if (content) {
         // update capacity to server
-        this.poService.editPurchaseOrder(this.purchaseOrder.id, "capacity", "capacity", content)
+        this.poService.editPurchaseOrder(this.purchaseOrder.id, "capacity", ["capacity"], [content])
           .subscribe(resp => {
             if (resp.success) {
               this.purchaseOrder.capacityKg = content
@@ -131,7 +134,19 @@ export class PurchaseDetailComponent implements OnInit {
     modalRef.componentInstance["title"] = "Ubah Tanggal PO"
     modalRef.componentInstance["dateRange"] = [this.purchaseOrder.startDate, this.purchaseOrder.endDate]
     modalRef.result.then(result => {
-      console.log(result)
+      // Update this PO's date range
+      let range = result["dateRange"]
+      let dateParams = [
+        this.dateConv.toMySqlTimestamp(range[0]), 
+        this.dateConv.toMySqlTimestamp(range[1])
+      ]
+      this.poService.editPurchaseOrder(this.purchaseOrder.id, "dates", ["from", "to"], dateParams)
+        .subscribe(resp => {
+          if (resp.success) {
+            this.purchaseOrder.startDate = range[0]
+            this.purchaseOrder.endDate = range[1]
+          }
+      })
     }).catch(err => {})
   }
 
