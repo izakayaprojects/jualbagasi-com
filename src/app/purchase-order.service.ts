@@ -40,6 +40,7 @@ export class PurchaseOrderService {
 
     if (item["destinations"] && item["destinations"].length > 0) {
       let dests = item["destinations"]
+      po.origin.id = dests[0]["id"]
       po.origin.city.countryCode = dests[0]["code"]
       po.origin.estimatedItemArrivalDate = dests[0]["estItemArrivalDate"]
       po.origin.city.country = dests[0]["country"]
@@ -48,6 +49,7 @@ export class PurchaseOrderService {
       if (dests.length > 1) {
         for (var i = 1 ; i < dests.length ; i++) {
           let route = new Route()
+          route.id = dests[i]["id"]
           route.city.countryCode = dests[i]["code"]
           route.estimatedItemArrivalDate = dests[i]["estItemArrivalDate"]
           route.city.country = dests[i]["country"]

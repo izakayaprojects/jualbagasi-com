@@ -121,6 +121,7 @@ export class Order {
 }
 
 export class Route {
+	id: string
 	city: City
 	arrivalDate: Date
 	estimatedItemArrivalDate: Date
@@ -128,6 +129,7 @@ export class Route {
 	note: string = ""
 
 	constructor() {
+		this.id = ""
 		this.city = new City()
 		this.arrivalDate = null
 		this.estimatedItemArrivalDate = null

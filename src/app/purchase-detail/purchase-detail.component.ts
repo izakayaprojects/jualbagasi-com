@@ -12,6 +12,7 @@ import { DateConverter } from "../_models/utils"
 
 import { DialogEditTextComponent } from "../dialog-edit-text/dialog-edit-text.component"
 import { DialogEditDaterangeComponent } from "../dialog-edit-daterange/dialog-edit-daterange.component"
+import { CreateDestinationComponent } from "../create-destination/create-destination.component"
 
 @Component({
   selector: 'app-purchase-detail',
@@ -148,6 +149,16 @@ export class PurchaseDetailComponent implements OnInit {
           }
       })
     }).catch(err => {})
+  }
+
+  onEditRoute(r, idx) {
+    const modalRef = this.modalService.open(CreateDestinationComponent)
+    modalRef.componentInstance.route = idx == -1 ? 
+      this.purchaseOrder.origin : this.purchaseOrder.routes[idx]
+    modalRef.componentInstance.routeIndex = idx
+    modalRef.result.then(result => {
+      console.log(result)
+    })
   }
 
   onBannerChanged(f) {

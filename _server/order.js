@@ -20,7 +20,7 @@ function do_parse_destination_concat(dests) {
 	destinations.forEach(e => {
 		let destElems = e.split(";")
 		parsed.push({
-			_id: destElems[0], // Id
+			id: destElems[0], // Id
 			code: destElems[1], // Country code
 			city: destElems[2], // city name
 			country: destElems[3], // country name
