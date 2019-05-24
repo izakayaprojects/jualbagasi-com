@@ -13,6 +13,7 @@ import { DateConverter } from "../_models/utils"
 import { DialogEditTextComponent } from "../dialog-edit-text/dialog-edit-text.component"
 import { DialogEditDaterangeComponent } from "../dialog-edit-daterange/dialog-edit-daterange.component"
 import { CreateDestinationComponent } from "../create-destination/create-destination.component"
+import { DialogConfirmComponent } from "../dialog-confirm/dialog-confirm.component"
 
 @Component({
   selector: 'app-purchase-detail',
@@ -158,7 +159,18 @@ export class PurchaseDetailComponent implements OnInit {
     modalRef.componentInstance.routeIndex = idx
     modalRef.result.then(result => {
       console.log(result)
-    })
+      // TODO update to server
+    }).catch(err => {})
+  }
+
+  onDeleteRoute(r, idx) {
+    const modalRef = this.modalService.open(DialogConfirmComponent)
+    modalRef.componentInstance.title = "Rute ("+(idx+1)+"): "+r.city.name+", "+r.city.country
+    modalRef.componentInstance.description = "Anda yakin ingin menghapus rute ini?"
+    modalRef.result.then(result => {
+      console.log(result)
+      // TODO update to server
+    }).catch(err => {})
   }
 
   onBannerChanged(f) {

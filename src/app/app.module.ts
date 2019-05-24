@@ -22,6 +22,7 @@ import { RegisterComponent } from './register/register.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 import { DialogEditTextComponent } from './dialog-edit-text/dialog-edit-text.component';
 import { DialogEditDaterangeComponent } from './dialog-edit-daterange/dialog-edit-daterange.component';
+import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { DialogEditDaterangeComponent } from './dialog-edit-daterange/dialog-edi
     RegisterComponent,
     ConfirmEmailComponent,
     DialogEditTextComponent,
-    DialogEditDaterangeComponent
+    DialogEditDaterangeComponent,
+    DialogConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,8 @@ import { DialogEditDaterangeComponent } from './dialog-edit-daterange/dialog-edi
   entryComponents: [
     CreateDestinationComponent, 
     DialogEditTextComponent, 
-    DialogEditDaterangeComponent
+    DialogEditDaterangeComponent,
+    DialogConfirmComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -277,6 +277,10 @@ module.exports = {
 		})
 	},
 
+	edit_destination: function(dest_id) {
+		
+	},
+
 	edit_banner(fs, file, token, po_id) {
 		return new Promise(function(resolve, reject) {
 			if (!file || file === null) {
