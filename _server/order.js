@@ -291,9 +291,9 @@ module.exports = {
 				reject(utils.createErrorResp(-12, "Destination id should not be empty"))
 			}
 			auth.check_token(token).then(info => {
-				let userid = info["userid"]
+				let userid = info["data"]["userid"]
 				let getPOOwner = "SELECT user_id, destinations FROM tbl_purchase_order WHERE _id=?"
-				db.connection.query(getPOOwner, [dest_id], function(err, po) {
+				db.connection.query(getPOOwner, [po_id], function(err, po) {
 					if (err || po.length === 0) {
 						reject(utils.createErrorResp(-13, "Purchase order not found"))
 					} else {
@@ -311,6 +311,10 @@ module.exports = {
 								if (err) {
 									reject(utils.createErrorResp(-15, "Failed to update Purchase order"))
 								} else {
+									let delRoute = "DELETE FROM tbl_destinations WHERE _id=?"
+									db.connection.query(delRoute, [dest_id], function(err, deleted) {
+										console.log(err)
+									})
 									resolve(utils.createSuccessResp({}))
 								}
 							})

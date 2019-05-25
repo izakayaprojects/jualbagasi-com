@@ -168,8 +168,14 @@ export class PurchaseDetailComponent implements OnInit {
     modalRef.componentInstance.title = "Rute ("+(idx+1)+"): "+r.city.name+", "+r.city.country
     modalRef.componentInstance.description = "Anda yakin ingin menghapus rute ini?"
     modalRef.result.then(result => {
-      console.log(result)
-      // TODO update to server
+      if (result) {
+        this.poService.deleteDestination(this.purchaseOrder.id, r.id).subscribe(resp => {
+          console.log(resp)
+          if (resp.success) {
+            this.purchaseOrder.routes.splice(idx, 1)
+          }
+        })
+      }
     }).catch(err => {})
   }
 
