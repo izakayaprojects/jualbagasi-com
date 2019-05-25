@@ -151,6 +151,12 @@ app.post("/api/purchaseorder/edit/dates", function(req, res) {
 	})
 })
 
+app.post("/api/purchaseorder/destinations/delete", function(req, res) {
+	order.delete_destination(req.body.token, req.body.purchase_order_id, req.body.destination_id).then(result => {
+		res.send(result)
+	}).catch(err => res.send(err))
+})
+
 app.post("/api/session", function(req, res) {
 	auth.check_token(req.body.token).then(result => {
 		res.send(result)

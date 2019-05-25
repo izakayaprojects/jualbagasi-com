@@ -204,6 +204,20 @@ export class PurchaseOrderService {
 
   }
 
+  deleteDestination(poId: string, destId: string): Observable<ApiResponse<Boolean>> {
+    let token = this.localStorage.retrieve("token")
+    let body = { token: token, purchase_order_id: poId, destination_id: destId }
+    return this.http.post<ApiResponse<Boolean>>(API+"/purchaseorder/destinations/delete", body).pipe(
+      map(result => {
+        let resp = new ApiResponse<Boolean>()
+        resp.success = result["success"]
+        resp.errorId = result["id"]
+        resp.data = resp.success
+        return resp
+      })
+    )
+  }
+
   editPurchaseOrder(po_id: string, col: string, key: string[], newValue: string[]): 
     Observable<ApiResponse<Boolean>> {
       

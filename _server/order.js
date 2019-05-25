@@ -281,6 +281,47 @@ module.exports = {
 		
 	},
 
+	delete_destination: function(token, po_id, dest_id) {
+		return new Promise(function(resolve, reject) {
+			if (!po_id || po_id === "") {
+				reject(utils.createErrorResp(-11, "Purchase order id should not be empty"))
+			}
+
+			if (!dest_id || dest_id === "") {
+				reject(utils.createErrorResp(-12, "Destination id should not be empty"))
+			}
+			auth.check_token(token).then(info => {
+				let userid = info["userid"]
+				let getPOOwner = "SELECT user_id, destinations FROM tbl_purchase_order WHERE _id=?"
+				db.connection.query(getPOOwner, [dest_id], function(err, po) {
+					if (err || po.length === 0) {
+						reject(utils.createErrorResp(-13, "Purchase order not found"))
+					} else {
+						let order = po[0]
+						if (order["user_id"] !== userid) {
+							reject(utils.createErrorResp(-14, "You are not the owner"))
+						} else {
+							let dests = order["destinations"].split(",")
+							let idx = dests.indexOf(dest_id)
+							if (idx > -1) {
+								dests.splice(idx, 1)
+							}
+							let updatePO = "UPDATE tbl_purchase_order SET destinations=? WHERE _id=?"
+							db.connection.query(updatePO, [dests.join(","), po_id], function(err, results) {
+								if (err) {
+									reject(utils.createErrorResp(-15, "Failed to update Purchase order"))
+								} else {
+									resolve(utils.createSuccessResp({}))
+								}
+							})
+						}
+					}
+				})
+
+			}).catch(err => {reject(error)})
+		})
+	},
+
 	edit_banner(fs, file, token, po_id) {
 		return new Promise(function(resolve, reject) {
 			if (!file || file === null) {
