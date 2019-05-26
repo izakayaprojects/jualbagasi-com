@@ -15,7 +15,7 @@ export class DateConverter {
 	}
  
 	toMySqlTimestamp(dt: Date): string {
-		return dt.getUTCFullYear()+"-"+(dt.getUTCMonth()+1)+"-"+dt.getUTCDate()
+		return dt.getUTCFullYear()+"-"+(dt.getUTCMonth()+1)+"-"+dt.getDate()
 	}
 
 }

@@ -218,6 +218,25 @@ export class PurchaseOrderService {
     )
   }
 
+  editDestination(poId: string, route: Route): Observable<ApiResponse<Boolean>> {
+    let token = this.localStorage.retrieve("token")
+    let body = { token: token, purchase_order_id: poId, destination_id: route.id }
+    body["city"] = route.city.name
+    body["country"] = route.city.country
+    body["country_code"] = route.city.countryCode
+    body["est_item_arrival_date"] = dateConv.toMySqlTimestamp(route.estimatedItemArrivalDate)
+    console.log(body)
+    return this.http.post<ApiResponse<Boolean>>(API+"/purchaseorder/destinations/edit", body).pipe(
+      map(result => {
+        let resp = new ApiResponse<Boolean>()
+        resp.success = result["success"]
+        resp.errorId = result["id"]
+        resp.data = resp.success
+        return resp
+      })
+    )
+  }
+
   editPurchaseOrder(po_id: string, col: string, key: string[], newValue: string[]): 
     Observable<ApiResponse<Boolean>> {
       

@@ -151,6 +151,36 @@ app.post("/api/purchaseorder/edit/dates", function(req, res) {
 	})
 })
 
+app.post("/api/purchaseorder/destinations/edit", function(req, res) {
+	let column = []
+	let values = []
+	if (req.body.city) {
+		column.push("city")
+		values.push(req.body.city)
+	}
+	if (req.body.country) {
+		column.push("country")
+		values.push(req.body.country)
+	}
+	if (req.body.country_code) {
+		column.push("country_code")
+		values.push(req.body.country_code)	
+	}
+
+	if (req.body.est_item_arrival_date) {
+		column.push("est_item_arrival_date")
+		values.push(req.body.est_item_arrival_date)	
+	}
+	if (req.body.note) {
+		column.push("note")
+		values.push(req.body.note)	
+	}
+
+	order.edit_destination(req.body.token, req.body.purchase_order_id, req.body.destination_id, column, values).then(result => {
+		res.send(result)
+	}).catch(err => res.send(err))
+})
+
 app.post("/api/purchaseorder/destinations/delete", function(req, res) {
 	order.delete_destination(req.body.token, req.body.purchase_order_id, req.body.destination_id).then(result => {
 		res.send(result)

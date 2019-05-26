@@ -158,8 +158,13 @@ export class PurchaseDetailComponent implements OnInit {
       this.purchaseOrder.origin : this.purchaseOrder.routes[idx]
     modalRef.componentInstance.routeIndex = idx
     modalRef.result.then(result => {
-      console.log(result)
-      // TODO update to server
+      let route = result.route
+      let valid = (route.city.name !== "") && route.city.country!==undefined && route.city.countryCode !== undefined
+      if (valid) {
+        this.poService.editDestination(this.purchaseOrder.id, route).subscribe(resp => {
+          console.log(resp)
+        })
+      }
     }).catch(err => {})
   }
 
@@ -170,7 +175,6 @@ export class PurchaseDetailComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         this.poService.deleteDestination(this.purchaseOrder.id, r.id).subscribe(resp => {
-          console.log(resp)
           if (resp.success) {
             this.purchaseOrder.routes.splice(idx, 1)
           }

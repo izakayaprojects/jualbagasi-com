@@ -277,8 +277,51 @@ module.exports = {
 		})
 	},
 
-	edit_destination: function(dest_id) {
-		
+	edit_destination: function(token, po_id, dest_id, cols, values) {
+		return new Promise(function(resolve, reject) {
+			if (!po_id || po_id === "") {
+				reject(utils.createErrorResp(-11, "Purchase order id should not be empty"))
+			}
+
+			if (!dest_id || dest_id === "") {
+				reject(utils.createErrorResp(-12, "Destination id should not be empty"))
+			}
+
+			if (cols.length !== values.length) {
+				reject(utils.createErrorResp(-15, "Columns and values don't match"))
+			}
+			auth.check_token(token).then(info => {
+				let userid = info["data"]["userid"]
+				let getPOOwner = "SELECT user_id, destinations FROM tbl_purchase_order WHERE _id=?"
+				db.connection.query(getPOOwner, [po_id], function(err, po) {
+					if (err || po.length === 0) {
+						reject(utils.createErrorResp(-13, "Purchase order not found"))
+					} else {
+						let order = po[0]
+						if (order["user_id"] !== userid || !order["destinations"].includes(dest_id)) {
+							reject(utils.createErrorResp(-14, "You are not the owner"))
+						} else {
+							let updateDest = "UPDATE tbl_destinations SET "
+							for (var i = 0 ; i < cols.length ; i++) {
+								updateDest += cols[i] + "=?"
+								if (i < cols.length-1) updateDest+=","
+							}
+							updateDest+=" WHERE _id=?"
+							values.push(dest_id)
+							db.connection.query(updateDest, values, function(err, results) {
+								if (err) {
+									reject(utils.createErrorResp(-16, "Failed to update Destination"))
+								} else {
+									resolve(utils.createSuccessResp({}))
+								}
+							})
+						}
+					}
+				})
+
+			}).catch(err => {reject(error)})
+
+		})
 	},
 
 	delete_destination: function(token, po_id, dest_id) {
@@ -290,6 +333,7 @@ module.exports = {
 			if (!dest_id || dest_id === "") {
 				reject(utils.createErrorResp(-12, "Destination id should not be empty"))
 			}
+
 			auth.check_token(token).then(info => {
 				let userid = info["data"]["userid"]
 				let getPOOwner = "SELECT user_id, destinations FROM tbl_purchase_order WHERE _id=?"
