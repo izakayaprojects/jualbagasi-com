@@ -37,6 +37,15 @@ app.get("/api/autocomplete/city", function(req, res) {
 	})
 })
 
+app.get("/api/autocomplete/city-country", function(req, res) {
+	cities.get_city_country_by_name(req.query.search).then(result => {
+		res.send(result)
+	}).catch(err => {
+		res.send(err)
+	})
+})
+
+
 app.get("/api/currencies", function(req, res) {
 	order.get_currencies().then(result => {
 		res.send(result)
